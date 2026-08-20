@@ -1,0 +1,381 @@
+.project-details-page {
+  min-height: 100vh;
+  background: #f6f7fb;
+  color: #1f2937;
+}
+
+
+/* ================= HEADER ================= */
+
+.project-details-header {
+  height: 72px;
+  padding: 0 6%;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-btn {
+  border: none;
+  background: transparent;
+  color: #4f46e5;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.project-status {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* ================= CONTAINER ================= */
+
+.project-details-container {
+  width: min(1180px, 92%);
+  margin: 0 auto;
+  padding: 45px 0 70px;
+}
+
+
+/* ================= HERO ================= */
+
+.project-details-hero {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 38px;
+
+  display: flex;
+  align-items: center;
+  gap: 28px;
+
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.05);
+}
+
+.project-details-logo {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+
+  border-radius: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(
+    135deg,
+    #6366f1,
+    #8b5cf6
+  );
+
+  color: white;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.project-category {
+  color: #6366f1;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.project-details-title h1 {
+  margin: 7px 0 10px;
+  font-size: 38px;
+  line-height: 1.1;
+  color: #111827;
+}
+
+.project-details-title p {
+  margin: 0;
+  max-width: 720px;
+  color: #6b7280;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+
+/* ================= INFO GRID ================= */
+
+.project-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.info-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.info-card span {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.info-card strong {
+  font-size: 17px;
+  color: #111827;
+}
+
+
+/* ================= MAIN GRID ================= */
+
+.project-details-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.9fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+
+/* ================= CARDS ================= */
+
+.details-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.details-card h2 {
+  margin: 0 0 15px;
+  font-size: 18px;
+  color: #111827;
+}
+
+.details-card p {
+  color: #6b7280;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+
+/* ================= TAGS ================= */
+
+.details-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.details-tags span {
+  padding: 8px 13px;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* ================= PROGRESS ================= */
+
+.details-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.details-card-heading h2 {
+  margin: 0;
+}
+
+.details-card-heading strong {
+  color: #6366f1;
+  font-size: 20px;
+}
+
+.details-progress {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.details-progress div {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #6366f1,
+    #8b5cf6
+  );
+  border-radius: inherit;
+  transition: width 0.4s ease;
+}
+
+
+/* ================= TEAM ================= */
+
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.team-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eef2ff;
+}
+
+.team-member strong {
+  display: block;
+  font-size: 14px;
+  color: #111827;
+}
+
+.team-member span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+
+/* ================= ACTIONS ================= */
+
+.project-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-project-btn,
+.find-team-btn {
+  width: 100%;
+  padding: 12px 16px;
+
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.edit-project-btn {
+  border: none;
+  background: #6366f1;
+  color: white;
+}
+
+.find-team-btn {
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+}
+
+
+/* ================= LOADING / ERROR ================= */
+
+.project-details-loading,
+.project-details-error {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  padding: 20px;
+}
+
+.project-details-loading {
+  color: #6b7280;
+}
+
+.project-details-error h2 {
+  margin-bottom: 8px;
+}
+
+.project-details-error p {
+  color: #6b7280;
+}
+
+.project-details-error button {
+  margin-top: 15px;
+  border: none;
+  background: #6366f1;
+  color: white;
+  padding: 11px 18px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+  .project-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .project-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .project-details-header {
+    padding: 0 20px;
+  }
+
+  .project-details-container {
+    width: 92%;
+    padding-top: 25px;
+  }
+
+  .project-details-hero {
+    padding: 25px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-details-logo {
+    width: 70px;
+    height: 70px;
+    font-size: 22px;
+  }
+
+  .project-details-title h1 {
+    font-size: 28px;
+  }
+
+  .project-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .details-card {
+    padding: 20px;
+  }
+
+}
