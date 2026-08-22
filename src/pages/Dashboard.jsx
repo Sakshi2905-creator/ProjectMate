@@ -671,10 +671,10 @@ const activeProjects = projects.filter(
               </p>
 
               <button
-              onClick={() => navigate('/profile')}
-              >
-              Complete Profile →
-             </button>
+  onClick={() => navigate('/profile')}
+>
+  Complete Profile →
+</button>
             </section>
 
           </aside>

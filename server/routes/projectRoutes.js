@@ -1,5 +1,6 @@
 const express = require('express')
 const Project = require('../models/Project')
+const User = require('../models/User')
 
 const router = express.Router()
 
@@ -161,6 +162,102 @@ router.get('/', async (req, res) => {
 
     res.status(500).json({
       message: 'Failed to fetch projects'
+    })
+
+  }
+
+})
+
+// SMART MATCHING
+
+router.get('/:projectId/match/:userId', async (req, res) => {
+
+  try {
+
+    const { projectId, userId } = req.params
+
+    const project = await Project.findById(projectId)
+
+    const user = await User.findById(userId)
+
+
+    if (!project) {
+
+      return res.status(404).json({
+        message: 'Project not found'
+      })
+
+    }
+
+
+    if (!user) {
+
+      return res.status(404).json({
+        message: 'User not found'
+      })
+
+    }
+
+
+    const requiredSkills =
+      project.requiredSkills || []
+
+    const userSkills =
+      user.skills || []
+
+
+    const normalizedUserSkills =
+      userSkills.map(skill =>
+        skill.toLowerCase().trim()
+      )
+
+
+    const matchedSkills =
+      requiredSkills.filter(skill =>
+        normalizedUserSkills.includes(
+          skill.toLowerCase().trim()
+        )
+      )
+
+
+    const missingSkills =
+      requiredSkills.filter(skill =>
+        !normalizedUserSkills.includes(
+          skill.toLowerCase().trim()
+        )
+      )
+
+
+    const matchPercentage =
+      requiredSkills.length === 0
+        ? 0
+        : Math.round(
+            (matchedSkills.length /
+              requiredSkills.length) * 100
+          )
+
+
+    res.status(200).json({
+
+      matchPercentage,
+
+      matchedSkills,
+
+      missingSkills,
+
+      requiredSkills,
+
+      userSkills
+
+    })
+
+
+  } catch (error) {
+
+    console.error(error)
+
+    res.status(500).json({
+      message: 'Failed to calculate match'
     })
 
   }
