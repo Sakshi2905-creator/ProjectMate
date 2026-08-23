@@ -58,6 +58,22 @@ const projectSchema = new mongoose.Schema(
       }
     ],
 
+    joinRequests: [
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+
+    status: {
+      type: String,
+      enum: ['pending', 'accepted', 'rejected'],
+      default: 'pending'
+    }
+  }
+],
+
     status: {
       type: String,
       enum: ['Planning', 'In Progress', 'Completed'],

@@ -379,3 +379,67 @@
   }
 
 }
+/* ================= JOIN PROJECT ================= */
+
+.join-project-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #6c5ce7,
+    #8e7dff
+  );
+
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.join-project-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(108, 92, 231, 0.25);
+}
+
+.join-project-btn:active {
+  transform: translateY(0);
+}
+
+.join-project-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+/* ================= JOIN STATUS ================= */
+
+.join-status {
+  margin: 10px 0 0;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  background: #f5f3ff;
+
+  color: #5b4cc4;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  text-align: center;
+}

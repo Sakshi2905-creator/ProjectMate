@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-//import './Discover.css'
+import './Discover.css'
 
 function Discover() {
 
   const navigate = useNavigate()
+  const storedUser = JSON.parse(
+  localStorage.getItem('user')
+)
+
+const userId = storedUser?.id
 
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [matches, setMatches] = useState({})
 
   useEffect(() => {
 
@@ -44,6 +51,51 @@ function Discover() {
 
   }, [])
 
+useEffect(() => {
+
+  const fetchMatches = async () => {
+
+    if (!userId || projects.length === 0) {
+      return
+    }
+
+    const matchResults = {}
+
+    for (const project of projects) {
+
+      try {
+
+        const response = await fetch(
+          `http://localhost:5000/api/projects/${project._id}/match/${userId}`
+        )
+
+        const data = await response.json()
+
+        if (response.ok) {
+
+          matchResults[project._id] =
+            data.matchPercentage
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          'Error calculating match:',
+          error
+        )
+
+      }
+
+    }
+
+    setMatches(matchResults)
+
+  }
+
+  fetchMatches()
+
+}, [projects, userId])
 
   if (loading) {
 
@@ -139,7 +191,14 @@ function Discover() {
                   <span className="difficulty">
                     {project.difficulty}
                   </span>
+                   
+                   {matches[project._id] !== undefined && (
 
+  <span className="match-score">
+    ⚡ {matches[project._id]}% Match
+  </span>
+
+)}
                 </div>
 
 

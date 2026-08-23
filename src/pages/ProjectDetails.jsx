@@ -10,6 +10,8 @@ function ProjectDetails() {
   const [project, setProject] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [joinStatus, setJoinStatus] = useState('')
+  const [joining, setJoining] = useState(false)
 
 
   useEffect(() => {
@@ -52,7 +54,71 @@ function ProjectDetails() {
 
   }, [id])
 
+const handleJoinRequest = async () => {
 
+  try {
+
+    setJoining(true)
+    setJoinStatus('')
+
+    const user = JSON.parse(
+      localStorage.getItem('user')
+    )
+
+    if (!user?.id) {
+      setJoinStatus('Please login first')
+      return
+    }
+
+    const response = await fetch(
+      `http://localhost:5000/api/projects/${id}/join`,
+      {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+          userId: user.id
+        })
+      }
+    )
+
+    const data = await response.json()
+
+    if (response.ok) {
+
+      setJoinStatus(
+        'Join request sent successfully! 🎉'
+      )
+
+    } else {
+
+      setJoinStatus(
+        data.message || 'Failed to send request'
+      )
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      'Join request error:',
+      error
+    )
+
+    setJoinStatus(
+      'Unable to connect to server'
+    )
+
+  } finally {
+
+    setJoining(false)
+
+  }
+
+}
   if (loading) {
 
     return (
@@ -383,6 +449,22 @@ function ProjectDetails() {
               >
                 Find Teammates
               </button>
+              
+              <button
+  className="join-project-btn"
+  onClick={handleJoinRequest}
+  disabled={joining}
+>
+  {joining
+    ? 'Sending...'
+    : 'Request to Join →'}
+</button>
+
+{joinStatus && (
+  <p className="join-status">
+    {joinStatus}
+  </p>
+)}
 
             </section>
 
