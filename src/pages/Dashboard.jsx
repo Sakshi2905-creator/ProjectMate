@@ -639,7 +639,56 @@ const activeProjects = projects.filter(
               </div>
 
             </section>
+            
+            {/* ================= JOIN REQUESTS ================= */}
 
+<section className="side-section join-requests-section">
+
+  <div className="section-header">
+
+    <div>
+      <span className="section-label">
+        TEAM
+      </span>
+
+      <h2>
+        Join Requests
+      </h2>
+    </div>
+
+  </div>
+
+
+  {projects.filter(
+    project =>
+      project.owner === user.id ||
+      project.owner?._id === user.id
+  ).length === 0 ? (
+
+    <div className="no-requests">
+      <p>No project requests yet.</p>
+    </div>
+
+  ) : (
+
+    <div className="request-placeholder">
+
+      <p>
+        You have projects with potential
+        join requests.
+      </p>
+
+      <button
+        onClick={() => navigate('/join-requests')}
+      >
+        View Requests →
+      </button>
+
+    </div>
+
+  )}
+
+</section>
 
             {/* PROFILE STRENGTH */}
 

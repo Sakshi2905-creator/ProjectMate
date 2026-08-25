@@ -342,6 +342,49 @@ router.post('/:projectId/join', async (req, res) => {
   }
 
 })
+// GET JOIN REQUESTS FOR A PROJECT
+
+router.get('/:projectId/join-requests', async (req, res) => {
+
+  try {
+
+    const project = await Project.findById(
+      req.params.projectId
+    ).populate(
+      'joinRequests.user',
+      'name email skills'
+    )
+
+    if (!project) {
+
+      return res.status(404).json({
+        message: 'Project not found'
+      })
+
+    }
+
+    const requests = project.joinRequests.filter(
+      request => request.status === 'pending'
+    )
+
+    res.status(200).json({
+      requests
+    })
+
+  } catch (error) {
+
+    console.error(
+      'Fetch join requests error:',
+      error
+    )
+
+    res.status(500).json({
+      message: 'Failed to fetch join requests'
+    })
+
+  }
+
+})
 
 // ACCEPT JOIN REQUEST
 
@@ -474,5 +517,47 @@ router.post('/:projectId/join/:requestId/reject', async (req, res) => {
 
 })
 
+// GET JOIN REQUESTS FOR A PROJECT
+
+router.get('/:projectId/join-requests', async (req, res) => {
+
+  try {
+
+    const project = await Project.findById(
+      req.params.projectId
+    ).populate(
+      'joinRequests.user',
+      'name email skills'
+    )
+
+    if (!project) {
+      return res.status(404).json({
+        message: 'Project not found'
+      })
+    }
+
+    const pendingRequests =
+      project.joinRequests.filter(
+        request => request.status === 'pending'
+      )
+
+    res.status(200).json({
+      requests: pendingRequests
+    })
+
+  } catch (error) {
+
+    console.error(
+      'Fetch join requests error:',
+      error
+    )
+
+    res.status(500).json({
+      message: 'Failed to fetch join requests'
+    })
+
+  }
+
+})
 
 module.exports = router

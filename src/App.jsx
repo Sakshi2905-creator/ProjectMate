@@ -8,6 +8,7 @@ import CreateProject from './pages/CreateProject'
 import ProjectDetails from './pages/ProjectDetails'
 import Discover from './pages/Discover'
 import Profile from './pages/Profile'
+import JoinRequests from './pages/JoinRequests'
 
 import './App.css'
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/project/:id" element={<ProjectDetails />}/>
         <Route path="/discover" element={<Discover /> }/>
         <Route path="/profile" element={<Profile />}/>
+        <Route path="/join-requests" element={<JoinRequests />}/>
 
       </Routes>
 
