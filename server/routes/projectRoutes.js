@@ -118,8 +118,11 @@ router.get('/:id', async (req, res) => {
   try {
 
     const project = await Project.findById(
-      req.params.id
-    )
+  req.params.id
+).populate(
+  'members',
+  'name email skills'
+)
 
     if (!project) {
 
@@ -612,6 +615,64 @@ router.get('/join-requests/:userId', async (req, res) => {
 
     res.status(500).json({
       message: 'Failed to fetch join requests'
+    })
+
+  }
+
+})
+
+// UPDATE PROJECT
+
+router.put('/:id', async (req, res) => {
+
+  try {
+
+    const {
+      title,
+      description,
+      category,
+      difficulty,
+      techStack,
+      requiredSkills,
+      teamSize,
+      deadline
+    } = req.body
+
+    const project = await Project.findById(
+      req.params.id
+    )
+
+    if (!project) {
+      return res.status(404).json({
+        message: 'Project not found'
+      })
+    }
+
+    project.title = title
+    project.description = description
+    project.category = category
+    project.difficulty = difficulty
+    project.techStack = techStack
+    project.requiredSkills = requiredSkills
+    project.teamSize = teamSize
+    project.deadline = deadline
+
+    await project.save()
+
+    res.status(200).json({
+      message: 'Project updated successfully',
+      project
+    })
+
+  } catch (error) {
+
+    console.error(
+      'Update project error:',
+      error
+    )
+
+    res.status(500).json({
+      message: 'Failed to update project'
     })
 
   }

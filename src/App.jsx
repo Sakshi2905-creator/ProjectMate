@@ -9,6 +9,7 @@ import ProjectDetails from './pages/ProjectDetails'
 import Discover from './pages/Discover'
 import Profile from './pages/Profile'
 import JoinRequests from './pages/JoinRequests'
+import EditProject from './pages/EditProject'
 
 import './App.css'
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/discover" element={<Discover /> }/>
         <Route path="/profile" element={<Profile />}/>
         <Route path="/join-requests" element={<JoinRequests />}/>
+        <Route path="/edit-project/:id" element={<EditProject />}/>
 
       </Routes>
 

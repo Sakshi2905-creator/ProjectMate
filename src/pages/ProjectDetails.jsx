@@ -405,45 +405,70 @@ const handleJoinRequest = async () => {
 
             {/* TEAM */}
 
-            <section className="details-card">
+           <section className="details-card">
 
-              <h2>
-                Team
-              </h2>
+  <h2>
+    Team
+  </h2>
 
-              <div className="team-member">
+  <div className="team-list">
 
-                <div className="team-avatar">
-                  👤
-                </div>
+    {project.members?.length > 0 ? (
 
-                <div>
+      project.members.map((member, index) => (
 
-                  <strong>
-                    Project Owner
-                  </strong>
+        <div
+          className="team-member"
+          key={member._id || index}
+        >
 
-                  <span>
-                    Team member
-                  </span>
+          <div className="team-avatar">
+            {member.name
+              ?.charAt(0)
+              ?.toUpperCase() || 'U'}
+          </div>
 
-                </div>
+          <div>
 
-              </div>
+            <strong>
+              {member.name || 'Unknown User'}
+            </strong>
 
-            </section>
+            <span>
+              {index === 0
+                ? 'Project Owner'
+                : 'Team Member'}
+            </span>
 
+          </div>
+
+        </div>
+
+      ))
+
+    ) : (
+
+      <p>
+        No team members yet.
+      </p>
+
+    )}
+
+  </div>
+
+</section>
 
             {/* ACTIONS */}
 
             <section className="details-card project-actions">
 
               <button
-                className="edit-project-btn"
-              >
-                Edit Project
-              </button>
-
+  className="edit-project-btn"
+  onClick={() =>
+    navigate(`/edit-project/${id}`)
+  }>
+  Edit Project
+</button>
               <button
                 className="find-team-btn"
               >
