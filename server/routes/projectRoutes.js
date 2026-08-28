@@ -517,38 +517,96 @@ router.post('/:projectId/join/:requestId/reject', async (req, res) => {
 
 })
 
-// GET JOIN REQUESTS FOR A PROJECT
+// // GET JOIN REQUESTS FOR A PROJECT
 
-router.get('/:projectId/join-requests', async (req, res) => {
+// router.get('/:projectId/join-requests', async (req, res) => {
+
+//   try {
+
+//     const project = await Project.findById(
+//       req.params.projectId
+//     ).populate(
+//       'joinRequests.user',
+//       'name email skills'
+//     )
+
+//     if (!project) {
+//       return res.status(404).json({
+//         message: 'Project not found'
+//       })
+//     }
+
+//     const pendingRequests =
+//       project.joinRequests.filter(
+//         request => request.status === 'pending'
+//       )
+
+//     res.status(200).json({
+//       requests: pendingRequests
+//     })
+
+//   } catch (error) {
+
+//     console.error(
+//       'Fetch join requests error:',
+//       error
+//     )
+
+//     res.status(500).json({
+//       message: 'Failed to fetch join requests'
+//     })
+
+//   }
+
+// })
+
+// GET ALL PENDING JOIN REQUESTS FOR PROJECT OWNER
+
+router.get('/join-requests/:userId', async (req, res) => {
 
   try {
 
-    const project = await Project.findById(
-      req.params.projectId
-    ).populate(
-      'joinRequests.user',
-      'name email skills'
-    )
-
-    if (!project) {
-      return res.status(404).json({
-        message: 'Project not found'
-      })
-    }
-
-    const pendingRequests =
-      project.joinRequests.filter(
-        request => request.status === 'pending'
+    const projects = await Project.find({
+      owner: req.params.userId
+    })
+      .populate(
+        'joinRequests.user',
+        'name email skills'
       )
+      .sort({
+        createdAt: -1
+      })
+
+    const requests = []
+
+    projects.forEach(project => {
+
+      project.joinRequests.forEach(request => {
+
+        if (request.status === 'pending') {
+
+          requests.push({
+            requestId: request._id,
+            projectId: project._id,
+            projectTitle: project.title,
+            user: request.user,
+            createdAt: request.createdAt
+          })
+
+        }
+
+      })
+
+    })
 
     res.status(200).json({
-      requests: pendingRequests
+      requests
     })
 
   } catch (error) {
 
     console.error(
-      'Fetch join requests error:',
+      'Fetch owner join requests error:',
       error
     )
 

@@ -11,6 +11,55 @@ function JoinRequests() {
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')
 
+const handleRequest = async (
+    projectId,
+    requestId,
+    action
+  ) => {
+
+    try {
+
+      const response = await fetch(
+        `http://localhost:5000/api/projects/${projectId}/join/${requestId}/${action}`,
+        {
+          method: 'POST'
+        }
+      )
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setMessage(
+          data.message || 'Something went wrong'
+        )
+        return
+      }
+
+      setMessage(data.message)
+
+      // Remove processed request from UI
+      setRequests(prevRequests =>
+        prevRequests.filter(
+          request => request._id !== requestId
+        )
+      )
+
+    } catch (error) {
+
+      console.error(
+        'Request action error:',
+        error
+      )
+
+      setMessage(
+        'Unable to process request'
+      )
+
+    }
+
+  }
+
+
 
   useEffect(() => {
 
@@ -284,20 +333,33 @@ function JoinRequests() {
 
                 <div className="request-actions">
 
-                  <button
-                    className="reject-btn"
-                  >
-                    Reject
-                  </button>
+  <button
+    className="reject-btn"
+    onClick={() =>
+      handleRequest(
+        request.projectId,
+        request._id,
+        'reject'
+      )
+    }
+  >
+    Reject
+  </button>
 
+  <button
+    className="accept-btn"
+    onClick={() =>
+      handleRequest(
+        request.projectId,
+        request._id,
+        'accept'
+      )
+    }
+  >
+    Accept
+  </button>
 
-                  <button
-                    className="accept-btn"
-                  >
-                    Accept
-                  </button>
-
-                </div>
+</div>
 
               </article>
 
