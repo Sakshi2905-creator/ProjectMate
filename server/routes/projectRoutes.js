@@ -678,5 +678,249 @@ router.put('/:id', async (req, res) => {
   }
 
 })
+// FIND BEST TEAMMATES
 
+router.get('/:projectId/find-teammates', async (req, res) => {
+
+  try {
+
+    const { projectId } = req.params
+
+    // Find project
+    const project = await Project.findById(projectId)
+
+    if (!project) {
+      return res.status(404).json({
+        message: 'Project not found'
+      })
+    }
+
+
+    // Get all users
+    const users = await User.find()
+      .select('name email skills interest')
+
+
+    const requiredSkills =
+      project.requiredSkills || []
+
+
+    // Normalize project skills
+    const normalizedRequiredSkills =
+      requiredSkills.map(skill =>
+        skill.toLowerCase().trim()
+      )
+
+
+    // Existing project members
+    const existingMembers =
+      project.members.map(member =>
+        member.toString()
+      )
+
+
+    const teammates = users
+
+      // Remove project owner
+      .filter(user =>
+        user._id.toString() !==
+        project.owner.toString()
+      )
+
+      // Remove existing members
+      .filter(user =>
+        !existingMembers.includes(
+          user._id.toString()
+        )
+      )
+
+      // Calculate matching
+      .map(user => {
+
+        const userSkills =
+          user.skills || []
+
+
+        const normalizedUserSkills =
+          userSkills.map(skill =>
+            skill.toLowerCase().trim()
+          )
+
+
+        const matchedSkills =
+          requiredSkills.filter(skill =>
+            normalizedUserSkills.includes(
+              skill.toLowerCase().trim()
+            )
+          )
+
+
+        const missingSkills =
+          requiredSkills.filter(skill =>
+            !normalizedUserSkills.includes(
+              skill.toLowerCase().trim()
+            )
+          )
+
+
+        const matchPercentage =
+          normalizedRequiredSkills.length === 0
+            ? 0
+            : Math.round(
+                (matchedSkills.length /
+                  normalizedRequiredSkills.length) *
+                  100
+              )
+
+
+        return {
+
+          _id: user._id,
+
+          name: user.name,
+
+          email: user.email,
+
+          skills: user.skills,
+
+          interest: user.interest,
+
+          matchPercentage,
+
+          matchedSkills,
+
+          missingSkills
+
+        }
+
+      })
+
+
+      // Highest match first
+
+      .sort(
+        (a, b) =>
+          b.matchPercentage -
+          a.matchPercentage
+      )
+
+
+    res.status(200).json({
+
+      project: {
+        id: project._id,
+        title: project.title,
+        requiredSkills: project.requiredSkills
+      },
+
+      teammates
+
+    })
+
+
+  } catch (error) {
+
+    console.error(
+      'Find teammates error:',
+      error
+    )
+
+    res.status(500).json({
+
+      message:
+        'Failed to find teammates'
+
+    })
+
+  }
+
+})
+
+// INVITE USER TO PROJECT
+
+router.post('/:projectId/invite', async (req, res) => {
+
+  try {
+
+    const { projectId } = req.params
+    const { userId } = req.body
+
+    if (!userId) {
+      return res.status(400).json({
+        message: 'User ID is required'
+      })
+    }
+
+    const project = await Project.findById(projectId)
+
+    if (!project) {
+      return res.status(404).json({
+        message: 'Project not found'
+      })
+    }
+
+    const user = await User.findById(userId)
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      })
+    }
+
+    // Check if already a member
+
+    const alreadyMember = project.members.some(
+      member =>
+        member.toString() === userId
+    )
+
+    if (alreadyMember) {
+      return res.status(400).json({
+        message: 'User is already a team member'
+      })
+    }
+
+    // Check existing pending request
+
+    const existingRequest =
+      project.joinRequests.find(
+        request =>
+          request.user.toString() === userId &&
+          request.status === 'pending'
+      )
+
+    if (existingRequest) {
+      return res.status(400).json({
+        message: 'Invitation already sent'
+      })
+    }
+
+    // Add invitation as pending request
+
+    project.joinRequests.push({
+      user: userId,
+      status: 'pending'
+    })
+
+    await project.save()
+
+    res.status(200).json({
+      message: `Invitation sent to ${user.name}`,
+      project
+    })
+
+  } catch (error) {
+
+    console.error(
+      'Invite user error:',
+      error
+    )
+
+    res.status(500).json({
+      message: 'Failed to send invitation'
+    })
+
+  }
+
+})
 module.exports = router

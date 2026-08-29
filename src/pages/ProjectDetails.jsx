@@ -13,6 +13,10 @@ function ProjectDetails() {
   const [joinStatus, setJoinStatus] = useState('')
   const [joining, setJoining] = useState(false)
 
+const [matchPercentage, setMatchPercentage] = useState(0)
+const [matchedSkills, setMatchedSkills] = useState([])
+const [missingSkills, setMissingSkills] = useState([])
+const [matchLoading, setMatchLoading] = useState(true)
 
   useEffect(() => {
 
@@ -119,6 +123,71 @@ const handleJoinRequest = async () => {
   }
 
 }
+
+// ================= SMART MATCH =================
+
+useEffect(() => {
+
+  const fetchMatch = async () => {
+
+    try {
+
+      const user = JSON.parse(
+        localStorage.getItem('user')
+      )
+
+      if (!user?.id) {
+        setMatchLoading(false)
+        return
+      }
+
+      const response = await fetch(
+        `http://localhost:5000/api/projects/${id}/match/${user.id}`
+      )
+
+      const data = await response.json()
+
+      if (!response.ok) {
+
+        console.error(
+          data.message || 'Failed to calculate match'
+        )
+
+        return
+      }
+
+      setMatchPercentage(
+        data.matchPercentage || 0
+      )
+
+      setMatchedSkills(
+        data.matchedSkills || []
+      )
+
+      setMissingSkills(
+        data.missingSkills || []
+      )
+
+    } catch (error) {
+
+      console.error(
+        'Match calculation error:',
+        error
+      )
+
+    } finally {
+
+      setMatchLoading(false)
+
+    }
+
+  }
+
+  fetchMatch()
+
+}, [id])
+
+
   if (loading) {
 
     return (
@@ -401,7 +470,115 @@ const handleJoinRequest = async () => {
               </p>
 
             </section>
+{/* SMART MATCH */}
 
+<section className="details-card smart-match-card">
+
+  <div className="details-card-heading">
+
+    <h2>
+      Your Match
+    </h2>
+
+    {!matchLoading && (
+      <strong>
+        {matchPercentage}%
+      </strong>
+    )}
+
+  </div>
+
+
+  {matchLoading ? (
+
+    <p>
+      Calculating your match...
+    </p>
+
+  ) : (
+
+    <>
+
+      <div className="match-progress">
+
+        <div
+          style={{
+            width: `${matchPercentage}%`
+          }}
+        />
+
+      </div>
+
+
+      <p className="match-summary">
+
+        {matchPercentage >= 70
+          ? 'Great match for this project! 🎯'
+          : matchPercentage >= 40
+          ? 'You match some of the required skills.'
+          : 'This project may require some additional skills.'}
+
+      </p>
+
+
+      {matchedSkills.length > 0 && (
+
+        <div className="match-skills">
+
+          <span>
+            MATCHED SKILLS
+          </span>
+
+          <div className="details-tags">
+
+            {matchedSkills.map(
+              (skill, index) => (
+
+                <span key={index}>
+                  ✓ {skill}
+                </span>
+
+              )
+            )}
+
+          </div>
+
+        </div>
+
+      )}
+
+
+      {missingSkills.length > 0 && (
+
+        <div className="match-skills">
+
+          <span>
+            SKILLS TO LEARN
+          </span>
+
+          <div className="details-tags">
+
+            {missingSkills.map(
+              (skill, index) => (
+
+                <span key={index}>
+                  {skill}
+                </span>
+
+              )
+            )}
+
+          </div>
+
+        </div>
+
+      )}
+
+    </>
+
+  )}
+
+</section>
 
             {/* TEAM */}
 
@@ -470,11 +647,13 @@ const handleJoinRequest = async () => {
   Edit Project
 </button>
               <button
-                className="find-team-btn"
-              >
-                Find Teammates
-              </button>
-              
+  className="find-team-btn"
+  onClick={() =>
+    navigate(`/project/${id}/find-teammates`)
+  }
+>
+  Find Teammates
+</button>
               <button
   className="join-project-btn"
   onClick={handleJoinRequest}

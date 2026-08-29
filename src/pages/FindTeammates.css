@@ -1,0 +1,702 @@
+/* =========================================
+   FIND TEAMMATES PAGE
+========================================= */
+
+.find-teammates-page {
+  min-height: 100vh;
+  background: #f7f8fc;
+  padding: 0 0 70px;
+  color: #111827;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.find-teammates-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 34px 24px 32px;
+  text-align: center;
+}
+
+
+/* BACK BUTTON */
+
+.find-back-btn {
+  display: block;
+
+  margin: 0 auto 34px;
+
+  border: none;
+  background: transparent;
+
+  color: #111827;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.find-back-btn:hover {
+  color: #635bff;
+}
+
+
+/* LABEL */
+
+.find-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #635bff;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+}
+
+
+/* TITLE */
+
+.find-teammates-header h1 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 42px;
+  font-weight: 750;
+
+  letter-spacing: -1.5px;
+}
+
+
+/* SUBTITLE */
+
+.find-teammates-header p {
+  margin: 10px 0 0;
+
+  color: #64748b;
+
+  font-size: 15px;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.find-teammates-container {
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding: 0 24px;
+}
+
+
+/* =========================================
+   PROJECT INFORMATION
+========================================= */
+
+.find-project-info {
+  position: relative;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e4e8f0;
+
+  border-radius: 18px;
+
+  padding: 28px 30px;
+
+  margin-bottom: 24px;
+
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.04);
+}
+
+
+/* Decorative purple circle */
+
+.find-project-info::after {
+  content: "";
+
+  position: absolute;
+
+  width: 115px;
+  height: 115px;
+
+  right: -40px;
+  top: -55px;
+
+  border-radius: 50%;
+
+  background: #eef0ff;
+
+  pointer-events: none;
+}
+
+
+/* PROJECT LABEL */
+
+.find-project-info > span {
+  display: block;
+
+  position: relative;
+  z-index: 1;
+
+  margin-bottom: 8px;
+
+  color: #635bff;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+
+/* PROJECT TITLE */
+
+.find-project-info h2 {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 7px;
+
+  color: #111827;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  letter-spacing: -0.5px;
+}
+
+
+/* REQUIRED SKILLS */
+
+.find-project-info p {
+  position: relative;
+  z-index: 1;
+
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   TEAMMATES LIST
+========================================= */
+
+.teammates-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* =========================================
+   TEAMMATE CARD
+========================================= */
+
+.teammate-card {
+  display: grid;
+
+  grid-template-columns:
+    55px
+    minmax(180px, 1fr)
+    auto
+    auto;
+
+  grid-template-rows: auto auto;
+
+  column-gap: 18px;
+  row-gap: 10px;
+
+  align-items: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e4e8f0;
+
+  border-radius: 16px;
+
+  padding: 20px 22px;
+
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.035);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.teammate-card:hover {
+  transform: translateY(-2px);
+
+  border-color: #d9dcff;
+
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, 0.07);
+}
+
+
+/* =========================================
+   AVATAR
+========================================= */
+
+.teammate-avatar {
+  grid-column: 1;
+  grid-row: 1;
+
+  width: 52px;
+  height: 52px;
+
+  border-radius: 14px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #eeebff;
+
+  color: #635bff;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+
+/* =========================================
+   USER INFORMATION
+========================================= */
+
+.teammate-info {
+  grid-column: 2;
+  grid-row: 1;
+
+  min-width: 0;
+}
+
+
+.teammate-info h2 {
+  margin: 0 0 4px;
+
+  color: #111827;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+
+.teammate-info p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   MATCH PERCENTAGE
+========================================= */
+
+.teammate-match {
+  grid-column: 3;
+  grid-row: 1;
+
+  min-width: 75px;
+
+  text-align: center;
+}
+
+
+.teammate-match strong {
+  display: block;
+
+  color: #111827;
+
+  font-size: 23px;
+  font-weight: 750;
+}
+
+
+.teammate-match span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   MATCHED SKILLS
+========================================= */
+
+.teammate-skills {
+  grid-column: 2 / 4;
+  grid-row: 2;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+
+.teammate-skills span {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 6px 9px;
+
+  background: #f5f6fa;
+
+  border: 1px solid #eceef3;
+
+  border-radius: 7px;
+
+  color: #475569;
+
+  font-size: 11px;
+  font-weight: 500;
+}
+
+
+/* =========================================
+   INVITE BUTTON
+========================================= */
+
+.invite-btn {
+  grid-column: 4;
+  grid-row: 1 / 3;
+
+  min-width: 82px;
+
+  border: none;
+
+  padding: 11px 18px;
+
+  border-radius: 9px;
+
+  background: #635bff;
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 12px rgba(99, 91, 255, 0.18);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.invite-btn:hover {
+  background: #554cf0;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 7px 16px rgba(99, 91, 255, 0.25);
+}
+
+
+.invite-btn:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   NO TEAMMATES
+========================================= */
+
+.no-teammates {
+  background: #ffffff;
+
+  border: 1px dashed #cbd5e1;
+
+  border-radius: 16px;
+
+  padding: 60px 25px;
+
+  text-align: center;
+
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.025);
+}
+
+
+.no-teammates > div {
+  margin-bottom: 12px;
+
+  font-size: 38px;
+}
+
+
+.no-teammates h2 {
+  margin: 0 0 8px;
+
+  color: #111827;
+
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+.no-teammates p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.find-loading {
+  min-height: 60vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #64748b;
+
+  font-size: 15px;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.find-error {
+  max-width: 600px;
+
+  margin: 100px auto;
+
+  padding: 35px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 18px;
+
+  text-align: center;
+
+  box-shadow:
+    0 8px 28px rgba(15, 23, 42, 0.05);
+}
+
+
+.find-error h2 {
+  margin: 0 0 8px;
+
+  color: #111827;
+}
+
+
+.find-error p {
+  margin-bottom: 22px;
+
+  color: #64748b;
+}
+
+
+.find-error button {
+  border: none;
+
+  background: #635bff;
+
+  color: #ffffff;
+
+  padding: 10px 18px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-weight: 600;
+}
+
+
+/* =========================================
+   INVITE MESSAGE
+========================================= */
+
+.invite-message {
+  max-width: 1100px;
+
+  margin: 0 auto 18px;
+
+  padding: 12px 16px;
+
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+  border-radius: 10px;
+
+  color: #15803d;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+
+  .find-teammates-header {
+    padding: 28px 18px;
+  }
+
+  .find-teammates-header h1 {
+    font-size: 34px;
+  }
+
+  .find-teammates-container {
+    padding: 0 18px;
+  }
+
+  .teammate-card {
+    grid-template-columns: 50px 1fr auto;
+
+    grid-template-rows: auto auto auto;
+
+    gap: 10px 14px;
+  }
+
+  .teammate-avatar {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .teammate-info {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .teammate-match {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .teammate-skills {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+
+  .invite-btn {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+}
+
+
+@media (max-width: 520px) {
+
+  .find-teammates-header h1 {
+    font-size: 30px;
+  }
+
+  .find-teammates-header p {
+    font-size: 13px;
+  }
+
+  .find-project-info {
+    padding: 22px;
+  }
+
+  .find-project-info h2 {
+    font-size: 21px;
+  }
+
+  .teammate-card {
+    display: grid;
+
+    grid-template-columns: 48px 1fr;
+
+    padding: 18px;
+  }
+
+  .teammate-avatar {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .teammate-info {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .teammate-match {
+    grid-column: 2;
+    grid-row: 2;
+
+    text-align: left;
+  }
+
+  .teammate-skills {
+    grid-column: 1 / 3;
+    grid-row: 3;
+  }
+
+  .invite-btn {
+    grid-column: 1 / 3;
+    grid-row: 4;
+
+    width: 100%;
+  }
+
+  .no-teammates {
+    padding: 45px 18px;
+  }
+
+}

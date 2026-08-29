@@ -1,153 +1,390 @@
+/* ================================
+   EDIT PROJECT PAGE
+================================ */
+
 .edit-project-page {
   min-height: 100vh;
   background: #f7f8fc;
-  padding-bottom: 60px;
+  padding-bottom: 70px;
+  color: #111827;
 }
 
+
+/* ================================
+   HEADER
+================================ */
+
 .edit-project-header {
-  max-width: 1100px;
-  margin: auto;
-  padding: 40px 24px 30px;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 34px 24px 28px;
 }
 
 .edit-back-btn {
   border: none;
   background: transparent;
+  color: #111827;
+  font-size: 14px;
   cursor: pointer;
-  font-size: 15px;
+  padding: 0;
   margin-bottom: 28px;
+  transition: color 0.2s ease;
+}
+
+.edit-back-btn:hover {
+  color: #635bff;
 }
 
 .edit-label {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: #666;
+  display: block;
+  color: #635bff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+  margin-bottom: 8px;
 }
 
 .edit-project-header h1 {
-  margin: 8px 0;
-  font-size: 38px;
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #111827;
 }
 
 .edit-project-header p {
-  color: #666;
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 15px;
 }
+
+
+/* ================================
+   FORM CONTAINER
+================================ */
 
 .edit-project-container {
   max-width: 850px;
-  margin: auto;
+  margin: 0 auto;
   padding: 0 24px;
 }
 
 .edit-project-form {
-  background: white;
-  padding: 35px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 18px;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  padding: 34px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05);
 }
+
+
+/* ================================
+   FORM GROUP
+================================ */
 
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .form-group label {
-  font-weight: 600;
   margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
 }
+
+
+/* ================================
+   INPUTS
+================================ */
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
   box-sizing: border-box;
-  padding: 13px 14px;
-  border: 1px solid #ddd;
+
+  padding: 12px 14px;
+
+  border: 1px solid #d8dee9;
   border-radius: 9px;
-  font-size: 15px;
+
+  background: #ffffff;
+
+  color: #111827;
+  font-family: inherit;
+  font-size: 14px;
+
   outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover {
+  border-color: #b9c1d0;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  border-color: #555;
+  border-color: #635bff;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.10);
 }
 
 .form-group textarea {
+  min-height: 120px;
   resize: vertical;
 }
 
-.form-group small {
-  margin-top: 6px;
-  color: #777;
+
+/* ================================
+   PLACEHOLDER
+================================ */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #94a3b8;
 }
+
+
+/* ================================
+   HELPER TEXT
+================================ */
+
+.form-group small {
+  margin-top: 7px;
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+
+/* ================================
+   TWO COLUMN ROW
+================================ */
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 18px;
 }
+
+
+/* ================================
+   SUCCESS MESSAGE
+================================ */
+
+.edit-success {
+  padding: 12px 14px;
+  margin-top: 8px;
+
+  border: 1px solid #bbf7d0;
+  border-radius: 9px;
+
+  background: #f0fdf4;
+  color: #15803d;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   ERROR MESSAGE
+================================ */
+
+.edit-error-message {
+  padding: 12px 14px;
+  margin-top: 8px;
+
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+
+  background: #fef2f2;
+  color: #b91c1c;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   ACTION BUTTONS
+================================ */
 
 .edit-form-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+
   gap: 12px;
-  margin-top: 30px;
+
+  margin-top: 32px;
+  padding-top: 24px;
+
+  border-top: 1px solid #eef0f4;
 }
 
-.cancel-edit-btn,
-.save-project-btn {
-  border: none;
-  padding: 13px 22px;
-  border-radius: 9px;
-  cursor: pointer;
-  font-weight: 600;
-}
+
+/* CANCEL */
 
 .cancel-edit-btn {
-  background: #eee;
+  border: 1px solid #d8dee9;
+
+  background: #ffffff;
+  color: #334155;
+
+  padding: 11px 20px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
 }
 
+.cancel-edit-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+
+/* SAVE */
+
 .save-project-btn {
-  background: #111;
-  color: white;
+  border: none;
+
+  background: #635bff;
+  color: #ffffff;
+
+  padding: 11px 22px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 12px rgba(99, 91, 255, 0.20);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.save-project-btn:hover {
+  background: #554cf0;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 16px rgba(99, 91, 255, 0.25);
+}
+
+.save-project-btn:active {
+  transform: translateY(0);
 }
 
 .save-project-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
-.edit-success {
-  padding: 12px;
-  border-radius: 8px;
-  background: #e8f7ed;
-  color: #18733a;
-  margin-top: 10px;
-}
 
-.edit-error-message {
-  padding: 12px;
-  border-radius: 8px;
-  background: #fdecec;
-  color: #b42318;
-  margin-top: 10px;
-}
+/* ================================
+   LOADING
+================================ */
 
-.edit-loading,
-.edit-error {
-  max-width: 700px;
+.edit-loading {
+  max-width: 850px;
   margin: 100px auto;
   text-align: center;
+
+  color: #64748b;
+  font-size: 15px;
 }
+
+
+/* ================================
+   ERROR PAGE
+================================ */
+
+.edit-error {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 35px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+
+  text-align: center;
+
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05);
+}
+
+.edit-error h2 {
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.edit-error p {
+  margin-bottom: 20px;
+  color: #64748b;
+}
+
+.edit-error button {
+  border: none;
+  background: #635bff;
+  color: white;
+
+  padding: 10px 18px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
 
 @media (max-width: 700px) {
 
+  .edit-project-page {
+    padding-bottom: 40px;
+  }
+
+  .edit-project-header {
+    padding: 25px 18px 22px;
+  }
+
   .edit-project-header h1 {
     font-size: 30px;
+  }
+
+  .edit-project-header p {
+    font-size: 14px;
+  }
+
+  .edit-project-container {
+    padding: 0 18px;
+  }
+
+  .edit-project-form {
+    padding: 22px;
+    border-radius: 15px;
   }
 
   .form-row {
@@ -155,12 +392,8 @@
     gap: 0;
   }
 
-  .edit-project-form {
-    padding: 22px;
-  }
-
   .edit-form-actions {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   .cancel-edit-btn,
