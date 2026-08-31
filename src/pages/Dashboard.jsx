@@ -9,6 +9,7 @@ function Dashboard() {
   const [user, setUser] = useState(null)
   const [projects, setProjects] = useState([])
   const [loadingProjects, setLoadingProjects] = useState(true)
+  const [invitationCount, setInvitationCount] = useState(0)
 
 useEffect(() => {
 
@@ -62,6 +63,36 @@ useEffect(() => {
 
   }
 
+const fetchInvitationCount = async () => {
+
+  try {
+
+    const response = await fetch(
+      `http://localhost:5000/api/projects/invitations/${loggedInUser.id}`
+    )
+
+    const data = await response.json()
+
+    if (response.ok) {
+
+      setInvitationCount(
+        data.invitations?.length || 0
+      )
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      'Error fetching invitations:',
+      error
+    )
+
+  }
+
+}
+
+fetchInvitationCount()
 
   fetchProjects()
 
@@ -124,16 +155,27 @@ const activeProjects = projects.filter(
           <button onClick={() => navigate('/teams')}>
             Teams
           </button>
+      
 
         </div>
 
 
         <div className="dashboard-profile">
 
-          <div className="notification">
-            🔔
-            <span>2</span>
-          </div>
+     <div
+  className="notification"
+  onClick={() => navigate('/invitations')}
+>
+  🔔
+
+ {invitationCount > 0 && (
+  <span className="notification-badge">
+    {invitationCount > 99
+      ? '99+'
+      : invitationCount}
+  </span>
+)}
+</div>
 
           <div className="user-avatar">
             {user.name.charAt(0).toUpperCase()}

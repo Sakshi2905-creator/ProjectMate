@@ -111,6 +111,92 @@ router.get('/user/:userId', async (req, res) => {
 
 })
 
+// GET INVITATIONS FOR A USER
+
+router.get('/invitations/:userId', async (req, res) => {
+
+  try {
+
+    const { userId } = req.params
+
+    const Notification = require('../models/Notification')
+
+    const notifications = await Notification.find({
+      recipient: userId,
+      type: 'project_invite',
+      status: 'pending'
+    })
+      .populate(
+        'sender',
+        'name email'
+      )
+      .populate(
+        'project',
+        'title description category difficulty teamSize requiredSkills'
+      )
+      .sort({
+        createdAt: -1
+      })
+
+
+    const invitations = notifications.map(
+      notification => ({
+
+        invitationId: notification._id,
+
+        projectId:
+          notification.project?._id,
+
+        projectTitle:
+          notification.project?.title,
+
+        projectDescription:
+          notification.project?.description,
+
+        category:
+          notification.project?.category,
+
+        difficulty:
+          notification.project?.difficulty,
+
+        teamSize:
+          notification.project?.teamSize,
+
+        requiredSkills:
+          notification.project?.requiredSkills || [],
+
+        owner: notification.sender,
+
+        message:
+          notification.message,
+
+        createdAt:
+          notification.createdAt
+
+      })
+    )
+
+
+    res.status(200).json({
+      invitations
+    })
+
+
+  } catch (error) {
+
+    console.error(
+      'Fetch invitations error:',
+      error
+    )
+
+    res.status(500).json({
+      message: 'Failed to fetch invitations'
+    })
+
+  }
+
+})
+
 // GET SINGLE PROJECT
 
 router.get('/:id', async (req, res) => {
@@ -678,6 +764,82 @@ router.put('/:id', async (req, res) => {
   }
 
 })
+// GET USER INVITATIONS
+
+router.get('/invitations/:userId', async (req, res) => {
+
+  try {
+
+    const { userId } = req.params
+
+    const projects = await Project.find({
+      'joinRequests.user': userId,
+      'joinRequests.status': 'pending'
+    })
+      .populate('owner', 'name email')
+
+
+    const invitations = []
+
+    projects.forEach(project => {
+
+      project.joinRequests.forEach(request => {
+
+        if (
+          request.user.toString() === userId &&
+          request.status === 'pending'
+        ) {
+
+          invitations.push({
+
+            invitationId: request._id,
+
+            projectId: project._id,
+
+            projectTitle: project.title,
+
+            projectDescription: project.description,
+
+            category: project.category,
+
+            difficulty: project.difficulty,
+
+            teamSize: project.teamSize,
+
+            requiredSkills: project.requiredSkills,
+
+            owner: project.owner,
+
+            createdAt: request.createdAt
+
+          })
+
+        }
+
+      })
+
+    })
+
+
+    res.status(200).json({
+      invitations
+    })
+
+  } catch (error) {
+
+    console.error(
+      'Fetch invitations error:',
+      error
+    )
+
+    res.status(500).json({
+      message: 'Failed to fetch invitations'
+    })
+
+  }
+
+})
+
 // FIND BEST TEAMMATES
 
 router.get('/:projectId/find-teammates', async (req, res) => {
@@ -836,6 +998,93 @@ router.get('/:projectId/find-teammates', async (req, res) => {
 
 })
 
+// // INVITE USER TO PROJECT
+
+// router.post('/:projectId/invite', async (req, res) => {
+
+//   try {
+
+//     const { projectId } = req.params
+//     const { userId } = req.body
+
+//     if (!userId) {
+//       return res.status(400).json({
+//         message: 'User ID is required'
+//       })
+//     }
+
+//     const project = await Project.findById(projectId)
+
+//     if (!project) {
+//       return res.status(404).json({
+//         message: 'Project not found'
+//       })
+//     }
+
+//     const user = await User.findById(userId)
+
+//     if (!user) {
+//       return res.status(404).json({
+//         message: 'User not found'
+//       })
+//     }
+
+//     // Check if already a member
+
+//     const alreadyMember = project.members.some(
+//       member =>
+//         member.toString() === userId
+//     )
+
+//     if (alreadyMember) {
+//       return res.status(400).json({
+//         message: 'User is already a team member'
+//       })
+//     }
+
+//     // Check existing pending request
+
+//     const existingRequest =
+//       project.joinRequests.find(
+//         request =>
+//           request.user.toString() === userId &&
+//           request.status === 'pending'
+//       )
+
+//     if (existingRequest) {
+//       return res.status(400).json({
+//         message: 'Invitation already sent'
+//       })
+//     }
+
+//     // Add invitation as pending request
+
+//     project.joinRequests.push({
+//       user: userId,
+//       status: 'pending'
+//     })
+
+//     await project.save()
+
+//     res.status(200).json({
+//       message: `Invitation sent to ${user.name}`,
+//       project
+//     })
+
+//   } catch (error) {
+
+//     console.error(
+//       'Invite user error:',
+//       error
+//     )
+
+//     res.status(500).json({
+//       message: 'Failed to send invitation'
+//     })
+
+//   }
+
+// })
 // INVITE USER TO PROJECT
 
 router.post('/:projectId/invite', async (req, res) => {
@@ -880,24 +1129,24 @@ router.post('/:projectId/invite', async (req, res) => {
       })
     }
 
-    // Check existing pending request
+    // Check existing pending invitation
 
-    const existingRequest =
-      project.joinRequests.find(
-        request =>
-          request.user.toString() === userId &&
-          request.status === 'pending'
+    const existingInvitation =
+      project.invitations.find(
+        invitation =>
+          invitation.user.toString() === userId &&
+          invitation.status === 'pending'
       )
 
-    if (existingRequest) {
+    if (existingInvitation) {
       return res.status(400).json({
         message: 'Invitation already sent'
       })
     }
 
-    // Add invitation as pending request
+    // Create invitation
 
-    project.joinRequests.push({
+    project.invitations.push({
       user: userId,
       status: 'pending'
     })
@@ -923,4 +1172,250 @@ router.post('/:projectId/invite', async (req, res) => {
   }
 
 })
+
+// GET USER'S PENDING INVITATIONS
+
+router.get('/invitations/:userId', async (req, res) => {
+
+  try {
+
+    const { userId } = req.params
+
+    const projects = await Project.find({
+      'invitations.user': userId
+    })
+      .populate(
+        'owner',
+        'name email'
+      )
+      .populate(
+        'invitations.user',
+        'name email skills'
+      )
+      .sort({
+        createdAt: -1
+      })
+
+
+    const invitations = []
+
+    projects.forEach(project => {
+
+      project.invitations.forEach(invitation => {
+
+        if (
+          invitation.user &&
+          invitation.user._id.toString() === userId &&
+          invitation.status === 'pending'
+        ) {
+
+          invitations.push({
+
+            invitationId: invitation._id,
+
+            projectId: project._id,
+
+            projectTitle: project.title,
+
+            projectDescription:
+              project.description,
+
+            category:
+              project.category,
+
+            difficulty:
+              project.difficulty,
+
+            teamSize:
+              project.teamSize,
+
+            owner:
+              project.owner,
+
+            requiredSkills:
+              project.requiredSkills,
+
+            createdAt:
+              invitation.createdAt
+
+          })
+
+        }
+
+      })
+
+    })
+
+
+    res.status(200).json({
+      invitations
+    })
+
+
+  } catch (error) {
+
+    console.error(
+      'Fetch invitations error:',
+      error
+    )
+
+    res.status(500).json({
+      message: 'Failed to fetch invitations'
+    })
+
+  }
+
+})
+
+// ACCEPT PROJECT INVITATION
+
+router.post(
+  '/:projectId/invitations/:invitationId/accept',
+  async (req, res) => {
+
+    try {
+
+      const { projectId, invitationId } = req.params
+
+      const project = await Project.findById(projectId)
+
+      if (!project) {
+
+        return res.status(404).json({
+          message: 'Project not found'
+        })
+
+      }
+
+      const invitation =
+        project.joinRequests.id(invitationId)
+
+      if (!invitation) {
+
+        return res.status(404).json({
+          message: 'Invitation not found'
+        })
+
+      }
+
+      if (invitation.status !== 'pending') {
+
+        return res.status(400).json({
+          message: 'Invitation already processed'
+        })
+
+      }
+
+      const alreadyMember =
+        project.members.some(
+          member =>
+            member.toString() ===
+            invitation.user.toString()
+        )
+
+      if (!alreadyMember) {
+
+        project.members.push(
+          invitation.user
+        )
+
+      }
+
+      invitation.status = 'accepted'
+
+      await project.save()
+
+      res.status(200).json({
+
+        message:
+          'Invitation accepted successfully! 🎉',
+
+        project
+
+      })
+
+    } catch (error) {
+
+      console.error(
+        'Accept invitation error:',
+        error
+      )
+
+      res.status(500).json({
+        message: 'Failed to accept invitation'
+      })
+
+    }
+
+  }
+)
+
+// REJECT PROJECT INVITATION
+
+router.post(
+  '/:projectId/invitations/:invitationId/reject',
+  async (req, res) => {
+
+    try {
+
+      const { projectId, invitationId } = req.params
+
+      const project =
+        await Project.findById(projectId)
+
+      if (!project) {
+
+        return res.status(404).json({
+          message: 'Project not found'
+        })
+
+      }
+
+      const invitation =
+        project.joinRequests.id(invitationId)
+
+      if (!invitation) {
+
+        return res.status(404).json({
+          message: 'Invitation not found'
+        })
+
+      }
+
+      if (invitation.status !== 'pending') {
+
+        return res.status(400).json({
+          message: 'Invitation already processed'
+        })
+
+      }
+
+      invitation.status = 'rejected'
+
+      await project.save()
+
+      res.status(200).json({
+
+        message:
+          'Invitation rejected successfully',
+
+        project
+
+      })
+
+    } catch (error) {
+
+      console.error(
+        'Reject invitation error:',
+        error
+      )
+
+      res.status(500).json({
+        message: 'Failed to reject invitation'
+      })
+
+    }
+
+  }
+)
 module.exports = router

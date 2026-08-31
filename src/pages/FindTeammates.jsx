@@ -12,18 +12,45 @@ function FindTeammates() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const [inviting, setInviting] = useState(null)
+const [inviting, setInviting] = useState(null)
 const [inviteMessage, setInviteMessage] = useState('')
 
-const handleInvite = async (userId) => {
+
+const handleInvite = async (recipientId) => {
 
   try {
 
-    setInviting(userId)
+    setInviting(recipientId)
     setInviteMessage('')
 
+
+    // Get logged-in user
+
+    const userData =
+      JSON.parse(localStorage.getItem('user'))
+
+
+    const senderId =
+      userData?._id || userData?.id
+
+
+    // Check logged-in user
+
+    if (!senderId) {
+
+      setInviteMessage(
+        'Please login again to send an invitation.'
+      )
+
+      return
+
+    }
+
+
+    // Send invitation
+
     const response = await fetch(
-      `http://localhost:5000/api/projects/${id}/invite`,
+      'http://localhost:5000/api/notifications/invite',
       {
         method: 'POST',
 
@@ -32,25 +59,39 @@ const handleInvite = async (userId) => {
         },
 
         body: JSON.stringify({
-          userId
+
+          senderId: senderId,
+
+          recipientId: recipientId,
+
+          projectId: id
+
         })
+
       }
     )
 
+
     const data = await response.json()
+
 
     if (!response.ok) {
 
       setInviteMessage(
-        data.message || 'Failed to send invitation'
+        data.message ||
+        'Failed to send invitation'
       )
 
       return
+
     }
 
+
     setInviteMessage(
-      data.message || 'Invitation sent successfully! 🎉'
+      data.message ||
+      'Invitation sent successfully! 🎉'
     )
+
 
   } catch (error) {
 
@@ -70,7 +111,6 @@ const handleInvite = async (userId) => {
   }
 
 }
-
   useEffect(() => {
 
     const fetchTeammates = async () => {
