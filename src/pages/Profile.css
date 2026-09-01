@@ -1,77 +1,132 @@
+/* =====================================================
+   PROFILE PAGE
+   ProjectMate Dashboard Theme
+===================================================== */
+
 .profile-page {
   min-height: 100vh;
-  background: #f6f7fb;
+  background: #f7f8fc;
   color: #111827;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
 }
 
 
-/* ================= HEADER ================= */
+/* =====================================================
+   HEADER
+===================================================== */
 
 .profile-header {
   height: 72px;
-  padding: 0 6%;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-bottom: 1px solid #e8eaf0;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  font-weight: 800;
-  font-size: 20px;
+  padding: 0 48px;
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.profile-header > span span {
-  color: #6366f1;
-}
+
+/* Dashboard button */
 
 .profile-back {
   border: none;
   background: transparent;
-  color: #6366f1;
+
+  color: #4b5563;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
+
   cursor: pointer;
+
+  padding: 10px 14px;
+  border-radius: 8px;
+
+  transition: all 0.2s ease;
+}
+
+.profile-back:hover {
+  background: #f1efff;
+  color: #635bff;
 }
 
 
-/* ================= CONTAINER ================= */
+/* ProjectMate logo */
+
+.profile-header > span {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+
+  color: #111827;
+}
+
+.profile-header > span span {
+  color: #635bff;
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
 
 .profile-container {
-  width: min(1000px, 92%);
-  margin: auto;
-  padding: 45px 0 70px;
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding: 42px 32px 70px;
 }
 
 
-/* ================= MAIN CARD ================= */
+/* =====================================================
+   PROFILE CARD
+===================================================== */
 
 .profile-card {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 24px;
-  padding: 35px;
+  background: #ffffff;
 
-  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.06);
+  border: 1px solid #e8eaf0;
+  border-radius: 20px;
+
+  padding: 36px 40px;
+
+  box-shadow:
+    0 10px 30px rgba(17, 24, 39, 0.05);
 }
 
 
-/* ================= INTRO ================= */
+/* =====================================================
+   PROFILE INTRO
+===================================================== */
 
 .profile-intro {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
 
-  padding-bottom: 30px;
-  border-bottom: 1px solid #eef0f4;
+  padding-bottom: 32px;
+
+  border-bottom: 1px solid #eceef3;
 }
 
-.profile-avatar {
-  width: 72px;
-  height: 72px;
 
-  border-radius: 20px;
+/* Avatar */
+
+.profile-avatar {
+  width: 82px;
+  height: 82px;
+
+  flex-shrink: 0;
+
+  border-radius: 22px;
 
   display: flex;
   align-items: center;
@@ -79,235 +134,673 @@
 
   background: linear-gradient(
     135deg,
-    #6366f1,
-    #8b5cf6
+    #635bff,
+    #805cff
   );
 
-  color: white;
-  font-size: 28px;
+  color: #ffffff;
+
+  font-size: 34px;
   font-weight: 800;
+
+  box-shadow:
+    0 10px 25px rgba(99, 91, 255, 0.25);
 }
+
+
+/* Small label */
 
 .profile-label {
-  color: #6366f1;
-  font-size: 11px;
+  display: block;
+
+  color: #635bff;
+
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.1em;
+
+  letter-spacing: 1.5px;
+
+  margin-bottom: 6px;
 }
+
+
+/* Name */
 
 .profile-intro h1 {
-  margin: 5px 0;
-  font-size: 28px;
+  margin: 0;
+
+  font-size: 32px;
+  line-height: 1.15;
+
+  letter-spacing: -0.8px;
+
+  color: #111827;
 }
 
+
+/* Email */
+
 .profile-intro p {
-  margin: 0;
+  margin: 7px 0 0;
+
   color: #6b7280;
+
   font-size: 14px;
 }
 
 
-/* ================= SKILLS ================= */
+/* =====================================================
+   SKILLS SECTION
+===================================================== */
 
 .skills-section {
-  padding-top: 35px;
+  padding-top: 34px;
 }
+
+
+/* Heading */
 
 .skills-heading {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 24px;
 }
 
-.skills-heading span {
-  color: #6366f1;
-  font-size: 11px;
+
+.skills-heading > div > span,
+.interest-heading > span {
+  display: block;
+
+  color: #635bff;
+
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.1em;
+
+  letter-spacing: 1.5px;
+
+  margin-bottom: 8px;
 }
 
-.skills-heading h2 {
-  margin: 7px 0;
-  font-size: 24px;
-}
 
-.skills-heading p {
+.skills-heading h2,
+.interest-heading h2 {
   margin: 0;
-  max-width: 600px;
+
+  font-size: 25px;
+  font-weight: 750;
+
+  letter-spacing: -0.5px;
+
+  color: #111827;
+}
+
+
+.skills-heading p,
+.interest-heading p {
+  margin: 8px 0 0;
+
   color: #6b7280;
+
   font-size: 14px;
   line-height: 1.6;
 }
 
-.skills-heading strong {
-  white-space: nowrap;
 
-  padding: 8px 13px;
+/* Selected count */
+
+.skills-heading > strong {
+  flex-shrink: 0;
+
+  padding: 11px 17px;
+
   border-radius: 999px;
 
-  background: #eef2ff;
-  color: #6366f1;
+  background: #f0efff;
 
-  font-size: 12px;
+  color: #635bff;
+
+  font-size: 13px;
+  font-weight: 700;
 }
 
 
-/* ================= SKILLS GRID ================= */
+/* =====================================================
+   SKILLS GRID
+===================================================== */
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
 
-  margin-top: 28px;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
 }
 
-.skill-btn {
-  min-height: 48px;
 
-  border: 1px solid #e5e7eb;
+/* Skill button */
+
+.skill-btn {
+  min-height: 52px;
+
+  padding: 10px 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe3eb;
+
   border-radius: 11px;
 
-  background: white;
   color: #374151;
 
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 650;
 
   cursor: pointer;
 
-  transition: all 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
 }
+
 
 .skill-btn:hover {
-  border-color: #818cf8;
-  transform: translateY(-2px);
+  border-color: #635bff;
+
+  color: #635bff;
+
+  background: #faf9ff;
+
+  transform: translateY(-1px);
 }
+
+
+/* Selected skill */
 
 .skill-btn.selected {
-  background: #eef2ff;
-  border-color: #6366f1;
-  color: #4f46e5;
+  background: #f0efff;
+
+  border-color: #635bff;
+
+  color: #635bff;
+
+  box-shadow:
+    0 4px 12px rgba(99, 91, 255, 0.10);
 }
 
 
-/* ================= MESSAGE ================= */
+.skill-btn.selected:hover {
+  background: #e9e7ff;
+}
+
+
+/* =====================================================
+   PROJECT PREFERENCE
+===================================================== */
+
+.interest-section {
+  margin-top: 42px;
+
+  padding-top: 34px;
+
+  border-top: 1px solid #eceef3;
+}
+
+
+/* Heading */
+
+.interest-heading {
+  text-align: center;
+
+  margin-bottom: 25px;
+}
+
+
+.interest-heading h2 {
+  font-size: 26px;
+}
+
+
+.interest-heading p {
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   INTEREST OPTIONS
+===================================================== */
+
+.interest-options {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+
+/* Interest button */
+
+.interest-btn {
+  width: 100%;
+
+  min-height: 115px;
+
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  text-align: left;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe3eb;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  transition:
+    all 0.2s ease;
+}
+
+
+.interest-btn:hover {
+  border-color: #635bff;
+
+  background: #faf9ff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(99, 91, 255, 0.08);
+}
+
+
+/* Icon */
+
+.interest-btn > strong {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #f1efff;
+
+  font-size: 22px;
+}
+
+
+/* Text container */
+
+.interest-btn > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+/* Title */
+
+.interest-btn b {
+  color: #111827;
+
+  font-size: 15px;
+  font-weight: 750;
+}
+
+
+/* Description */
+
+.interest-btn small {
+  color: #6b7280;
+
+  font-size: 12px;
+
+  line-height: 1.45;
+}
+
+
+/* Selected interest */
+
+.interest-btn.selected {
+  border-color: #635bff;
+
+  background: #f5f3ff;
+
+  box-shadow:
+    0 8px 22px rgba(99, 91, 255, 0.12);
+}
+
+
+.interest-btn.selected > strong {
+  background: #635bff;
+
+  color: #ffffff;
+}
+
+
+.interest-btn.selected b {
+  color: #635bff;
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
 
 .skill-message {
-  margin-top: 20px;
+  margin: 20px 0 0;
 
   padding: 12px 15px;
 
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
+  border-radius: 9px;
 
-  border-radius: 10px;
+  background: #f0fdf4;
 
-  color: #047857;
+  border: 1px solid #bbf7d0;
+
+  color: #15803d;
+
   font-size: 13px;
   font-weight: 600;
+
+  text-align: center;
 }
 
 
-/* ================= ACTIONS ================= */
+/* =====================================================
+   SAVE BUTTON
+===================================================== */
 
 .skills-actions {
   display: flex;
+
   justify-content: flex-end;
 
-  margin-top: 30px;
+  margin-top: 32px;
+
+  padding-top: 25px;
+
+  border-top: 1px solid #eceef3;
 }
+
 
 .save-skills-btn {
   border: none;
-  border-radius: 11px;
 
-  padding: 13px 22px;
+  padding: 13px 23px;
 
-  background: linear-gradient(
-    135deg,
-    #6366f1,
-    #8b5cf6
-  );
+  border-radius: 10px;
 
-  color: white;
+  background: #635bff;
+
+  color: #ffffff;
 
   font-size: 14px;
   font-weight: 700;
 
   cursor: pointer;
 
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
+  box-shadow:
+    0 8px 18px rgba(99, 91, 255, 0.22);
 
-  transition: transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
 }
+
 
 .save-skills-btn:hover {
-  transform: translateY(-2px);
+  background: #554df0;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 22px rgba(99, 91, 255, 0.28);
 }
+
+
+.save-skills-btn:active {
+  transform: translateY(0);
+}
+
 
 .save-skills-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.65;
+
   cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
 }
 
 
-/* ================= RESPONSIVE ================= */
+/* =====================================================
+   RESPONSIVE — TABLET
+===================================================== */
 
-@media (max-width: 800px) {
-
-  .skills-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-}
-
-
-@media (max-width: 600px) {
+@media (max-width: 900px) {
 
   .profile-header {
-    padding: 0 20px;
+    padding: 0 28px;
   }
 
   .profile-container {
-    width: 92%;
-    padding-top: 25px;
+    padding: 30px 22px 60px;
   }
 
   .profile-card {
-    padding: 22px;
-    border-radius: 18px;
+    padding: 30px;
+  }
+
+  .skills-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .interest-options {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE — MOBILE
+===================================================== */
+
+@media (max-width: 650px) {
+
+  .profile-header {
+    height: 64px;
+
+    padding: 0 16px;
+  }
+
+  .profile-header > span {
+    font-size: 18px;
+  }
+
+  .profile-back {
+    padding: 8px;
+
+    font-size: 13px;
+  }
+
+
+  .profile-container {
+    padding: 20px 14px 45px;
+  }
+
+
+  .profile-card {
+    padding: 22px 18px;
+
+    border-radius: 16px;
+  }
+
+
+  /* Profile intro */
+
+  .profile-intro {
+    gap: 15px;
+
+    padding-bottom: 24px;
+  }
+
+
+  .profile-avatar {
+    width: 62px;
+    height: 62px;
+
+    border-radius: 17px;
+
+    font-size: 25px;
+  }
+
+
+  .profile-intro h1 {
+    font-size: 24px;
+  }
+
+
+  .profile-intro p {
+    font-size: 12px;
+
+    word-break: break-word;
+  }
+
+
+  /* Skills heading */
+
+  .skills-heading {
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+
+  .skills-heading h2,
+  .interest-heading h2 {
+    font-size: 22px;
+  }
+
+
+  .skills-heading > strong {
+    align-self: flex-start;
+  }
+
+
+  /* Skills */
+
+  .skills-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+  }
+
+
+  .skill-btn {
+    min-height: 48px;
+
+    padding: 8px;
+
+    font-size: 12px;
+  }
+
+
+  /* Interest */
+
+  .interest-section {
+    margin-top: 32px;
+
+    padding-top: 28px;
+  }
+
+
+  .interest-options {
+    gap: 10px;
+  }
+
+
+  .interest-btn {
+    min-height: 90px;
+
+    padding: 14px;
+  }
+
+
+  .interest-btn > strong {
+    width: 40px;
+    height: 40px;
+
+    font-size: 19px;
+  }
+
+
+  .interest-btn b {
+    font-size: 14px;
+  }
+
+
+  .interest-btn small {
+    font-size: 11px;
+  }
+
+
+  /* Save */
+
+  .skills-actions {
+    margin-top: 25px;
+
+    padding-top: 20px;
+  }
+
+
+  .save-skills-btn {
+    width: 100%;
+
+    padding: 14px;
+  }
+
+}
+
+
+/* =====================================================
+   VERY SMALL MOBILE
+===================================================== */
+
+@media (max-width: 400px) {
+
+  .skills-grid {
+    grid-template-columns: 1fr;
   }
 
   .profile-intro {
     align-items: flex-start;
-  }
-
-  .profile-avatar {
-    width: 58px;
-    height: 58px;
-    font-size: 22px;
-  }
-
-  .profile-intro h1 {
-    font-size: 22px;
-  }
-
-  .skills-heading {
-    flex-direction: column;
-  }
-
-  .skills-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .skills-actions {
-    justify-content: stretch;
-  }
-
-  .save-skills-btn {
-    width: 100%;
   }
 
 }

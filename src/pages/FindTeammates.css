@@ -700,3 +700,48 @@
   }
 
 }
+
+/* ================= MATCH LEVEL ================= */
+
+.match-level {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+
+/* Excellent */
+
+.match-level.excellent {
+  background: #e8f7ed;
+  color: #18733a;
+}
+
+
+/* Strong */
+
+.match-level.strong {
+  background: #eef4ff;
+  color: #3157b7;
+}
+
+
+/* Potential */
+
+.match-level.potential {
+  background: #fff7df;
+  color: #9a6700;
+}
+
+
+/* Low */
+
+.match-level.low {
+  background: #f1f1f1;
+  color: #666;
+}

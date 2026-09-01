@@ -15,6 +15,35 @@ function FindTeammates() {
 const [inviting, setInviting] = useState(null)
 const [inviteMessage, setInviteMessage] = useState('')
 
+const getMatchLevel = (percentage) => {
+
+  if (percentage >= 90) {
+    return {
+      label: 'Excellent Match',
+      className: 'excellent'
+    }
+  }
+
+  if (percentage >= 70) {
+    return {
+      label: 'Strong Match',
+      className: 'strong'
+    }
+  }
+
+  if (percentage >= 40) {
+    return {
+      label: 'Potential Match',
+      className: 'potential'
+    }
+  }
+
+  return {
+    label: 'Low Match',
+    className: 'low'
+  }
+
+}
 
 const handleInvite = async (recipientId) => {
 
@@ -317,15 +346,23 @@ const handleInvite = async (recipientId) => {
 
                 <div className="teammate-match">
 
-                  <strong>
-                    {teammate.matchPercentage}%
-                  </strong>
+  <strong>
+    {teammate.matchPercentage}%
+  </strong>
 
-                  <span>
-                    Skill Match
-                  </span>
+  <span>
+    Skill Match
+  </span>
 
-                </div>
+  <div
+    className={`match-level ${
+      getMatchLevel(teammate.matchPercentage).className
+    }`}
+  >
+    {getMatchLevel(teammate.matchPercentage).label}
+  </div>
+
+</div>
 
 
                 <div className="teammate-skills">

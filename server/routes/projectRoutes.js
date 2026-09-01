@@ -867,7 +867,7 @@ router.get('/:projectId/find-teammates', async (req, res) => {
       project.requiredSkills || []
 
 
-    // Normalize project skills
+    // Normalize required skills
     const normalizedRequiredSkills =
       requiredSkills.map(skill =>
         skill.toLowerCase().trim()
@@ -903,12 +903,14 @@ router.get('/:projectId/find-teammates', async (req, res) => {
           user.skills || []
 
 
+        // Normalize user skills
         const normalizedUserSkills =
           userSkills.map(skill =>
             skill.toLowerCase().trim()
           )
 
 
+        // Find matched skills
         const matchedSkills =
           requiredSkills.filter(skill =>
             normalizedUserSkills.includes(
@@ -917,6 +919,7 @@ router.get('/:projectId/find-teammates', async (req, res) => {
           )
 
 
+        // Find missing skills
         const missingSkills =
           requiredSkills.filter(skill =>
             !normalizedUserSkills.includes(
@@ -925,7 +928,8 @@ router.get('/:projectId/find-teammates', async (req, res) => {
           )
 
 
-        const matchPercentage =
+        // Calculate skill match
+        const skillMatch =
           normalizedRequiredSkills.length === 0
             ? 0
             : Math.round(
@@ -933,6 +937,32 @@ router.get('/:projectId/find-teammates', async (req, res) => {
                   normalizedRequiredSkills.length) *
                   100
               )
+
+
+        // Interest priority
+        let interestScore = 0
+
+        if (user.interest === 'join') {
+
+          interestScore = 100
+
+        } else if (user.interest === 'both') {
+
+          interestScore = 80
+
+        } else if (user.interest === 'build') {
+
+          interestScore = 40
+
+        }
+
+
+        // Final score
+        const finalScore =
+          Math.round(
+            skillMatch * 0.8 +
+            interestScore * 0.2
+          )
 
 
         return {
@@ -947,7 +977,9 @@ router.get('/:projectId/find-teammates', async (req, res) => {
 
           interest: user.interest,
 
-          matchPercentage,
+          matchPercentage: skillMatch,
+
+          finalScore,
 
           matchedSkills,
 
@@ -958,21 +990,25 @@ router.get('/:projectId/find-teammates', async (req, res) => {
       })
 
 
-      // Highest match first
-
+      // Sort according to final score
       .sort(
         (a, b) =>
-          b.matchPercentage -
-          a.matchPercentage
+          b.finalScore -
+          a.finalScore
       )
 
 
     res.status(200).json({
 
       project: {
+
         id: project._id,
+
         title: project.title,
-        requiredSkills: project.requiredSkills
+
+        requiredSkills:
+          project.requiredSkills
+
       },
 
       teammates

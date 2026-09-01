@@ -14,6 +14,10 @@ function Profile() {
     storedUser?.skills || []
   )
 
+  const [interest, setInterest] = useState(
+  storedUser?.interest || 'both'
+)
+
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -85,6 +89,31 @@ function Profile() {
 
       const data = await response.json()
 
+const interestResponse = await fetch(
+  `http://localhost:5000/api/users/${storedUser.id}/interest`,
+  {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      interest
+    })
+  }
+)
+
+const interestData = await interestResponse.json()
+
+if (!interestResponse.ok) {
+
+  setMessage(
+    interestData.message ||
+    'Failed to save interest'
+  )
+
+  return
+}
+
       if (!response.ok) {
 
         setMessage(
@@ -98,9 +127,10 @@ function Profile() {
       // Update localStorage
 
       const updatedUser = {
-        ...storedUser,
-        skills: data.user.skills
-      }
+  ...storedUser,
+  skills: data.user.skills,
+  interest: interestData.user.interest
+}
 
       localStorage.setItem(
         'user',
@@ -256,7 +286,90 @@ function Profile() {
               </p>
 
             )}
+   
+   <div className="interest-section">
 
+  <div className="interest-heading">
+
+    <span>
+      PROJECT PREFERENCE
+    </span>
+
+    <h2>
+      What are you looking for?
+    </h2>
+
+    <p>
+      Tell us how you want to use ProjectMate.
+    </p>
+
+  </div>
+
+
+  <div className="interest-options">
+
+    <button
+      type="button"
+      className={
+        interest === 'build'
+          ? 'interest-btn selected'
+          : 'interest-btn'
+      }
+      onClick={() => setInterest('build')}
+    >
+      <strong>🚀</strong>
+
+      <div>
+        <b>Build Projects</b>
+        <small>
+          I want to create and lead projects.
+        </small>
+      </div>
+    </button>
+
+
+    <button
+      type="button"
+      className={
+        interest === 'join'
+          ? 'interest-btn selected'
+          : 'interest-btn'
+      }
+      onClick={() => setInterest('join')}
+    >
+      <strong>🤝</strong>
+
+      <div>
+        <b>Join Projects</b>
+        <small>
+          I want to contribute to existing projects.
+        </small>
+      </div>
+    </button>
+
+
+    <button
+      type="button"
+      className={
+        interest === 'both'
+          ? 'interest-btn selected'
+          : 'interest-btn'
+      }
+      onClick={() => setInterest('both')}
+    >
+      <strong>✨</strong>
+
+      <div>
+        <b>Both</b>
+        <small>
+          I want to build and join projects.
+        </small>
+      </div>
+    </button>
+
+  </div>
+
+</div>
 
             <div className="skills-actions">
 

@@ -1,5 +1,26 @@
+import { useNavigate } from 'react-router-dom'
+
 function Hero() {
+
+  const navigate = useNavigate()
+
+
+  // Check whether user is logged in
+  const handleProtectedNavigation = (path) => {
+
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      navigate('/login')
+      return
+    }
+
+    navigate(path)
+  }
+
+
   return (
+
     <section className="hero">
 
       <div className="hero-content">
@@ -8,11 +29,13 @@ function Hero() {
           🚀 Build. Collaborate. Create.
         </p>
 
+
         <h1>
           Find the right people
           <br />
           for your <span>next project.</span>
         </h1>
+
 
         <p className="hero-description">
           ProjectMate helps students discover project ideas,
@@ -20,15 +43,38 @@ function Hero() {
           amazing projects together.
         </p>
 
+
+        {/* ================= HERO BUTTONS ================= */}
+
         <div className="hero-buttons">
-          <button className="primary-btn">
+
+          {/* EXPLORE PROJECTS */}
+
+          <button
+            className="primary-btn"
+            onClick={() =>
+              handleProtectedNavigation('/discover')
+            }
+          >
             Explore Projects →
           </button>
 
-          <button className="secondary-btn">
+
+          {/* CREATE PROJECT */}
+
+          <button
+            className="secondary-btn"
+            onClick={() =>
+              handleProtectedNavigation('/create-project')
+            }
+          >
             Create a Project
           </button>
+
         </div>
+
+
+        {/* ================= STATS ================= */}
 
         <div className="hero-stats">
 
@@ -52,47 +98,74 @@ function Hero() {
       </div>
 
 
-      <div className="hero-visual">
+      {/* ================= HERO VISUAL ================= */}
 
-        <div className="project-card">
+     <div className="hero-visual">
 
-          <div className="card-header">
+  <div className="project-card">
 
-            <span className="project-status">
-              ● Open for teammates
-            </span>
+    {/* CARD HEADER */}
+    <div className="card-header">
 
-            <span className="project-menu">
-              ⋮
-            </span>
+      <span className="project-status">
+        <span className="status-dot"></span>
+        Open for teammates
+      </span>
 
-          </div>
+      <span className="project-menu">
+        ⋮
+      </span>
 
-          <h2>Smart Campus Assistant</h2>
+    </div>
 
-          <p>
-            An AI-powered platform that helps students
-            manage their academic life.
-          </p>
 
-          <div className="skills">
-            <span>React</span>
-            <span>Node.js</span>
-            <span>MongoDB</span>
-            <span>AI/ML</span>
-          </div>
+    {/* PROJECT INFO */}
+    <div className="project-info">
 
-          <div className="card-footer">
+      <h2>
+        Smart Campus Assistant
+      </h2>
 
-            <div className="team">
-              <div className="avatar">S</div>
-              <div className="avatar">A</div>
-              <div className="avatar">R</div>
+      <p>
+        An AI-powered platform that helps students
+        manage their academic life.
+      </p>
 
-              <span>+2</span>
-            </div>
+    </div>
 
-            <button className="join-btn">
+
+    {/* SKILLS */}
+    <div className="skills">
+
+      <span>React</span>
+      <span>Node.js</span>
+      <span>MongoDB</span>
+      <span>AI/ML</span>
+
+    </div>
+
+
+    {/* CARD FOOTER */}
+    <div className="card-footer">
+
+      <div className="team">
+
+        <div className="avatar">S</div>
+        <div className="avatar">A</div>
+        <div className="avatar">R</div>
+
+        <span className="team-count">
+          +2
+        </span>
+
+      </div>
+
+            <button
+              className="join-btn"
+              onClick={() =>
+                handleProtectedNavigation('/discover')
+              }
+            >
               Join Project
             </button>
 

@@ -54,6 +54,61 @@ router.put('/:id/skills', async (req, res) => {
   }
 
 })
+// UPDATE USER INTEREST
 
+router.put('/:id/interest', async (req, res) => {
+
+  try {
+
+    const { interest } = req.body
+
+    const allowedInterests = [
+      'build',
+      'join',
+      'both'
+    ]
+
+    if (!allowedInterests.includes(interest)) {
+
+      return res.status(400).json({
+        message: 'Invalid interest'
+      })
+
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        interest: interest
+      },
+      {
+        new: true
+      }
+    )
+
+    if (!user) {
+
+      return res.status(404).json({
+        message: 'User not found'
+      })
+
+    }
+
+    res.status(200).json({
+      message: 'Interest updated successfully',
+      user
+    })
+
+  } catch (error) {
+
+    console.error(error)
+
+    res.status(500).json({
+      message: 'Failed to update interest'
+    })
+
+  }
+
+})
 
 module.exports = router

@@ -65,7 +65,7 @@ a {
 .nav-links a {
   color: #475569;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 700;
   transition: color 0.3s ease;
 }
 
@@ -82,7 +82,8 @@ a {
   padding: 10px 20px;
   background: transparent;
   color: #334155;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .signup-btn {
@@ -204,122 +205,240 @@ a {
   font-size: 14px;
 }
 
-
 /* =========================
    HERO PROJECT CARD
 ========================= */
 
 .hero-visual {
-  width: 440px;
+  width: 480px;
+  max-width: 100%;
   flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.project-card {
-  padding: 28px;
-  background: white;
-  border-radius: 18px;
+/* MAIN CARD */
+
+.hero-visual .project-card {
+  width: 100%;
+  min-height: 390px;
+  padding: 30px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.12);
-  transform: rotate(2deg);
-  transition: 0.4s ease;
+  border-radius: 20px;
+
+  box-shadow:
+    0 25px 60px rgba(15, 23, 42, 0.10);
+
+  transform: none;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.project-card:hover {
-  transform: rotate(0deg) translateY(-8px);
+
+/* HOVER */
+
+.hero-visual .project-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 30px 70px rgba(15, 23, 42, 0.14);
 }
 
-.card-header {
+
+/* =========================
+   CARD HEADER
+========================= */
+
+.hero-visual .card-header {
+  width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   margin-bottom: 25px;
 }
 
-.project-status {
+
+.hero-visual .project-status {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 9px 13px;
+
+  border-radius: 999px;
+
+  background: #ecfdf5;
   color: #16a34a;
+
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.project-menu {
+
+.hero-visual .project-menu {
   font-size: 22px;
   color: #94a3b8;
+
+  cursor: pointer;
 }
 
-.project-card h2 {
-  font-size: 23px;
-  margin-bottom: 12px;
+
+/* =========================
+   CARD TITLE
+========================= */
+
+.hero-visual .project-card h2 {
+  margin: 0 0 12px;
+
+  font-size: 25px;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+
+  color: #0f172a;
 }
 
-.project-card > p {
+
+/* =========================
+   CARD DESCRIPTION
+========================= */
+
+.hero-visual .project-card > p {
+  margin: 0 0 22px;
+
+  max-width: 100%;
+
   color: #64748b;
-  line-height: 1.6;
+
   font-size: 14px;
-  margin-bottom: 22px;
+  line-height: 1.7;
 }
 
-.skills {
+
+/* =========================
+   SKILLS
+========================= */
+
+.hero-visual .skills {
+  width: 100%;
+
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 9px;
+
   margin-bottom: 28px;
 }
 
-.skills span {
-  padding: 6px 10px;
-  border-radius: 6px;
+
+.hero-visual .skills span {
+  padding: 7px 11px;
+
+  border-radius: 7px;
+
   background: #eef2ff;
   color: #4f46e5;
+
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+
+  white-space: nowrap;
 }
 
-.card-footer {
+
+/* =========================
+   CARD FOOTER
+========================= */
+
+.hero-visual .card-footer {
+  width: 100%;
+
+  margin-top: auto;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  gap: 20px;
 }
 
-.team {
+
+/* =========================
+   TEAM
+========================= */
+
+.hero-visual .team {
   display: flex;
   align-items: center;
 }
 
-.avatar {
-  width: 34px;
-  height: 34px;
-  margin-left: -7px;
-  border-radius: 50%;
+
+.hero-visual .avatar {
+  width: 36px;
+  height: 36px;
+
+  margin-left: -8px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border-radius: 50%;
+
   background: #c7d2fe;
   color: #3730a3;
-  border: 2px solid white;
+
+  border: 2px solid #ffffff;
+
   font-size: 12px;
   font-weight: 700;
 }
 
-.avatar:first-child {
+
+.hero-visual .avatar:first-child {
   margin-left: 0;
 }
 
-.team > span {
-  margin-left: 8px;
-  color: #64748b;
-  font-size: 13px;
-}
 
-.join-btn {
-  padding: 10px 16px;
-  border-radius: 7px;
-  background: #0f172a;
-  color: white;
+.hero-visual .team > span {
+  margin-left: 10px;
+
+  color: #64748b;
+
   font-size: 13px;
   font-weight: 600;
 }
 
 
+/* =========================
+   JOIN BUTTON
+========================= */
+
+.hero-visual .join-btn {
+  padding: 11px 18px;
+
+  border-radius: 8px;
+
+  background: #0f172a;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition: all 0.25s ease;
+}
+
+
+.hero-visual .join-btn:hover {
+  background: #1e293b;
+  transform: translateY(-2px);
+}
 /* =========================
    FEATURES
 ========================= */
@@ -337,9 +456,9 @@ a {
 
 .section-heading > p:first-child {
   color: #6366f1;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
   margin-bottom: 12px;
 }
 
@@ -418,6 +537,7 @@ a {
   font-size: 45px;
   line-height: 1.2;
   margin-bottom: 20px;
+  color:white;
 }
 
 .cta h2 span {
