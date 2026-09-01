@@ -120,6 +120,15 @@ const activeProjects = projects.filter(
   project => project.status !== 'Completed'
 ).length
 
+const upcomingProjects = projects
+  .filter(project => project.deadline)
+  .filter(project => new Date(project.deadline) >= new Date())
+  .sort(
+    (a, b) =>
+      new Date(a.deadline) - new Date(b.deadline)
+  )
+  .slice(0, 3)
+
   if (!user) {
     return null
   }
@@ -775,114 +784,126 @@ const activeProjects = projects.filter(
 
         {/* ================= UPCOMING ================= */}
 
-        <section className="upcoming-section">
+       {/* ================= UPCOMING ================= */}
 
-          <div className="section-header">
+<section className="upcoming-section">
 
-            <div>
+  <div className="section-header">
 
-              <span className="section-label">
-                YOUR SCHEDULE
+    <div>
+
+      <span className="section-label">
+        YOUR SCHEDULE
+      </span>
+
+      <h2>
+        Upcoming
+      </h2>
+
+    </div>
+
+    <button
+      onClick={() => navigate('/calendar')}
+    >
+      View calendar 
+    </button>
+
+  </div>
+
+
+  {upcomingProjects.length === 0 ? (
+
+    <div className="upcoming-empty">
+
+      <div className="upcoming-empty-icon">
+        📅
+      </div>
+
+      <div>
+
+        <strong>
+          No upcoming deadlines
+        </strong>
+
+        <p>
+          Your upcoming project deadlines
+          will appear here.
+        </p>
+
+      </div>
+
+    </div>
+
+  ) : (
+
+    <div className="upcoming-grid">
+
+      {upcomingProjects.map(project => {
+
+        const date = new Date(project.deadline)
+
+        const day = date
+          .getDate()
+          .toString()
+          .padStart(2, '0')
+
+        const month = date
+          .toLocaleString('en-US', {
+            month: 'short'
+          })
+          .toUpperCase()
+
+        return (
+
+          <div
+            className="upcoming-card"
+            key={project._id}
+            onClick={() =>
+              navigate(`/project/${project._id}`)
+            }
+          >
+
+            <div className="date-box">
+
+              <strong>
+                {day}
+              </strong>
+
+              <span>
+                {month}
               </span>
 
-              <h2>
-                Upcoming
-              </h2>
+            </div>
+
+
+            <div className="upcoming-info">
+
+              <strong>
+                {project.title}
+              </strong>
+
+              <p>
+                Project Deadline
+              </p>
 
             </div>
 
-            <button>
-              View calendar →
-            </button>
+
+            <span className="upcoming-arrow">
+              →
+            </span>
 
           </div>
 
+        )
 
-          <div className="upcoming-grid">
+      })}
 
-            <div className="upcoming-card">
+    </div>
 
-              <div className="date-box">
-                <strong>
-                  24
-                </strong>
+  )}
 
-                <span>
-                  AUG
-                </span>
-              </div>
-
-              <div>
-
-                <strong>
-                  Project Demo
-                </strong>
-
-                <p>
-                  ProjectMate • 4:00 PM
-                </p>
-
-              </div>
-
-            </div>
-
-
-            <div className="upcoming-card">
-
-              <div className="date-box">
-                <strong>
-                  27
-                </strong>
-
-                <span>
-                  AUG
-                </span>
-              </div>
-
-              <div>
-
-                <strong>
-                  Team Meeting
-                </strong>
-
-                <p>
-                  StudyTogether • 6:30 PM
-                </p>
-
-              </div>
-
-            </div>
-
-
-            <div className="upcoming-card">
-
-              <div className="date-box">
-                <strong>
-                  02
-                </strong>
-
-                <span>
-                  SEP
-                </span>
-              </div>
-
-              <div>
-
-                <strong>
-                  Project Deadline
-                </strong>
-
-                <p>
-                  StudyTogether
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
+</section>
 
       </main>
 

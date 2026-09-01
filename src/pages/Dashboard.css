@@ -547,59 +547,196 @@
 
 /* ================= UPCOMING ================= */
 
+/* =========================
+   UPCOMING SECTION
+========================= */
+
 .upcoming-section {
-  margin-top: 25px;
-  padding: 22px;
-  border: 1px solid #e7e8ee;
-  border-radius: 13px;
-  background: white;
+  margin-top: 28px;
+  padding: 30px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
 }
+
+.upcoming-section .section-header {
+  margin-bottom: 22px;
+}
+
+.upcoming-section .section-header button {
+  background: transparent;
+  color: #6366f1;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.upcoming-section .section-header button:hover {
+  color: #4f46e5;
+}
+
+
+/* =========================
+   UPCOMING GRID
+========================= */
 
 .upcoming-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
+
+
+/* =========================
+   UPCOMING CARD
+========================= */
 
 .upcoming-card {
+  min-height: 94px;
+  padding: 18px;
+
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 13px;
-  border: 1px solid #ececf1;
-  border-radius: 9px;
+  gap: 15px;
+
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
+.upcoming-card:hover {
+  transform: translateY(-2px);
+  border-color: #c7d2fe;
+  box-shadow: 0 8px 22px rgba(99, 102, 241, 0.08);
+}
+
+
+/* =========================
+   DATE BOX
+========================= */
+
 .date-box {
-  width: 38px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 7px;
-  background: #f1f0ff;
-  color: #5b52e8;
+
+  background: #eef2ff;
+  border-radius: 9px;
 }
 
 .date-box strong {
-  font-size: 0.82rem;
+  color: #4f46e5;
+  font-size: 16px;
+  line-height: 1;
 }
 
 .date-box span {
-  font-size: 0.48rem;
+  margin-top: 4px;
+
+  color: #6366f1;
+  font-size: 9px;
   font-weight: 800;
 }
 
-.upcoming-card > div:last-child strong {
-  display: block;
-  font-size: 0.68rem;
+
+/* =========================
+   UPCOMING INFO
+========================= */
+
+.upcoming-info {
+  min-width: 0;
+  flex: 1;
 }
 
-.upcoming-card p {
-  margin: 4px 0 0;
-  color: #9ca3af;
-  font-size: 0.57rem;
+.upcoming-info strong {
+  display: block;
+
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 700;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.upcoming-info p {
+  margin-top: 7px;
+
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+
+/* =========================
+   ARROW
+========================= */
+
+.upcoming-arrow {
+  color: #6366f1;
+  font-size: 18px;
+  opacity: 0;
+
+  transition: opacity 0.2s ease;
+}
+
+.upcoming-card:hover .upcoming-arrow {
+  opacity: 1;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.upcoming-empty {
+  min-height: 100px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.upcoming-empty-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eef2ff;
+  border-radius: 10px;
+
+  font-size: 20px;
+}
+
+.upcoming-empty strong {
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.upcoming-empty p {
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 12px;
 }
 
 /* ================= RESPONSIVE ================= */

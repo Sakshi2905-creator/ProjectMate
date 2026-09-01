@@ -12,6 +12,7 @@ import JoinRequests from './pages/JoinRequests'
 import EditProject from './pages/EditProject'
 import FindTeammates from './pages/FindTeammates'
 import MyInvitations from './pages/MyInvitations'
+import Calendar from './pages/Calendar'
 
 import './App.css'
 
@@ -35,6 +36,10 @@ function App() {
         <Route path="/edit-project/:id" element={<EditProject />}/>
         <Route path="/project/:id/find-teammates" element={<FindTeammates />}/>
         <Route path="/invitations"element={<MyInvitations />}/>
+        <Route
+  path="/calendar"
+  element={<Calendar />}
+/>
         
       </Routes>
 
