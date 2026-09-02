@@ -231,7 +231,7 @@ const upcomingProjects = projects
 
             <h1>
               Good morning,{' '}
-              {user.name.split(' ')[0]} 👋
+              {user.name.split(' ')[0]} !!
             </h1>
 
             <p>
@@ -568,7 +568,7 @@ const upcomingProjects = projects
 
 
                 <button>
-                  View Profile →
+                  View Profile 
                 </button>
 
               </div>
@@ -611,7 +611,7 @@ const upcomingProjects = projects
 
 
                 <button>
-                  View Profile →
+                  View Profile 
                 </button>
 
               </div>
@@ -739,7 +739,7 @@ const upcomingProjects = projects
       <button
         onClick={() => navigate('/join-requests')}
       >
-        View Requests →
+        View Requests 
       </button>
 
     </div>
@@ -780,7 +780,7 @@ const upcomingProjects = projects
               <button
   onClick={() => navigate('/profile')}
 >
-  Complete Profile →
+  Complete Profile
 </button>
             </section>
 

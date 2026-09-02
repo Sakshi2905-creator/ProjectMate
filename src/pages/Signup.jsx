@@ -297,7 +297,7 @@ function Signup() {
 >
   {loading
     ? 'Creating account...'
-    : 'Create my ProjectMate account →'}
+    : 'Create my ProjectMate account'}
 </button>
 
           </form>

@@ -45,7 +45,7 @@ function CTA() {
         className="primary-btn"
         onClick={handleStartBuilding}
       >
-        Start Building →
+        Start Building
       </button>
 
     </section>

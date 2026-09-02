@@ -270,7 +270,7 @@ import { Link, useNavigate } from 'react-router-dom'
   className="auth-submit"
   disabled={loading}
 >
-  {loading ? 'Signing in...' : 'Login →'}
+  {loading ? 'Signing in...' : 'Login'}
 </button>
 
           </form>

@@ -56,7 +56,7 @@ function Hero() {
               handleProtectedNavigation('/discover')
             }
           >
-            Explore Projects →
+            Explore Projects
           </button>
 
 
