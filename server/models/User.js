@@ -27,10 +27,18 @@ const userSchema = new mongoose.Schema(
       enum: ['build', 'join', 'both'],
       default: 'both'
     },
+    resetPasswordToken: {
+      type: String
+    },
+
+    resetPasswordExpires: {
+      type: Date
+    },
+
     skills: {
-  type: [String],
-  default: []
-}
+      type: [String],
+      default: []
+    }
   },
   {
     timestamps: true

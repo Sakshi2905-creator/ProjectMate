@@ -749,6 +749,7 @@ a {
   line-height: 1.05;
   letter-spacing: -2px;
   margin-bottom: 25px;
+  color:white;
 }
 
 .auth-brand-content h1 span {
@@ -864,7 +865,7 @@ a {
 }
 
 .form-group label {
-  display: block;
+  display: flex;
   margin-bottom: 8px;
   color: #334155;
   font-size: 13px;
@@ -934,6 +935,11 @@ a {
   background: #e2e8f0;
 }
 
+.google-btn:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
 .google-btn {
   width: 100%;
   padding: 13px;
@@ -943,17 +949,18 @@ a {
   color: #334155;
   font-size: 14px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
   transition: 0.2s ease;
 }
 
-.google-btn:hover {
-  background: #f8fafc;
-  border-color: #94a3b8;
-}
-
-.google-btn span {
-  margin-right: 8px;
-  font-weight: 800;
+.google-icon {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
 }
 
 .auth-switch {
@@ -1028,4 +1035,102 @@ a {
 .auth-submit:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+
+/* =========================
+   PASSWORD SHOW / HIDE
+========================= */
+
+/* .password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  padding-right: 45px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.password-toggle:hover {
+  opacity: 0.7;
+} */
+
+/* =========================
+   PASSWORD INPUT
+========================= */
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  color: #64748b;
+
+  padding: 0;
+  border: none;
+
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  color: #475569;
+}
+
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+/* =========================
+   REMEMBER ME
+========================= */
+
+.remember-row {
+  margin-top: -5px;
+  margin-bottom: 20px;
+}
+
+.remember-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.remember-row input {
+  width: 15px;
+  height: 15px;
+  accent-color: #6366f1;
+  cursor: pointer;
 }

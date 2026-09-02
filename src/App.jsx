@@ -13,6 +13,8 @@ import EditProject from './pages/EditProject'
 import FindTeammates from './pages/FindTeammates'
 import MyInvitations from './pages/MyInvitations'
 import Calendar from './pages/Calendar'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 import './App.css'
 
@@ -36,11 +38,9 @@ function App() {
         <Route path="/edit-project/:id" element={<EditProject />}/>
         <Route path="/project/:id/find-teammates" element={<FindTeammates />}/>
         <Route path="/invitations"element={<MyInvitations />}/>
-        <Route
-  path="/calendar"
-  element={<Calendar />}
-/>
-        
+        <Route path="/calendar" element={<Calendar />}/>
+        <Route path="/forgot-password" element={<ForgotPassword />}/>
+        <Route path="/reset-password/:token" element={<ResetPassword />}/>
       </Routes>
 
     </BrowserRouter>

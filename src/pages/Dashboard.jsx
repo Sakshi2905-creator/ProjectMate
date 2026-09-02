@@ -13,13 +13,18 @@ function Dashboard() {
 
 useEffect(() => {
 
-  const token = localStorage.getItem('token')
-  const storedUser = localStorage.getItem('user')
+  const token =
+  localStorage.getItem('token') ||
+  sessionStorage.getItem('token')
 
-  if (!token || !storedUser) {
-    navigate('/login')
-    return
-  }
+const storedUser =
+  localStorage.getItem('user') ||
+  sessionStorage.getItem('user')
+
+if (!token || !storedUser) {
+  navigate('/login')
+  return
+}
 
   const loggedInUser = JSON.parse(storedUser)
 
@@ -101,12 +106,14 @@ fetchInvitationCount()
 
   const handleLogout = () => {
 
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
 
-    navigate('/login')
+  sessionStorage.removeItem('token')
+  sessionStorage.removeItem('user')
 
-  }
+  navigate('/login')
+}
 
   const totalProjects = projects.length
 
