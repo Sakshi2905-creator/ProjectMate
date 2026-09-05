@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import './Profile.css'
 
 function Profile() {
 
   const navigate = useNavigate()
-
+const { id } = useParams()
   const storedUser = JSON.parse(
     localStorage.getItem('user')
   )
@@ -20,6 +20,7 @@ function Profile() {
 
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
+  
 
 
   const skills = [

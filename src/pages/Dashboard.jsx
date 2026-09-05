@@ -10,28 +10,32 @@ function Dashboard() {
   const [projects, setProjects] = useState([])
   const [loadingProjects, setLoadingProjects] = useState(true)
   const [invitationCount, setInvitationCount] = useState(0)
+  const [smartMatches, setSmartMatches] = useState([])
+const [loadingMatches, setLoadingMatches] = useState(true)
 
 useEffect(() => {
 
   const token =
-  localStorage.getItem('token') ||
-  sessionStorage.getItem('token')
+    localStorage.getItem('token') ||
+    sessionStorage.getItem('token')
 
-const storedUser =
-  localStorage.getItem('user') ||
-  sessionStorage.getItem('user')
+  const storedUser =
+    localStorage.getItem('user') ||
+    sessionStorage.getItem('user')
 
-if (!token || !storedUser) {
-  navigate('/login')
-  return
-}
+  if (!token || !storedUser) {
+    navigate('/login')
+    return
+  }
 
   const loggedInUser = JSON.parse(storedUser)
 
   setUser(loggedInUser)
 
 
-  // Fetch user's projects
+  // =========================
+  // FETCH USER PROJECTS
+  // =========================
 
   const fetchProjects = async () => {
 
@@ -45,7 +49,7 @@ if (!token || !storedUser) {
 
       if (response.ok) {
 
-        setProjects(data.projects)
+        setProjects(data.projects || [])
 
       } else {
 
@@ -68,38 +72,97 @@ if (!token || !storedUser) {
 
   }
 
-const fetchInvitationCount = async () => {
 
-  try {
+  // =========================
+  // FETCH INVITATION COUNT
+  // =========================
 
-    const response = await fetch(
-      `http://localhost:5000/api/projects/invitations/${loggedInUser.id}`
-    )
+  const fetchInvitationCount = async () => {
 
-    const data = await response.json()
+    try {
 
-    if (response.ok) {
+      const response = await fetch(
+        `http://localhost:5000/api/projects/invitations/${loggedInUser.id}`
+      )
 
-      setInvitationCount(
-        data.invitations?.length || 0
+      const data = await response.json()
+
+      if (response.ok) {
+
+        setInvitationCount(
+          data.invitations?.length || 0
+        )
+
+      } else {
+
+        console.error(data.message)
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        'Error fetching invitations:',
+        error
       )
 
     }
 
-  } catch (error) {
+  }
 
-    console.error(
-      'Error fetching invitations:',
-      error
-    )
+
+  // =========================
+  // FETCH SMART MATCHES
+  // =========================
+
+  const fetchSmartMatches = async () => {
+
+    try {
+
+      const response = await fetch(
+        `http://localhost:5000/api/matches/${loggedInUser.id}`
+      )
+
+      const data = await response.json()
+
+      if (response.ok) {
+
+        setSmartMatches(
+          data.matches || []
+        )
+
+      } else {
+
+        console.error(
+          'Smart match error:',
+          data.message
+        )
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        'Error fetching smart matches:',
+        error
+      )
+
+    } finally {
+
+      setLoadingMatches(false)
+
+    }
 
   }
 
-}
 
-fetchInvitationCount()
+  // =========================
+  // CALL ALL FUNCTIONS
+  // =========================
 
   fetchProjects()
+  fetchInvitationCount()
+  fetchSmartMatches()
 
 }, [navigate])
 
@@ -530,91 +593,89 @@ const upcomingProjects = projects
 
               </div>
 
+             {loadingMatches ? (
 
-              <div className="match-card">
+  <div className="match-loading">
+    Finding your best teammates...
+  </div>
 
-                <div className="match-top">
+) : smartMatches.length === 0 ? (
 
-                  <div className="match-avatar">
-                    R
-                  </div>
+  <div className="match-empty">
+    <p>
+      No matching teammates found yet.
+    </p>
 
-                  <div>
+    <small>
+      Add more skills to your profile to get better matches.
+    </small>
+  </div>
 
-                    <strong>
-                      Rahul Sharma
-                    </strong>
+) : (
 
-                    <small>
-                      Full Stack Developer
-                    </small>
+  smartMatches.map((match) => (
 
-                  </div>
+    <div
+      className="match-card"
+      key={match.id}
+    >
 
-                  <span className="match-score">
-                    94%
-                  </span>
+      <div className="match-top">
 
-                </div>
+        <div className="match-avatar">
+          {match.name
+            .charAt(0)
+            .toUpperCase()}
+        </div>
 
+        <div>
 
-                <div className="match-skills">
+          <strong>
+            {match.name}
+          </strong>
 
-                  <span>React</span>
-                  <span>Node.js</span>
-                  <span>MongoDB</span>
+          <small>
+            {match.interest || 'Student'}
+          </small>
 
-                </div>
+        </div>
 
+        <span className="match-score">
+          {match.matchPercentage}%
+        </span>
 
-                <button>
-                  View Profile 
-                </button>
-
-              </div>
-
-
-              <div className="match-card">
-
-                <div className="match-top">
-
-                  <div className="match-avatar pink">
-                    A
-                  </div>
-
-                  <div>
-
-                    <strong>
-                      Ananya Verma
-                    </strong>
-
-                    <small>
-                      UI/UX Designer
-                    </small>
-
-                  </div>
-
-                  <span className="match-score">
-                    88%
-                  </span>
-
-                </div>
+      </div>
 
 
-                <div className="match-skills">
+      <div className="match-skills">
 
-                  <span>Figma</span>
-                  <span>UI/UX</span>
-                  <span>Research</span>
+        {match.skills
+          .slice(0, 4)
+          .map((skill, index) => (
 
-                </div>
+            <span key={index}>
+              {skill}
+            </span>
+
+          ))}
+
+      </div>
 
 
-                <button>
-                  View Profile 
-                </button>
+      <button
+  onClick={(e) => {
+    e.stopPropagation()
+    navigate(`/profile/${match.id}`)
+  }}
+>
+  View Profile →
+</button>
 
-              </div>
+    </div>
+
+  ))
+
+)}
 
             </section>
 

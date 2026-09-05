@@ -34,6 +34,7 @@ function App() {
         <Route path="/project/:id" element={<ProjectDetails />}/>
         <Route path="/discover" element={<Discover /> }/>
         <Route path="/profile" element={<Profile />}/>
+        <Route path="/profile/:id" element={<Profile />} />
         <Route path="/join-requests" element={<JoinRequests />}/>
         <Route path="/edit-project/:id" element={<EditProject />}/>
         <Route path="/project/:id/find-teammates" element={<FindTeammates />}/>
