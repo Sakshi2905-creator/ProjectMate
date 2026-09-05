@@ -12,6 +12,8 @@ function Dashboard() {
   const [invitationCount, setInvitationCount] = useState(0)
   const [smartMatches, setSmartMatches] = useState([])
 const [loadingMatches, setLoadingMatches] = useState(true)
+const [activities, setActivities] = useState([])
+const [loadingActivities, setLoadingActivities] = useState(true)
 
 useEffect(() => {
 
@@ -155,6 +157,33 @@ useEffect(() => {
 
   }
 
+  const fetchActivities = async () => {
+
+  try {
+
+    const response = await fetch(
+      `http://localhost:5000/api/activities/${loggedInUser.id}`
+    )
+
+    const data = await response.json()
+
+    if (response.ok) {
+      setActivities(data.activities || [])
+    }
+
+  } catch (error) {
+
+    console.error(
+      'Error fetching activities:',
+      error
+    )
+
+  } finally {
+
+    setLoadingActivities(false)
+
+  }
+}
 
   // =========================
   // CALL ALL FUNCTIONS
@@ -163,6 +192,7 @@ useEffect(() => {
   fetchProjects()
   fetchInvitationCount()
   fetchSmartMatches()
+  fetchActivities()
 
 }, [navigate])
 
@@ -701,61 +731,51 @@ const upcomingProjects = projects
               </div>
 
 
-              <div className="activity-item">
+            {loadingActivities ? (
 
-                <div className="activity-dot purple-dot" />
+  <div className="activity-loading">
+    Loading activity...
+  </div>
 
-                <div>
+) : activities.length === 0 ? (
 
-                  <strong>
-                    Rahul joined your project
-                  </strong>
+  <div className="activity-empty">
+    No recent activity yet.
+  </div>
 
-                  <small>
-                    12 minutes ago
-                  </small>
+) : (
 
-                </div>
+  activities.map((activity) => (
 
-              </div>
+    <div
+      className="activity-item"
+      key={activity._id}
+    >
+
+      <div className="activity-dot purple-dot" />
+
+      <div>
+
+        <strong>
+          {activity.message}
+        </strong>
+
+        <small>
+          {new Date(
+            activity.createdAt
+          ).toLocaleString()}
+        </small>
+
+      </div>
+
+    </div>
+
+  ))
+
+)}
 
 
-              <div className="activity-item">
-
-                <div className="activity-dot blue-dot" />
-
-                <div>
-
-                  <strong>
-                    New teammate request
-                  </strong>
-
-                  <small>
-                    1 hour ago
-                  </small>
-
-                </div>
-
-              </div>
-
-
-              <div className="activity-item">
-
-                <div className="activity-dot green-dot" />
-
-                <div>
-
-                  <strong>
-                    Project reached 70%
-                  </strong>
-
-                  <small>
-                    Yesterday
-                  </small>
-
-                </div>
-
-              </div>
+              
 
             </section>
             

@@ -5,10 +5,43 @@ import './Profile.css'
 function Profile() {
 
   const navigate = useNavigate()
-const { id } = useParams()
+  const { id } = useParams()
+
+   const [profile, setProfile] = useState(null)
+  const [loading, setLoading] = useState(true)
+
   const storedUser = JSON.parse(
     localStorage.getItem('user')
   )
+
+  useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/users/${id}`
+      )
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setProfile(data.user)
+      } else {
+        console.error(data.message)
+      }
+
+    } catch (error) {
+      console.error('Error fetching profile:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (id) {
+    fetchProfile()
+  } else {
+    setLoading(false)
+  }
+}, [id])
 
   const [selectedSkills, setSelectedSkills] = useState(
     storedUser?.skills || []
@@ -158,6 +191,35 @@ if (!interestResponse.ok) {
 
   }
 
+  if (loading) {
+  return (
+    <div className="profile-page">
+      <div className="profile-loading">
+        Loading profile...
+      </div>
+    </div>
+  )
+}
+
+if (id && !profile) {
+  return (
+    <div className="profile-page">
+      <div className="profile-loading">
+        Profile not found.
+      </div>
+    </div>
+  )
+}
+
+ const isOwnProfile = !id
+
+  const displayedProfile = id
+    ? profile
+    : {
+        ...storedUser,
+        skills: selectedSkills,
+        interest: interest
+      }
 
   return (
 
@@ -194,26 +256,26 @@ if (!interestResponse.ok) {
 
             <div className="profile-avatar">
 
-              {storedUser?.name
-                ?.charAt(0)
-                .toUpperCase()}
+  {displayedProfile?.name
+    ?.charAt(0)
+    .toUpperCase()}
 
-            </div>
+</div>
 
 
             <div>
 
               <span className="profile-label">
-                YOUR PROFILE
-              </span>
+  {isOwnProfile ? 'YOUR PROFILE' : 'STUDENT PROFILE'}
+</span>
 
-              <h1>
-                {storedUser?.name}
-              </h1>
+<h1>
+  {displayedProfile?.name}
+</h1>
 
-              <p>
-                {storedUser?.email}
-              </p>
+<p>
+  {displayedProfile?.email}
+</p>
 
             </div>
 
@@ -222,71 +284,93 @@ if (!interestResponse.ok) {
 
           <div className="skills-section">
 
-            <div className="skills-heading">
+           <div className="skills-heading">
 
-              <div>
+  <div>
 
-                <span>
-                  YOUR EXPERTISE
-                </span>
+    <span>
+      YOUR EXPERTISE
+    </span>
 
-                <h2>
-                  What can you build?
-                </h2>
+    <h2>
+      What can you build?
+    </h2>
 
-                <p>
-                  Select the skills you know.
-                  We'll use them to find better
-                  project and teammate matches.
-                </p>
+    <p>
+      Select the skills you know.
+      We'll use them to find better
+      project and teammate matches.
+    </p>
 
-              </div>
+  </div>
 
+  <strong>
+    {selectedSkills.length} selected
+  </strong>
 
-              <strong>
-                {selectedSkills.length} selected
-              </strong>
-
-            </div>
+</div>
 
 
             <div className="skills-grid">
 
-              {skills.map(skill => (
+  {isOwnProfile ? (
 
-                <button
-                  key={skill}
-                  type="button"
-                  className={
-                    selectedSkills.includes(skill)
-                      ? 'skill-btn selected'
-                      : 'skill-btn'
-                  }
-                  onClick={() =>
-                    toggleSkill(skill)
-                  }
-                >
+    skills.map(skill => (
 
-                  {selectedSkills.includes(skill)
-                    ? '✓ '
-                    : '+'}
+      <button
+        key={skill}
+        type="button"
+        className={
+          selectedSkills.includes(skill)
+            ? 'skill-btn selected'
+            : 'skill-btn'
+        }
+        onClick={() => toggleSkill(skill)}
+      >
 
-                  {skill}
+        {selectedSkills.includes(skill)
+          ? '✓ '
+          : '+'}
 
-                </button>
+        {skill}
 
-              ))}
+      </button>
 
-            </div>
+    ))
+
+  ) : (
+
+    displayedProfile?.skills?.length > 0 ? (
+
+      displayedProfile.skills.map(skill => (
+
+        <span
+          key={skill}
+          className="skill-btn selected"
+        >
+          ✓ {skill}
+        </span>
+
+      ))
+
+    ) : (
+
+      <p>No skills added yet.</p>
+
+    )
+
+  )}
+
+</div>
 
 
-            {message && (
+            {isOwnProfile && message && (
 
-              <p className="skill-message">
-                {message}
-              </p>
+  <p className="skill-message">
+    {message}
+  </p>
 
-            )}
+)}
    
    <div className="interest-section">
 
@@ -309,82 +393,122 @@ if (!interestResponse.ok) {
 
   <div className="interest-options">
 
-    <button
-      type="button"
-      className={
-        interest === 'build'
-          ? 'interest-btn selected'
-          : 'interest-btn'
-      }
-      onClick={() => setInterest('build')}
-    >
-      <strong>🚀</strong>
+  {isOwnProfile ? (
+
+    <>
+      <button
+        type="button"
+        className={
+          interest === 'build'
+            ? 'interest-btn selected'
+            : 'interest-btn'
+        }
+        onClick={() => setInterest('build')}
+      >
+        <strong>🚀</strong>
+
+        <div>
+          <b>Build Projects</b>
+          <small>
+            I want to create and lead projects.
+          </small>
+        </div>
+      </button>
+
+
+      <button
+        type="button"
+        className={
+          interest === 'join'
+            ? 'interest-btn selected'
+            : 'interest-btn'
+        }
+        onClick={() => setInterest('join')}
+      >
+        <strong>🤝</strong>
+
+        <div>
+          <b>Join Projects</b>
+          <small>
+            I want to contribute to existing projects.
+          </small>
+        </div>
+      </button>
+
+
+      <button
+        type="button"
+        className={
+          interest === 'both'
+            ? 'interest-btn selected'
+            : 'interest-btn'
+        }
+        onClick={() => setInterest('both')}
+      >
+        <strong>✨</strong>
+
+        <div>
+          <b>Both</b>
+          <small>
+            I want to build and join projects.
+          </small>
+        </div>
+      </button>
+    </>
+
+  ) : (
+
+    <div className="interest-btn selected">
+
+      <strong>
+        {displayedProfile?.interest === 'build'
+          ? '🚀'
+          : displayedProfile?.interest === 'join'
+            ? '🤝'
+            : '✨'}
+      </strong>
 
       <div>
-        <b>Build Projects</b>
+        <b>
+          {displayedProfile?.interest === 'build'
+            ? 'Build Projects'
+            : displayedProfile?.interest === 'join'
+              ? 'Join Projects'
+              : 'Build & Join Projects'}
+        </b>
+
         <small>
-          I want to create and lead projects.
+          {displayedProfile?.interest === 'build'
+            ? 'Wants to create and lead projects.'
+            : displayedProfile?.interest === 'join'
+              ? 'Wants to contribute to existing projects.'
+              : 'Wants to build and join projects.'}
         </small>
       </div>
-    </button>
 
+    </div>
 
-    <button
-      type="button"
-      className={
-        interest === 'join'
-          ? 'interest-btn selected'
-          : 'interest-btn'
-      }
-      onClick={() => setInterest('join')}
-    >
-      <strong>🤝</strong>
-
-      <div>
-        <b>Join Projects</b>
-        <small>
-          I want to contribute to existing projects.
-        </small>
-      </div>
-    </button>
-
-
-    <button
-      type="button"
-      className={
-        interest === 'both'
-          ? 'interest-btn selected'
-          : 'interest-btn'
-      }
-      onClick={() => setInterest('both')}
-    >
-      <strong>✨</strong>
-
-      <div>
-        <b>Both</b>
-        <small>
-          I want to build and join projects.
-        </small>
-      </div>
-    </button>
-
-  </div>
+  )}
 
 </div>
 
-            <div className="skills-actions">
+</div>
 
-              <button
-                className="save-skills-btn"
-                onClick={saveSkills}
-                disabled={saving}
-              >
-                {saving
-                  ? 'Saving...'
-                  : 'Save Skills →'}
-              </button>
+           {isOwnProfile && (
+  <div className="skills-actions">
 
-            </div>
+    <button
+      className="save-skills-btn"
+      onClick={saveSkills}
+      disabled={saving}
+    >
+      {saving
+        ? 'Saving...'
+        : 'Save Skills →'}
+    </button>
+
+  </div>
+)}
 
           </div>
 
