@@ -1,6 +1,7 @@
 const express = require('express')
 const Project = require('../models/Project')
 const User = require('../models/User')
+const Activity = require('../models/Activity')
 
 const router = express.Router()
 
@@ -60,6 +61,13 @@ router.post('/', async (req, res) => {
 
     })
 
+// CREATE ACTIVITY
+await Activity.create({
+  user: owner,
+  type: 'PROJECT_CREATED',
+  message: 'You created a new project',
+  project: project._id
+})
 
     res.status(201).json({
 
