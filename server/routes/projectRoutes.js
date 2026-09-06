@@ -420,6 +420,16 @@ router.post('/:projectId/join', async (req, res) => {
 
     await project.save()
 
+    // CREATE ACTIVITY
+const joiningUser = await User.findById(userId)
+
+await Activity.create({
+  user: project.owner,
+  type: 'JOIN_REQUEST',
+  message: `${joiningUser.name} sent a join request`,
+  project: project._id
+})
+
     res.status(200).json({
       message: 'Join request sent successfully',
       project
@@ -534,6 +544,16 @@ router.post('/:projectId/join/:requestId/accept', async (req, res) => {
 
     await project.save()
 
+    // CREATE ACTIVITY
+const joiningUser = await User.findById(request.user)
+
+await Activity.create({
+  user: project.owner,
+  type: 'PROJECT_JOINED',
+  message: `${joiningUser.name} joined your project`,
+  project: project._id
+})
+
     res.status(200).json({
       message: 'Join request accepted successfully',
       project
@@ -592,12 +612,22 @@ router.post('/:projectId/join/:requestId/reject', async (req, res) => {
 
     request.status = 'rejected'
 
-    await project.save()
+await project.save()
 
-    res.status(200).json({
-      message: 'Join request rejected',
-      project
-    })
+// CREATE ACTIVITY
+const rejectedUser = await User.findById(request.user)
+
+await Activity.create({
+  user: project.owner,
+  type: 'JOIN_REQUEST_REJECTED',
+  message: `${rejectedUser.name}'s join request was rejected`,
+  project: project._id
+})
+
+res.status(200).json({
+  message: 'Join request rejected',
+  project
+})
 
   } catch (error) {
 
@@ -613,49 +643,6 @@ router.post('/:projectId/join/:requestId/reject', async (req, res) => {
   }
 
 })
-
-// // GET JOIN REQUESTS FOR A PROJECT
-
-// router.get('/:projectId/join-requests', async (req, res) => {
-
-//   try {
-
-//     const project = await Project.findById(
-//       req.params.projectId
-//     ).populate(
-//       'joinRequests.user',
-//       'name email skills'
-//     )
-
-//     if (!project) {
-//       return res.status(404).json({
-//         message: 'Project not found'
-//       })
-//     }
-
-//     const pendingRequests =
-//       project.joinRequests.filter(
-//         request => request.status === 'pending'
-//       )
-
-//     res.status(200).json({
-//       requests: pendingRequests
-//     })
-
-//   } catch (error) {
-
-//     console.error(
-//       'Fetch join requests error:',
-//       error
-//     )
-
-//     res.status(500).json({
-//       message: 'Failed to fetch join requests'
-//     })
-
-//   }
-
-// })
 
 // GET ALL PENDING JOIN REQUESTS FOR PROJECT OWNER
 

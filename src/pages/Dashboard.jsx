@@ -229,6 +229,76 @@ const upcomingProjects = projects
   )
   .slice(0, 3)
 
+const getActivityIcon = (type) => {
+  switch (type) {
+    case 'PROJECT_CREATED':
+      return '🚀'
+    case 'JOIN_REQUEST':
+      return '👋'
+    case 'PROJECT_JOINED':
+      return '🎉'
+    case 'PROJECT_UPDATED':
+      return '✏️'
+    case 'PROGRESS_UPDATED':
+      return '📈'
+    default:
+      return '🔔'
+  }
+}
+
+const getTimeAgo = (date) => {
+  const seconds = Math.floor(
+    (new Date() - new Date(date)) / 1000
+  )
+
+  if (seconds < 60) {
+    return 'Just now'
+  }
+
+  const minutes = Math.floor(seconds / 60)
+
+  if (minutes < 60) {
+    return `${minutes} min ago`
+  }
+
+  const hours = Math.floor(minutes / 60)
+
+  if (hours < 24) {
+    return `${hours} hr ago`
+  }
+
+  const days = Math.floor(hours / 24)
+
+  if (days < 7) {
+    return `${days} day${days > 1 ? 's' : ''} ago`
+  }
+
+  return new Date(date).toLocaleDateString()
+}
+
+const handleActivityClick = (activity) => {
+  // Join request received
+  if (activity.type === 'JOIN_REQUEST') {
+    navigate('/join-requests')
+    return
+  }
+
+  // Join request rejected
+  if (activity.type === 'JOIN_REQUEST_REJECTED') {
+    return
+  }
+
+  // Project-related activities
+  if (activity.project) {
+    const projectId =
+      typeof activity.project === 'object'
+        ? activity.project._id
+        : activity.project
+
+    navigate(`/project/${projectId}`)
+  }
+}
+
   if (!user) {
     return null
   }
@@ -747,30 +817,31 @@ const upcomingProjects = projects
 
   activities.map((activity) => (
 
-    <div
-      className="activity-item"
-      key={activity._id}
-    >
+ <div
+  className="activity-item"
+  key={activity._id}
+  onClick={() => handleActivityClick(activity)}
+>
 
-      <div className="activity-dot purple-dot" />
+    <div className="activity-icon">
+      {getActivityIcon(activity.type)}
+    </div>
 
-      <div>
+    <div className="activity-content">
 
-        <strong>
-          {activity.message}
-        </strong>
+      <strong>
+        {activity.message}
+      </strong>
 
-        <small>
-          {new Date(
-            activity.createdAt
-          ).toLocaleString()}
-        </small>
-
-      </div>
+      <small>
+        {getTimeAgo(activity.createdAt)}
+      </small>
 
     </div>
 
-  ))
+  </div>
+
+))
 
 )}
 

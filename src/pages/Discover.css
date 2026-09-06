@@ -432,3 +432,12 @@
   color: white;
   text-align: center;
 }
+
+.activity-item {
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.activity-item:hover {
+  transform: translateX(4px);
+}
