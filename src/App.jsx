@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
+import MyProjects from './pages/MyProjects'
 import CreateProject from './pages/CreateProject'
 import ProjectDetails from './pages/ProjectDetails'
 import Discover from './pages/Discover'
@@ -30,6 +31,7 @@ function App() {
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />}/>
+        <Route path="/projects" element={<MyProjects />} />
         <Route path="/create-project" element={<CreateProject />}/>
         <Route path="/project/:id" element={<ProjectDetails />}/>
         <Route path="/discover" element={<Discover /> }/>
@@ -42,6 +44,7 @@ function App() {
         <Route path="/calendar" element={<Calendar />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
         <Route path="/reset-password/:token" element={<ResetPassword />}/>
+        
       </Routes>
 
     </BrowserRouter>
