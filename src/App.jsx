@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import MyProjects from './pages/MyProjects'
+import Teams from './pages/Teams'
 import CreateProject from './pages/CreateProject'
 import ProjectDetails from './pages/ProjectDetails'
 import Discover from './pages/Discover'
@@ -26,12 +27,11 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Home />} />
-
         <Route path="/login" element={<Login />} />
-
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />}/>
         <Route path="/projects" element={<MyProjects />} />
+        <Route path="/teams" element={<Teams />} />
         <Route path="/create-project" element={<CreateProject />}/>
         <Route path="/project/:id" element={<ProjectDetails />}/>
         <Route path="/discover" element={<Discover /> }/>

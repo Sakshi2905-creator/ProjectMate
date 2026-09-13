@@ -92,8 +92,8 @@ function MyProjects() {
             My Projects
           </button>
 
-          <button>
-            Teams
+          <button onClick={() => navigate('/teams')}>
+           Teams
           </button>
 
         </div>

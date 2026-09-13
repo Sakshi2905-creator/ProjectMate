@@ -1,8 +1,8 @@
 /* =====================================================
-   MY PROJECTS
+   TEAMS PAGE
 ===================================================== */
 
-.my-projects-page {
+.teams-page {
   min-height: 100vh;
   width: 100%;
   background: #f7f8fc;
@@ -11,9 +11,9 @@
   box-sizing: border-box;
 }
 
-.my-projects-page *,
-.my-projects-page *::before,
-.my-projects-page *::after {
+.teams-page *,
+.teams-page *::before,
+.teams-page *::after {
   box-sizing: border-box;
 }
 
@@ -22,7 +22,7 @@
    NAVBAR
 ===================================================== */
 
-.my-projects-page .projects-navbar {
+.teams-navbar {
   width: 100%;
   height: 70px;
 
@@ -35,7 +35,7 @@
   border-bottom: 1px solid #e8eaf0;
 }
 
-.my-projects-page .projects-brand {
+.teams-brand {
   flex-shrink: 0;
 
   font-size: 25px;
@@ -46,14 +46,14 @@
   cursor: pointer;
 }
 
-.my-projects-page .projects-brand span {
+.teams-brand span {
   color: #6257f5;
 }
 
 
 /* NAV LINKS */
 
-.my-projects-page .projects-nav-links {
+.teams-nav-links {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -62,7 +62,7 @@
   margin-right: 28px;
 }
 
-.my-projects-page .projects-nav-links button {
+.teams-nav-links button {
   border: none;
   outline: none;
 
@@ -85,12 +85,12 @@
   transition: 0.2s ease;
 }
 
-.my-projects-page .projects-nav-links button:hover {
+.teams-nav-links button:hover {
   background: #f3f1ff;
   color: #6257f5;
 }
 
-.my-projects-page .projects-nav-links button.active {
+.teams-nav-links button.active {
   background: #eeecff;
   color: #6257f5;
 }
@@ -98,7 +98,7 @@
 
 /* PROFILE */
 
-.my-projects-page .projects-profile {
+.teams-profile {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -106,7 +106,7 @@
   flex-shrink: 0;
 }
 
-.my-projects-page .user-avatar {
+.teams-user-avatar {
   width: 36px;
   height: 36px;
 
@@ -123,23 +123,23 @@
   font-weight: 700;
 }
 
-.my-projects-page .user-info {
+.teams-user-info {
   display: flex;
   flex-direction: column;
   gap: 1px;
 }
 
-.my-projects-page .user-info strong {
+.teams-user-info strong {
   color: #111827;
   font-size: 13px;
 }
 
-.my-projects-page .user-info small {
+.teams-user-info small {
   color: #94a3b8;
   font-size: 10px;
 }
 
-.my-projects-page .logout-btn {
+.teams-logout-btn {
   margin-left: 8px;
 
   padding: 7px 13px;
@@ -158,16 +158,16 @@
   transition: 0.2s ease;
 }
 
-.my-projects-page .logout-btn:hover {
+.teams-logout-btn:hover {
   background: #f8fafc;
 }
 
 
 /* =====================================================
-   MAIN
+   MAIN CONTAINER
 ===================================================== */
 
-.my-projects-page .projects-container {
+.teams-container {
   width: 100%;
   max-width: 1180px;
 
@@ -183,7 +183,7 @@
    HEADER
 ===================================================== */
 
-.my-projects-page .projects-header {
+.teams-header {
   width: 100%;
 
   display: flex;
@@ -192,12 +192,12 @@
 
   gap: 25px;
 
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 
   text-align: left;
 }
 
-.my-projects-page .projects-label {
+.teams-label {
   margin: 0 0 8px;
 
   color: #6257f5;
@@ -208,7 +208,7 @@
   letter-spacing: 2px;
 }
 
-.my-projects-page .projects-header h1 {
+.teams-header h1 {
   margin: 0;
 
   color: #111827;
@@ -221,7 +221,7 @@
   text-align: left;
 }
 
-.my-projects-page .projects-header p:not(.projects-label) {
+.teams-header p:not(.teams-label) {
   margin: 7px 0 0;
 
   color: #64748b;
@@ -233,9 +233,9 @@
 }
 
 
-/* CREATE BUTTON */
+/* FIND TEAMMATES */
 
-.my-projects-page .create-project-btn {
+.find-teammates-btn {
   flex-shrink: 0;
 
   border: none;
@@ -259,7 +259,7 @@
   transition: 0.2s ease;
 }
 
-.my-projects-page .create-project-btn:hover {
+.find-teammates-btn:hover {
   transform: translateY(-2px);
 
   box-shadow: 0 10px 22px rgba(98, 87, 245, 0.24);
@@ -267,10 +267,82 @@
 
 
 /* =====================================================
-   PROJECT GRID
+   STATS
 ===================================================== */
 
-.my-projects-page .projects-grid {
+.teams-stats {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 16px;
+
+  margin-bottom: 25px;
+}
+
+.team-stat-card {
+  min-height: 88px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 17px 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #e6e8ee;
+
+  border-radius: 12px;
+
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.03);
+}
+
+.team-stat-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f0efff;
+
+  font-size: 18px;
+}
+
+.team-stat-card div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.team-stat-card strong {
+  color: #111827;
+
+  font-size: 21px;
+  font-weight: 750;
+}
+
+.team-stat-card span {
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+
+/* =====================================================
+   TEAMS GRID
+===================================================== */
+
+.teams-grid {
   width: 100%;
 
   display: grid;
@@ -284,10 +356,10 @@
 
 
 /* =====================================================
-   PROJECT CARD
+   TEAM CARD
 ===================================================== */
 
-.my-projects-page .project-card {
+.team-card {
   width: 100%;
   min-width: 0;
 
@@ -299,6 +371,7 @@
   background: #ffffff;
 
   border: 1px solid #e4e7ed;
+
   border-radius: 14px;
 
   box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
@@ -313,7 +386,7 @@
     border-color 0.2s ease;
 }
 
-.my-projects-page .project-card:hover {
+.team-card:hover {
   transform: translateY(-3px);
 
   border-color: #d7d3ff;
@@ -326,21 +399,16 @@
    CARD HEADER
 ===================================================== */
 
-.my-projects-page .project-card-top {
+.team-card-header {
   width: 100%;
 
   display: flex;
   align-items: flex-start;
 
   gap: 13px;
-
-  text-align: left;
 }
 
-
-/* AVATAR */
-
-.my-projects-page .project-avatar {
+.team-project-icon {
   width: 44px;
   height: 44px;
 
@@ -357,14 +425,9 @@
 
   font-size: 16px;
   font-weight: 800;
-
-  text-align: center;
 }
 
-
-/* TITLE */
-
-.my-projects-page .project-title-area {
+.team-title-area {
   flex: 1;
 
   min-width: 0;
@@ -374,11 +437,9 @@
   align-items: flex-start;
 
   gap: 6px;
-
-  text-align: left;
 }
 
-.my-projects-page .project-title-area h2 {
+.team-title-area h2 {
   width: 100%;
 
   margin: 2px 0 0;
@@ -398,10 +459,7 @@
   text-overflow: ellipsis;
 }
 
-
-/* STATUS */
-
-.my-projects-page .project-status {
+.team-status {
   display: inline-flex;
   align-items: center;
 
@@ -423,10 +481,10 @@
    DESCRIPTION
 ===================================================== */
 
-.my-projects-page .project-description {
+.team-description {
   width: 100%;
 
-  margin: 16px 0 18px;
+  margin: 16px 0 17px;
 
   color: #64748b;
 
@@ -447,10 +505,10 @@
 
 
 /* =====================================================
-   PROJECT META
+   PROJECT INFO
 ===================================================== */
 
-.my-projects-page .project-meta {
+.team-info-row {
   width: 100%;
 
   display: grid;
@@ -459,12 +517,10 @@
 
   gap: 9px;
 
-  margin-bottom: 16px;
-
-  text-align: left;
+  margin-bottom: 18px;
 }
 
-.my-projects-page .project-meta span {
+.team-info-row span {
   min-width: 0;
 
   display: flex;
@@ -473,6 +529,7 @@
   padding: 9px 10px;
 
   border: 1px solid #e8ebf1;
+
   border-radius: 8px;
 
   background: #f8fafc;
@@ -480,10 +537,6 @@
   color: #475569;
 
   font-size: 10px;
-
-  line-height: 1.4;
-
-  text-align: left;
 
   white-space: nowrap;
 
@@ -493,49 +546,129 @@
 
 
 /* =====================================================
-   TECH STACK
+   MEMBERS
 ===================================================== */
 
-.my-projects-page .project-skills {
+.team-members-section {
+  width: 100%;
+
+  margin-bottom: 19px;
+}
+
+.team-members-heading {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 11px;
+}
+
+.team-members-heading strong {
+  color: #334155;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.team-members-heading span {
+  min-width: 23px;
+  height: 21px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 6px;
+
+  border-radius: 12px;
+
+  background: #f1f5f9;
+  color: #64748b;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+
+/* MEMBER LIST */
+
+.team-members-list {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.team-member {
   width: 100%;
 
   display: flex;
   align-items: center;
 
-  flex-wrap: wrap;
+  gap: 9px;
 
-  gap: 6px;
+  padding: 7px 8px;
 
-  min-height: 27px;
+  border-radius: 8px;
 
-  margin-bottom: 19px;
-
-  text-align: left;
+  background: #fafbfc;
 }
 
-.my-projects-page .project-skills span {
-  display: inline-flex;
+.member-avatar {
+  width: 29px;
+  height: 29px;
+
+  flex-shrink: 0;
+
+  display: flex;
   align-items: center;
+  justify-content: center;
 
-  padding: 6px 8px;
+  border-radius: 50%;
 
-  border-radius: 6px;
-
-  background: #f0efff;
+  background: #eeecff;
   color: #6257f5;
 
-  font-size: 9px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.member-details {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 1px;
+}
+
+.member-details strong {
+  color: #334155;
+
+  font-size: 10px;
 
   white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-details small {
+  color: #94a3b8;
+
+  font-size: 8px;
 }
 
 
 /* =====================================================
-   FOOTER
+   CARD FOOTER
 ===================================================== */
 
-.my-projects-page .project-card-footer {
+.team-card-footer {
   width: 100%;
 
   display: flex;
@@ -549,25 +682,15 @@
   padding-top: 14px;
 
   border-top: 1px solid #edf0f4;
-
-  text-align: left;
 }
 
-.my-projects-page .project-members {
-  flex: 1;
-
-  min-width: 0;
-
+.team-card-footer > span {
   color: #64748b;
 
   font-size: 10px;
-
-  text-align: left;
-
-  white-space: nowrap;
 }
 
-.my-projects-page .project-card-footer button {
+.team-card-footer button {
   flex-shrink: 0;
 
   border: none;
@@ -576,18 +699,18 @@
   padding: 0;
 
   background: transparent;
+
   color: #6257f5;
 
   font-family: inherit;
+
   font-size: 11px;
   font-weight: 700;
 
   cursor: pointer;
-
-  white-space: nowrap;
 }
 
-.my-projects-page .project-card-footer button:hover {
+.team-card-footer button:hover {
   text-decoration: underline;
 }
 
@@ -596,7 +719,7 @@
    LOADING
 ===================================================== */
 
-.my-projects-page .projects-loading {
+.teams-loading {
   min-height: 350px;
 
   display: flex;
@@ -609,7 +732,7 @@
   text-align: center;
 }
 
-.my-projects-page .loading-spinner {
+.teams-spinner {
   width: 34px;
   height: 34px;
 
@@ -620,10 +743,10 @@
 
   border-radius: 50%;
 
-  animation: myProjectsSpin 0.8s linear infinite;
+  animation: teamsSpin 0.8s linear infinite;
 }
 
-@keyframes myProjectsSpin {
+@keyframes teamsSpin {
   to {
     transform: rotate(360deg);
   }
@@ -634,7 +757,7 @@
    EMPTY STATE
 ===================================================== */
 
-.my-projects-page .projects-empty {
+.teams-empty {
   width: 100%;
 
   padding: 65px 30px;
@@ -642,16 +765,17 @@
   background: #ffffff;
 
   border: 1px dashed #cbd5e1;
+
   border-radius: 15px;
 
   text-align: center;
 }
 
-.my-projects-page .empty-icon {
+.teams-empty-icon {
   font-size: 40px;
 }
 
-.my-projects-page .projects-empty h2 {
+.teams-empty h2 {
   margin: 13px 0 7px;
 
   color: #111827;
@@ -661,17 +785,21 @@
   text-align: center;
 }
 
-.my-projects-page .projects-empty p {
-  margin: 0;
+.teams-empty p {
+  max-width: 450px;
+
+  margin: 0 auto;
 
   color: #64748b;
 
   font-size: 13px;
 
+  line-height: 1.6;
+
   text-align: center;
 }
 
-.my-projects-page .projects-empty button {
+.teams-empty button {
   margin-top: 19px;
 
   border: none;
@@ -684,6 +812,7 @@
   color: #ffffff;
 
   font-family: inherit;
+
   font-size: 12px;
   font-weight: 700;
 
@@ -697,19 +826,19 @@
 
 @media (max-width: 900px) {
 
-  .my-projects-page .projects-navbar {
+  .teams-navbar {
     padding: 0 25px;
   }
 
-  .my-projects-page .projects-container {
+  .teams-container {
     padding: 38px 22px 50px;
   }
 
-  .my-projects-page .projects-nav-links {
+  .teams-nav-links {
     margin-right: 15px;
   }
 
-  .my-projects-page .projects-nav-links button {
+  .teams-nav-links button {
     padding: 9px 10px;
   }
 
@@ -722,23 +851,23 @@
 
 @media (max-width: 750px) {
 
-  .my-projects-page .projects-navbar {
+  .teams-navbar {
     padding: 0 18px;
   }
 
-  .my-projects-page .projects-nav-links {
+  .teams-nav-links {
     display: none;
   }
 
-  .my-projects-page .projects-profile {
+  .teams-profile {
     margin-left: auto;
   }
 
-  .my-projects-page .projects-container {
+  .teams-container {
     padding: 30px 18px 45px;
   }
 
-  .my-projects-page .projects-header {
+  .teams-header {
     align-items: flex-start;
 
     flex-direction: column;
@@ -748,11 +877,15 @@
     margin-bottom: 25px;
   }
 
-  .my-projects-page .projects-header h1 {
+  .teams-header h1 {
     font-size: 29px;
   }
 
-  .my-projects-page .projects-grid {
+  .teams-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .teams-grid {
     grid-template-columns: 1fr;
   }
 
@@ -765,35 +898,24 @@
 
 @media (max-width: 480px) {
 
-  .my-projects-page .projects-brand {
+  .teams-brand {
     font-size: 22px;
   }
 
-  .my-projects-page .user-info {
+  .teams-user-info {
     display: none;
   }
 
-  .my-projects-page .logout-btn {
+  .teams-logout-btn {
     padding: 7px 11px;
   }
 
-  .my-projects-page .project-card {
+  .team-card {
     padding: 18px;
   }
 
-  .my-projects-page .project-meta {
+  .team-info-row {
     grid-template-columns: 1fr;
-  }
-
-  .my-projects-page .project-card-footer {
-    align-items: flex-start;
-    flex-direction: column;
-
-    gap: 9px;
-  }
-
-  .my-projects-page .project-card-footer button {
-    align-self: flex-end;
   }
 
 }

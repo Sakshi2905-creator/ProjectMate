@@ -119,6 +119,33 @@ router.get('/user/:userId', async (req, res) => {
 
 })
 
+// GET USER'S TEAMS
+router.get('/teams/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params
+
+    const projects = await Project.find({
+      $or: [
+        { owner: userId },
+        { members: userId }
+      ]
+    })
+      .populate('owner', 'name email skills')
+      .populate('members', 'name email skills interest')
+      .sort({ createdAt: -1 })
+
+    res.status(200).json({
+      projects
+    })
+  } catch (error) {
+    console.error('Fetch teams error:', error)
+
+    res.status(500).json({
+      message: 'Failed to fetch teams'
+    })
+  }
+})
+
 // GET INVITATIONS FOR A USER
 
 router.get('/invitations/:userId', async (req, res) => {
