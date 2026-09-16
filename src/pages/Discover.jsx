@@ -226,8 +226,8 @@ function Discover() {
           </button>
 
           <button
-            onClick={() => navigate('/my-projects')}
-          >
+            onClick={() => navigate('/projects')}
+            >
             My Projects
           </button>
 

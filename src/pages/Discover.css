@@ -447,20 +447,20 @@
 ================================= */
 
 .discover-navbar {
-  height: 66px;
+  height: 70px;
   width: 100%;
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 
-  padding: 0 38px;
-  box-sizing: border-box;
+  padding: 0 42px;
+  /* box-sizing: border-box; */
 
-  position: relative;
-  z-index: 20;
+  /* position: relative;
+  z-index: 20; */
 }
 
 
@@ -489,20 +489,22 @@
 .discover-nav-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap:4px;
+      margin-left: auto;
+    margin-right: 28px;
 }
 
 .discover-nav-links button {
   border: none;
   background: transparent;
 
-  padding: 9px 14px;
+  padding: 10px 15px;
   border-radius: 8px;
-
+  outline: none;
   font-size: 13px;
-  font-weight: 500;
-
-  color: #475569;
+  font-weight: 600;
+    font-family: inherit;
+  color: #64748b;
 
   cursor: pointer;
 
