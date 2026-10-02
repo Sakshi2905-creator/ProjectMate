@@ -17,7 +17,6 @@ import MyInvitations from './pages/MyInvitations'
 import Calendar from './pages/Calendar'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
-
 import './App.css'
 
 function App() {

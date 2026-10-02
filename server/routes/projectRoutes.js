@@ -736,15 +736,17 @@ router.put('/:id', async (req, res) => {
   try {
 
     const {
-      title,
-      description,
-      category,
-      difficulty,
-      techStack,
-      requiredSkills,
-      teamSize,
-      deadline
-    } = req.body
+  title,
+  description,
+  category,
+  difficulty,
+  techStack,
+  requiredSkills,
+  teamSize,
+  deadline,
+  status,
+  progress
+} = req.body
 
     const project = await Project.findById(
       req.params.id
@@ -756,14 +758,16 @@ router.put('/:id', async (req, res) => {
       })
     }
 
-    project.title = title
-    project.description = description
-    project.category = category
-    project.difficulty = difficulty
-    project.techStack = techStack
-    project.requiredSkills = requiredSkills
-    project.teamSize = teamSize
-    project.deadline = deadline
+   project.title = title
+project.description = description
+project.category = category
+project.difficulty = difficulty
+project.techStack = techStack
+project.requiredSkills = requiredSkills
+project.teamSize = teamSize
+project.deadline = deadline
+project.status = status
+project.progress = progress
 
     await project.save()
 
@@ -781,6 +785,106 @@ router.put('/:id', async (req, res) => {
 
     res.status(500).json({
       message: 'Failed to update project'
+    })
+
+  }
+
+})
+// ==========================================
+// DELETE COMPLETED PROJECT
+// ==========================================
+
+router.delete('/:id', async (req, res) => {
+
+  try {
+
+    const { id } = req.params
+    const { userId } = req.body
+
+    // Check user ID
+    if (!userId) {
+
+      return res.status(400).json({
+        message: 'User ID is required'
+      })
+
+    }
+
+
+    // Find project
+    const project = await Project.findById(id)
+
+    if (!project) {
+
+      return res.status(404).json({
+        message: 'Project not found'
+      })
+
+    }
+
+
+    // Only project owner can delete
+    if (project.owner.toString() !== userId) {
+
+      return res.status(403).json({
+        message:
+          'Only the project owner can delete this project'
+      })
+
+    }
+
+
+    // Only completed projects can be deleted
+    if (project.status !== 'Completed') {
+
+      return res.status(400).json({
+        message:
+          'Only completed projects can be deleted'
+      })
+
+    }
+
+
+    // Delete activities related to this project
+    await Activity.deleteMany({
+      project: project._id
+    })
+
+
+    // Delete notifications related to this project
+    const Notification =
+      require('../models/Notification')
+
+    await Notification.deleteMany({
+      project: project._id
+    })
+
+
+    // Finally delete the project
+    await Project.findByIdAndDelete(id)
+
+
+    res.status(200).json({
+
+      message:
+        'Project deleted successfully',
+
+      projectId: id
+
+    })
+
+  } catch (error) {
+
+    console.error(
+      'Delete project error:',
+      error
+    )
+
+    res.status(500).json({
+
+      message:
+        'Failed to delete project'
+
     })
 
   }

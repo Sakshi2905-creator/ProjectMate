@@ -59,6 +59,74 @@ function MyProjects() {
 
     navigate('/login')
   }
+  const handleDeleteProject = async (projectId) => {
+
+  const confirmed = window.confirm(
+    'Are you sure you want to delete this completed project? This action cannot be undone.'
+  )
+
+  if (!confirmed) {
+    return
+  }
+
+  const storedUser =
+    localStorage.getItem('user') ||
+    sessionStorage.getItem('user')
+
+  if (!storedUser) {
+    navigate('/login')
+    return
+  }
+
+  const loggedInUser = JSON.parse(storedUser)
+
+  try {
+
+    const response = await fetch(
+      `http://localhost:5000/api/projects/${projectId}`,
+      {
+        method: 'DELETE',
+
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+          userId: loggedInUser.id
+        })
+      }
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+
+      alert(data.message || 'Failed to delete project')
+
+      return
+    }
+
+    // Remove deleted project from the current page
+    setProjects((currentProjects) =>
+      currentProjects.filter(
+        (project) => project._id !== projectId
+      )
+    )
+
+    alert('Project deleted successfully.')
+
+  } catch (error) {
+
+    console.error(
+      'Delete project error:',
+      error
+    )
+
+    alert(
+      'Something went wrong while deleting the project.'
+    )
+  }
+}
 
   if (!user) {
     return null
@@ -255,25 +323,43 @@ function MyProjects() {
 
                 {/* FOOTER */}
 
-                <div className="project-card-footer">
+               <div className="project-card-footer">
 
-                  <div className="project-members">
+  <div className="project-members">
 
-                    👥 {project.members?.length || 0}
-                    {' '}
-                    members
+    👥 {project.members?.length || 0}
+    {' '}
+    members
 
-                  </div>
+  </div>
 
-                  <button
-                    onClick={() =>
-                      navigate(`/project/${project._id}`)
-                    }
-                  >
-                    View Project →
-                  </button>
+  <div className="project-actions">
 
-                </div>
+    <button
+      className="view-project-btn"
+      onClick={() =>
+        navigate(`/project/${project._id}`)
+      }
+    >
+      View Project →
+    </button>
+
+    {project.status === 'Completed' && (
+
+      <button
+        className="delete-project-btn"
+        onClick={() =>
+          handleDeleteProject(project._id)
+        }
+      >
+        🗑 Delete
+      </button>
+
+    )}
+
+  </div>
+
+</div>
 
               </article>
 

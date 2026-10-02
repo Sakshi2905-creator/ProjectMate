@@ -797,3 +797,33 @@
   }
 
 }
+.project-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view-project-btn {
+  border: none;
+  background: transparent;
+  color: #5b4df8;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-project-btn {
+  border: 1px solid #fecaca;
+  background: #fff5f5;
+  color: #dc2626;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.delete-project-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}

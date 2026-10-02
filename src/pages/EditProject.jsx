@@ -15,7 +15,9 @@ function EditProject() {
     techStack: '',
     requiredSkills: '',
     teamSize: '',
-    deadline: ''
+    deadline: '',
+    status:'Planing',
+    progress:0
   })
 
   const [loading, setLoading] = useState(true)
@@ -62,8 +64,11 @@ function EditProject() {
           teamSize: project.teamSize || '',
 
           deadline: project.deadline
-            ? project.deadline.substring(0, 10)
-            : ''
+            ? project.deadline.substring(0, 10): '',
+            status: project.status || 'Planning',
+
+           progress:
+            project.progress !== undefined ? project.progress : 0
         })
 
       } catch (error) {
@@ -89,17 +94,93 @@ function EditProject() {
 
   // HANDLE INPUT
 
-  const handleChange = (event) => {
+// const handleChange = (event) => {
 
-    const { name, value } = event.target
+//   const { name, value } = event.target
 
-    setFormData(prev => ({
+//   setFormData(prev => {
+
+//     if (name === 'status' && value === 'Completed') {
+
+//       return {
+//         ...prev,
+//         status: value,
+//         progress: 100
+//       }
+
+//     }
+
+//     return {
+//       ...prev,
+//       [name]: value
+//     }
+
+//   })
+
+// }
+const handleChange = (event) => {
+
+  const { name, value } = event.target
+
+  setFormData(prev => {
+
+    // If project is completed,
+    // progress must be 100%
+    if (
+      name === 'status' &&
+      value === 'Completed'
+    ) {
+
+      return {
+        ...prev,
+        status: 'Completed',
+        progress: 100
+      }
+
+    }
+
+
+    // If progress reaches 100,
+    // automatically mark project completed
+    if (
+      name === 'progress' &&
+      Number(value) === 100
+    ) {
+
+      return {
+        ...prev,
+        progress: 100,
+        status: 'Completed'
+      }
+
+    }
+
+
+    // If status is changed away from Completed
+    // and progress was 100, reset progress
+    if (
+      name === 'status' &&
+      value !== 'Completed' &&
+      prev.progress === 100
+    ) {
+
+      return {
+        ...prev,
+        status: value,
+        progress: value === 'Planning' ? 0 : 50
+      }
+
+    }
+
+
+    return {
       ...prev,
       [name]: value
-    }))
+    }
 
-  }
+  })
 
+}
 
   // UPDATE PROJECT
 
@@ -151,7 +232,11 @@ function EditProject() {
               Number(formData.teamSize),
 
             deadline:
-              formData.deadline
+              formData.deadline,
+              status:
+            formData.status,
+             progress:
+            Number(formData.progress)
 
           })
         }
@@ -463,7 +548,62 @@ function EditProject() {
             </div>
 
           </div>
+         
+         {/* STATUS + PROGRESS */}
 
+<div className="form-row">
+
+  <div className="form-group">
+
+    <label>
+      Project Status
+    </label>
+
+    <select
+      name="status"
+      value={formData.status}
+      onChange={handleChange}
+    >
+
+      <option value="Planning">
+        Planning
+      </option>
+
+      <option value="In Progress">
+        In Progress
+      </option>
+
+      <option value="Completed">
+        Completed
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <div className="form-group">
+
+    <label>
+      Progress: {formData.progress}%
+    </label>
+
+    <input
+      type="range"
+      name="progress"
+      min="0"
+      max="100"
+      value={formData.progress}
+      onChange={handleChange}
+    />
+
+    <small>
+      Update the project completion percentage.
+    </small>
+
+  </div>
+
+</div>
 
           {/* MESSAGE */}
 
