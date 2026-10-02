@@ -5,6 +5,47 @@ import './Dashboard.css'
 function Dashboard() {
 
   const navigate = useNavigate()
+  const getTimeBasedGreeting = () => {
+
+    const hour = new Date().getHours()
+
+    if (hour >= 5 && hour < 12) {
+      return {
+        greeting: 'Good morning',
+        emoji: '☀️',
+        message:
+          'Ready to turn your next idea into something real?'
+      }
+    }
+
+    if (hour >= 12 && hour < 17) {
+      return {
+        greeting: 'Good afternoon',
+        emoji: '🌤️',
+        message:
+          'Keep the momentum going and build something great.'
+      }
+    }
+
+    if (hour >= 17 && hour < 21) {
+      return {
+        greeting: 'Good evening',
+        emoji: '🌆',
+        message:
+          'A great idea can become a great project today.'
+      }
+    }
+
+    return {
+      greeting: 'Good night',
+      emoji: '🌙',
+      message:
+        'Still building? Your next big idea might be closer than you think.'
+    }
+
+  }
+
+  const timeGreeting = getTimeBasedGreeting()
 
   const [user, setUser] = useState(null)
   const [projects, setProjects] = useState([])
@@ -391,17 +432,17 @@ const handleActivityClick = (activity) => {
             <p className="hero-label">
               YOUR WORKSPACE
             </p>
+{/* <h1>
+  {timeGreeting.greeting}, {user.name}!
+</h1> */}
+           <h1>
+  {timeGreeting.emoji} {timeGreeting.greeting},{' '}
+  {user.name}!
+</h1>
 
-            <h1>
-              Good morning,{' '}
-              {user.name.split(' ')[0]} !!
-            </h1>
-
-            <p>
-              Ready to turn your next idea into
-              something real?
-            </p>
-
+<p>
+  {timeGreeting.message}
+</p>
           </div>
 
 
