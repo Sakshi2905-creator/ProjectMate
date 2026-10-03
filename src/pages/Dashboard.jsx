@@ -55,6 +55,8 @@ function Dashboard() {
 const [loadingMatches, setLoadingMatches] = useState(true)
 const [activities, setActivities] = useState([])
 const [loadingActivities, setLoadingActivities] = useState(true)
+const [profileData, setProfileData] = useState(null)
+const [loadingProfile, setLoadingProfile] = useState(true)
 
 useEffect(() => {
 
@@ -197,6 +199,47 @@ useEffect(() => {
     }
 
   }
+// =========================
+// FETCH USER PROFILE
+// =========================
+
+const fetchProfile = async () => {
+
+  try {
+
+    const response = await fetch(
+      `http://localhost:5000/api/users/${loggedInUser.id}`
+    )
+
+    const data = await response.json()
+
+    if (response.ok) {
+
+      setProfileData(data.user)
+
+    } else {
+
+      console.error(
+        'Profile fetch error:',
+        data.message
+      )
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      'Error fetching profile:',
+      error
+    )
+
+  } finally {
+
+    setLoadingProfile(false)
+
+  }
+
+}
 
   const fetchActivities = async () => {
 
@@ -234,6 +277,7 @@ useEffect(() => {
   fetchInvitationCount()
   fetchSmartMatches()
   fetchActivities()
+  fetchProfile()
 
 }, [navigate])
 
@@ -250,6 +294,27 @@ useEffect(() => {
 }
 
   const totalProjects = projects.length
+  const bestMatch =
+  smartMatches.length > 0
+    ? Math.max(
+        ...smartMatches.map(
+          match => match.matchPercentage || 0
+        )
+      )
+    : 0
+
+    const totalSkills =
+  profileData?.skills?.length || 0
+
+  const profileStrength = profileData
+  ? Math.min(
+      100,
+      (profileData.name ? 20 : 0) +
+      (profileData.email ? 20 : 0) +
+      (profileData.interest ? 20 : 0) +
+      Math.min(totalSkills, 8) * 5
+    )
+  : 0
 
 const totalTeamMembers = [
   ...new Set(
@@ -520,7 +585,9 @@ const handleActivityClick = (activity) => {
 
             <div>
               <span>Best Match</span>
-              <strong>94%</strong>
+              <strong>
+  {loadingMatches ? '—' : `${bestMatch}%`}
+</strong>
               <small>Skill compatibility</small>
             </div>
 
@@ -535,8 +602,13 @@ const handleActivityClick = (activity) => {
 
             <div>
               <span>Skills</span>
-              <strong>7</strong>
-              <small>Profile strength: 82%</small>
+              <strong>
+  {loadingProfile ? '—' : totalSkills}
+</strong>
+
+<small>
+  Profile strength: {loadingProfile ? '—' : `${profileStrength}%`}
+</small>
             </div>
 
           </div>
