@@ -85,6 +85,12 @@
   color: #5b52e8;
   font-size: 0.85rem;
   font-weight: 800;
+  cursor: pointer;
+   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.user-avatar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(91, 77, 248, 0.18);
 }
 
 .user-info {

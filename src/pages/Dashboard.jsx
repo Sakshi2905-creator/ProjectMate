@@ -462,9 +462,13 @@ const handleActivityClick = (activity) => {
 )}
 </div>
 
-          <div className="user-avatar">
-            {user.name.charAt(0).toUpperCase()}
-          </div>
+          <div
+  className="user-avatar"
+  onClick={() => navigate('/profile')}
+  title="View Profile"
+>
+  {user.name.charAt(0).toUpperCase()}
+</div>
 
           <div className="user-info">
             <strong>{user.name}</strong>
