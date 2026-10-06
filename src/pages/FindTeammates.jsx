@@ -44,101 +44,80 @@ const getMatchLevel = (percentage) => {
   }
 
 }
-
 const handleInvite = async (recipientId) => {
-
   try {
-
     setInviting(recipientId)
     setInviteMessage('')
 
-
     // Get logged-in user
+    const storedUser =
+      localStorage.getItem('user') ||
+      sessionStorage.getItem('user')
 
-    const userData =
-      JSON.parse(localStorage.getItem('user'))
+    if (!storedUser) {
+      setInviteMessage(
+        'Please login again to send an invitation.'
+      )
+      return
+    }
 
+    const userData = JSON.parse(storedUser)
 
     const senderId =
       userData?._id || userData?.id
 
-
     // Check logged-in user
-
     if (!senderId) {
-
       setInviteMessage(
         'Please login again to send an invitation.'
       )
-
       return
-
     }
 
+    // Check project id
+    if (!id) {
+      setInviteMessage('Project not found.')
+      return
+    }
 
     // Send invitation
-
     const response = await fetch(
-      'http://localhost:5000/api/notifications/invite',
+      `http://localhost:5000/api/projects/${id}/invite`,
       {
         method: 'POST',
-
         headers: {
           'Content-Type': 'application/json'
         },
-
         body: JSON.stringify({
-
-          senderId: senderId,
-
-          recipientId: recipientId,
-
-          projectId: id
-
+          userId: recipientId
         })
-
       }
     )
 
-
     const data = await response.json()
 
-
     if (!response.ok) {
-
       setInviteMessage(
         data.message ||
         'Failed to send invitation'
       )
-
       return
-
     }
-
 
     setInviteMessage(
       data.message ||
       'Invitation sent successfully! 🎉'
     )
 
-
   } catch (error) {
-
-    console.error(
-      'Invite error:',
-      error
-    )
+    console.error('Invite error:', error)
 
     setInviteMessage(
       'Unable to connect to server'
     )
-
   } finally {
-
     setInviting(null)
-
   }
-
 }
   useEffect(() => {
 
