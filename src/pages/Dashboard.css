@@ -419,6 +419,32 @@
   border: 1px solid #ececf1;
   border-radius: 10px;
 }
+.smart-matches-list {
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+.smart-matches-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.smart-matches-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.smart-matches-list::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.smart-matches-list::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.smart-matches-list {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
 
 .match-top {
   display: flex;
@@ -480,6 +506,27 @@
 
 .activity-section {
   margin-top: 18px;
+}
+.activity-list-scroll {
+  max-height: 160px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+.activity-list-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.activity-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.activity-list-scroll::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.activity-list-scroll::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }
 
 .activity-item {

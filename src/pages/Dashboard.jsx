@@ -686,7 +686,7 @@ const handleActivityClick = (activity) => {
 
 ) : (
 
-  projects.map((project) => (
+  projects.slice(0, 8).map((project) => (
 
     <div
   className="project-card"
@@ -829,8 +829,8 @@ const handleActivityClick = (activity) => {
   </div>
 
 ) : (
-
-  smartMatches.map((match) => (
+<div className="smart-matches-list">
+ { smartMatches.map((match) => (
 
     <div
       className="match-card"
@@ -890,8 +890,8 @@ const handleActivityClick = (activity) => {
 
     </div>
 
-  ))
-
+  ))}
+</div>
 )}
 
             </section>
@@ -916,7 +916,7 @@ const handleActivityClick = (activity) => {
                 </div>
 
               </div>
-
+ <div className="activity-list-scroll">
 
             {loadingActivities ? (
 
@@ -961,10 +961,7 @@ const handleActivityClick = (activity) => {
 ))
 
 )}
-
-
-              
-
+ </div>
             </section>
             
             {/* ================= JOIN REQUESTS ================= */}
