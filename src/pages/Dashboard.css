@@ -319,6 +319,7 @@
   border-radius: 10px;
   transform: none !important;
   rotate: none !important;
+  cursor:pointer;
 
 
 }

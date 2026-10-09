@@ -1025,7 +1025,7 @@ const handleActivityClick = (activity) => {
                 </span>
 
                 <strong>
-                  82%
+                  {loadingProfile ? '—' : `${profileStrength}%`}
                 </strong>
 
               </div>
@@ -1033,7 +1033,9 @@ const handleActivityClick = (activity) => {
               <div className="strength-bar">
 
                 <div
-                  style={{ width: '82%' }}
+                style={{
+    width: `${profileStrength}%`
+  }}
                 />
 
               </div>

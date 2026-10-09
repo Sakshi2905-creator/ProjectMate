@@ -14,8 +14,10 @@ function Calendar() {
 
   useEffect(() => {
 
-    const token = localStorage.getItem('token')
-    const storedUser = localStorage.getItem('user')
+    const token = localStorage.getItem('token')||
+  sessionStorage.getItem('token')
+    const storedUser = localStorage.getItem('user')||
+  sessionStorage.getItem('user')
 
     if (!token || !storedUser) {
       navigate('/login')

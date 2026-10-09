@@ -65,10 +65,17 @@ const handleJoinRequest = async () => {
     setJoining(true)
     setJoinStatus('')
 
-    const user = JSON.parse(
-      localStorage.getItem('user')
-    )
+  //   const user = JSON.parse(
+  //     localStorage.getItem('user')
+  //   )
+  const storedUser =
+  localStorage.getItem('user') ||
+  sessionStorage.getItem('user')
 
+const user = storedUser
+  ? JSON.parse(storedUser)
+  : null
+  
     if (!user?.id) {
       setJoinStatus('Please login first')
       return
