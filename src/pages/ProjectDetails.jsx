@@ -436,8 +436,61 @@ useEffect(() => {
 
             </section>
 
+           <section className="details-card">
+
+  <h2>
+    Team
+  </h2>
+
+  <div className="team-list">
+
+    {project.members?.length > 0 ? (
+
+      project.members.map((member, index) => (
+
+        <div
+          className="team-member"
+          key={member._id || index}
+        >
+
+          <div className="team-avatar">
+            {member.name
+              ?.charAt(0)
+              ?.toUpperCase() || 'U'}
+          </div>
+
+          <div>
+
+            <strong>
+              {member.name || 'Unknown User'}
+            </strong>
+
+            <span>
+              {index === 0
+                ? 'Project Owner'
+                : 'Team Member'}
+            </span>
 
           </div>
+
+        </div>
+
+      ))
+
+    ) : (
+
+      <p>
+        No team members yet.
+      </p>
+
+    )}
+
+  </div>
+
+</section>
+
+          </div>
+
 
 
           {/* RIGHT */}
@@ -586,9 +639,8 @@ useEffect(() => {
   )}
 
 </section>
-
-            {/* TEAM */}
-
+{/* TEAM */}
+{/* 
            <section className="details-card">
 
   <h2>
@@ -640,7 +692,7 @@ useEffect(() => {
 
   </div>
 
-</section>
+</section> */}
 
             {/* ACTIONS */}
 

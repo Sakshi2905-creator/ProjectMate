@@ -72,7 +72,7 @@
 
   border-radius: 8px;
 
-  color: #64748b;
+  color: #475569;
 
   font-family: inherit;
   font-size: 13px;
@@ -135,8 +135,8 @@
 }
 
 .my-projects-page .user-info small {
-  color: #94a3b8;
-  font-size: 10px;
+  color: #475569;
+  font-size: 11px;
 }
 
 .my-projects-page .logout-btn {
@@ -224,9 +224,9 @@
 .my-projects-page .projects-header p:not(.projects-label) {
   margin: 7px 0 0;
 
-  color: #64748b;
+  color: #475569;
 
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
 
   text-align: left;
@@ -385,7 +385,7 @@
 
   color: #111827;
 
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
 
   line-height: 1.35;
@@ -428,9 +428,9 @@
 
   margin: 16px 0 18px;
 
-  color: #64748b;
+  color: #475569;
 
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.6;
 
   text-align: left;
@@ -479,7 +479,7 @@
 
   color: #475569;
 
-  font-size: 10px;
+  font-size: 12px;
 
   line-height: 1.4;
 
@@ -524,7 +524,7 @@
   background: #f0efff;
   color: #6257f5;
 
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
 
   white-space: nowrap;
@@ -558,9 +558,9 @@
 
   min-width: 0;
 
-  color: #64748b;
-
-  font-size: 10px;
+  color: #475569;
+  font-weight: 700;
+  font-size: 11px;
 
   text-align: left;
 
@@ -580,7 +580,7 @@
 
   font-family: inherit;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
 
   cursor: pointer;
 
@@ -604,7 +604,7 @@
   align-items: center;
   justify-content: center;
 
-  color: #64748b;
+  color: #475569;
 
   text-align: center;
 }
@@ -664,8 +664,7 @@
 .my-projects-page .projects-empty p {
   margin: 0;
 
-  color: #64748b;
-
+  color: #475569;
   font-size: 13px;
 
   text-align: center;

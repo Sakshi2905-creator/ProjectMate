@@ -885,7 +885,7 @@ const handleActivityClick = (activity) => {
     navigate(`/profile/${match.id}`)
   }}
 >
-  View Profile →
+  View Profile
 </button>
 
     </div>
