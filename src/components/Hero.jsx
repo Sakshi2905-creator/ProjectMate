@@ -1,14 +1,16 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function Hero() {
-
   const navigate = useNavigate()
 
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [previewMessage, setPreviewMessage] = useState('')
 
-  // Check whether user is logged in
   const handleProtectedNavigation = (path) => {
-
-    const token = localStorage.getItem('token')
+    const token =
+      localStorage.getItem('token') ||
+      sessionStorage.getItem('token')
 
     if (!token) {
       navigate('/login')
@@ -18,17 +20,37 @@ function Hero() {
     navigate(path)
   }
 
+  const handleCopyIdea = async () => {
+    const idea =
+      'Campus Companion: A student-focused platform for campus resources, events and everyday activities. Tech stack: React, Node.js, MongoDB and AI/ML.'
+
+    try {
+      await navigator.clipboard.writeText(idea)
+      setPreviewMessage('Project idea copied successfully!')
+    } catch (error) {
+      console.error('Copy project idea error:', error)
+      setPreviewMessage(
+        'Could not copy the idea. Please try again.'
+      )
+    } finally {
+      setMenuOpen(false)
+    }
+  }
+
+  const handleStartProject = () => {
+    setMenuOpen(false)
+    handleProtectedNavigation('/create-project')
+  }
 
   return (
+    <section className="hero" id="home">
 
-    <section className="hero">
-
+      {/* HERO CONTENT */}
       <div className="hero-content">
 
         <p className="hero-tag">
-          🚀 Build. Collaborate. Create.
+          🚀 Built for student builders
         </p>
-
 
         <h1>
           Find the right people
@@ -36,19 +58,13 @@ function Hero() {
           for your <span>next project.</span>
         </h1>
 
-
         <p className="hero-description">
-          ProjectMate helps students discover project ideas,
-          find teammates with the right skills, and build
-          amazing projects together.
+          Discover project ideas, connect with students
+          who complement your skills, and turn your ideas
+          into real projects with ProjectMate.
         </p>
 
-
-        {/* ================= HERO BUTTONS ================= */}
-
         <div className="hero-buttons">
-
-          {/* EXPLORE PROJECTS */}
 
           <button
             className="primary-btn"
@@ -56,11 +72,8 @@ function Hero() {
               handleProtectedNavigation('/discover')
             }
           >
-            Explore Projects
+            Explore Projects →
           </button>
-
-
-          {/* CREATE PROJECT */}
 
           <button
             className="secondary-btn"
@@ -68,29 +81,26 @@ function Hero() {
               handleProtectedNavigation('/create-project')
             }
           >
-            Create a Project
+            + Start a Project
           </button>
 
         </div>
 
-
-        {/* ================= STATS ================= */}
-
         <div className="hero-stats">
 
           <div>
-            <h3>500+</h3>
-            <p>Projects</p>
+            <h3>01</h3>
+            <p>Discover ideas</p>
           </div>
 
           <div>
-            <h3>1,200+</h3>
-            <p>Students</p>
+            <h3>02</h3>
+            <p>Find teammates</p>
           </div>
 
           <div>
-            <h3>50+</h3>
-            <p>Skills</p>
+            <h3>03</h3>
+            <p>Build together</p>
           </div>
 
         </div>
@@ -98,80 +108,117 @@ function Hero() {
       </div>
 
 
-      {/* ================= HERO VISUAL ================= */}
+      {/* PROJECT PREVIEW CARD */}
+      <div className="hero-visual">
 
-     <div className="hero-visual">
+        <article className="project-card">
 
-  <div className="project-card">
+          <div className="card-header">
 
-    {/* CARD HEADER */}
-    <div className="card-header">
+            <span className="project-status">
+              <span className="status-dot" />
+              PROJECT CONCEPT
+            </span>
 
-      <span className="project-status">
-        <span className="status-dot"></span>
-        Open for teammates
-      </span>
+            <div className="project-preview-actions">
 
-      <span className="project-menu">
-        ⋮
-      </span>
+              <button
+                type="button"
+                className="project-menu-button"
+                aria-label="Open project preview actions"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                <span aria-hidden="true">⋮</span>
+              </button>
 
-    </div>
+              {menuOpen && (
+                <div className="project-preview-menu">
+
+                  <button
+                    type="button"
+                    onClick={handleCopyIdea}
+                  >
+                    <span aria-hidden="true">📋</span>
+                    Copy project idea
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleStartProject}
+                  >
+                    <span aria-hidden="true">✚</span>
+                    Start a similar project
+                  </button>
+
+                </div>
+              )}
+
+            </div>
+
+          </div>
 
 
-    {/* PROJECT INFO */}
-    <div className="project-info">
+          <div className="project-info">
 
-      <h2>
-        Smart Campus Assistant
-      </h2>
+            <span className="project-type">
+              CAMPUS & PRODUCTIVITY
+            </span>
 
-      <p>
-        An AI-powered platform that helps students
-        manage their academic life.
-      </p>
+            <h2>
+              Campus Companion
+            </h2>
 
-    </div>
+            <p>
+              A student-focused concept for organizing
+              campus resources, events and everyday activities.
+            </p>
 
-
-    {/* SKILLS */}
-    <div className="skills">
-
-      <span>React</span>
-      <span>Node.js</span>
-      <span>MongoDB</span>
-      <span>AI/ML</span>
-
-    </div>
+          </div>
 
 
-    {/* CARD FOOTER */}
-    <div className="card-footer">
+          <div className="skills" aria-label="Example technology stack">
+            <span>React</span>
+            <span>Node.js</span>
+            <span>MongoDB</span>
+            <span>AI/ML</span>
+          </div>
 
-      <div className="team">
 
-        <div className="avatar">S</div>
-        <div className="avatar">A</div>
-        <div className="avatar">R</div>
+          <div className="card-footer">
 
-        <span className="team-count">
-          +2
-        </span>
+            <div className="team-preview">
 
-      </div>
+              <div className="team-avatars" aria-hidden="true">
+                <span className="avatar">S</span>
+                <span className="avatar">A</span>
+                <span className="avatar">R</span>
+              </div>
 
-            <button
-              className="join-btn"
-              onClick={() =>
-                handleProtectedNavigation('/discover')
-              }
+              <div className="team-preview-info">
+                <strong>Team preview</strong>
+                <span>Illustrative collaborators</span>
+              </div>
+
+            </div>
+
+            <span className="preview-badge">
+              Example
+            </span>
+
+          </div>
+
+          {previewMessage && (
+            <p
+              className="project-preview-feedback"
+              role="status"
+              aria-live="polite"
             >
-              Join Project
-            </button>
+              {previewMessage}
+            </p>
+          )}
 
-          </div>
-
-        </div>
+        </article>
 
       </div>
 

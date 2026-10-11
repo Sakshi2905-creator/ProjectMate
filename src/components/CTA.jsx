@@ -1,51 +1,45 @@
 import { useNavigate } from 'react-router-dom'
 
 function CTA() {
-
   const navigate = useNavigate()
 
-
-  const handleStartBuilding = () => {
-
-    const token = localStorage.getItem('token')
+  const handleGetStarted = () => {
+    const token =
+      localStorage.getItem('token') ||
+      sessionStorage.getItem('token')
 
     if (!token) {
-      navigate('/login')
+      navigate('/signup')
       return
     }
 
     navigate('/create-project')
-
   }
 
-
   return (
+    <section className="cta">
 
-    <section
-      className="cta"
-      id="projects"
-    >
-
-      <h2>
-        Have an idea?
-        <br />
-        <span>
-          Let's build it together.
-        </span>
-      </h2>
-
-
-      <p>
-        Create your project, find your teammates,
-        and start building something amazing.
+      <p className="cta-eyebrow">
+        YOUR NEXT PROJECT STARTS HERE
       </p>
 
+      <h2>
+        Bring your next idea to life.
+        <br />
+        <span>Find your people.</span>
+      </h2>
+
+      <p>
+        Whether you have a clear project plan or just
+        the beginning of an idea, take the next step.
+        Find collaborators and start building together.
+      </p>
 
       <button
         className="primary-btn"
-        onClick={handleStartBuilding}
+        onClick={handleGetStarted}
       >
-        Start Building
+        Get Started with ProjectMate →
       </button>
 
     </section>
