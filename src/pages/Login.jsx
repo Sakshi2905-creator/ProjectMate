@@ -73,7 +73,7 @@ import { Link, useNavigate } from 'react-router-dom'
       // Go to dashboard
       navigate('/dashboard')
 
-    } catch (error) {
+    } catch {
 
       setError('Unable to connect to server')
 

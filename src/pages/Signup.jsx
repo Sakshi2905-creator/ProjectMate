@@ -60,7 +60,7 @@ function Signup() {
         interest: ''
       })
 
-    } catch (error) {
+    } catch{
 
       setError('Unable to connect to server')
 

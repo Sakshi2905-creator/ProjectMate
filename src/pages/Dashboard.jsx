@@ -47,7 +47,19 @@ function Dashboard() {
 
   const timeGreeting = getTimeBasedGreeting()
 
-  const [user, setUser] = useState(null)
+  const [user] = useState(() => {
+    const storedUser =
+      localStorage.getItem('user') ||
+      sessionStorage.getItem('user')
+
+    if (!storedUser) return null
+
+    try {
+      return JSON.parse(storedUser)
+    } catch {
+      return null
+    }
+  })
   const [projects, setProjects] = useState([])
   const [loadingProjects, setLoadingProjects] = useState(true)
   const [invitationCount, setInvitationCount] = useState(0)
@@ -74,8 +86,6 @@ useEffect(() => {
   }
 
   const loggedInUser = JSON.parse(storedUser)
-
-  setUser(loggedInUser)
 
 
   // =========================
@@ -321,10 +331,6 @@ const totalTeamMembers = [
     projects.flatMap(project => project.members || [])
   )
 ].length
-
-const activeProjects = projects.filter(
-  project => project.status !== 'Completed'
-).length
 
 const upcomingProjects = projects
   .filter(project => project.deadline)

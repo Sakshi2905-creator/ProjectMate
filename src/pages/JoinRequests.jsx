@@ -6,7 +6,6 @@ function JoinRequests() {
 
   const navigate = useNavigate()
 
-  const [projects, setProjects] = useState([])
   const [requests, setRequests] = useState([])
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')
@@ -59,18 +58,33 @@ const handleRequest = async (
 
   }
 
-
-
   useEffect(() => {
 
-    const storedUser = localStorage.getItem('user')
-
+     const storedUser =
+    localStorage.getItem('user') ||
+    sessionStorage.getItem('user')
     if (!storedUser) {
-      navigate('/login')
-      return
-    }
+    navigate('/login')
+    return
+  }
+ let user
 
-    const user = JSON.parse(storedUser)
+  try {
+    user = JSON.parse(storedUser)
+  } catch (error) {
+    console.error('Invalid stored user data:', error)
+    navigate('/login')
+    return
+  }
+
+  // Support both id and _id
+  const userId = user?.id || user?._id
+
+  if (!userId) {
+    navigate('/login')
+    return
+  }
+    // const user = JSON.parse(storedUser)
 
 
     const fetchRequests = async () => {
@@ -95,9 +109,6 @@ const handleRequest = async (
 
         const userProjects =
           projectData.projects || []
-
-        setProjects(userProjects)
-
 
         // Fetch requests for every project
 

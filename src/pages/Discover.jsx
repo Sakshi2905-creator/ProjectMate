@@ -5,7 +5,19 @@ import './Discover.css'
 function Discover() {
   const navigate = useNavigate()
 
-  const [user, setUser] = useState(null)
+  const [user] = useState(() => {
+    const storedUser =
+      localStorage.getItem('user') ||
+      sessionStorage.getItem('user')
+
+    if (!storedUser) return null
+
+    try {
+      return JSON.parse(storedUser)
+    } catch {
+      return null
+    }
+  })
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -19,23 +31,10 @@ function Discover() {
       localStorage.getItem('token') ||
       sessionStorage.getItem('token')
 
-    const storedUser =
-      localStorage.getItem('user') ||
-      sessionStorage.getItem('user')
-
-    if (!token || !storedUser) {
-      navigate('/login')
-      return
-    }
-
-    try {
-      const loggedInUser = JSON.parse(storedUser)
-      setUser(loggedInUser)
-    } catch (error) {
-      console.error('Error reading user:', error)
+    if (!token || !user) {
       navigate('/login')
     }
-  }, [navigate])
+  }, [navigate, user])
 
   // ================================
   // FETCH PROJECTS

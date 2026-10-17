@@ -73,7 +73,7 @@ function ResetPassword() {
         navigate('/login')
       }, 2000)
 
-    } catch (error) {
+    } catch {
 
       setError(
         'Unable to connect to server'

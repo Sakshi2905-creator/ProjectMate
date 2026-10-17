@@ -5,7 +5,13 @@ import './MyProjects.css'
 function MyProjects() {
   const navigate = useNavigate()
 
-  const [user, setUser] = useState(null)
+  const [user] = useState(() => {
+    const storedUser =
+      localStorage.getItem('user') ||
+      sessionStorage.getItem('user')
+
+    return storedUser ? JSON.parse(storedUser) : null
+  })
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -24,8 +30,6 @@ function MyProjects() {
     }
 
     const loggedInUser = JSON.parse(storedUser)
-
-    setUser(loggedInUser)
 
     const fetchProjects = async () => {
       try {

@@ -5,7 +5,16 @@ import './Teams.css'
 function Teams() {
   const navigate = useNavigate()
 
-  const [user, setUser] = useState(null)
+  const [user] = useState(() => {
+    const token =
+      localStorage.getItem('token') ||
+      sessionStorage.getItem('token')
+    const storedUser =
+      localStorage.getItem('user') ||
+      sessionStorage.getItem('user')
+
+    return token && storedUser ? JSON.parse(storedUser) : null
+  })
   const [teams, setTeams] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -24,8 +33,6 @@ function Teams() {
     }
 
     const loggedInUser = JSON.parse(storedUser)
-
-    setUser(loggedInUser)
 
     const fetchTeams = async () => {
       try {

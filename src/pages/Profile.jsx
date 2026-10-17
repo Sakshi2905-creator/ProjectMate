@@ -8,11 +8,27 @@ function Profile() {
   const { id } = useParams()
 
    const [profile, setProfile] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(Boolean(id))
 
-  const storedUser = JSON.parse(
-    localStorage.getItem('user')
-  )
+ const localUserData = localStorage.getItem('user')
+const sessionUserData = sessionStorage.getItem('user')
+
+const userStorage = localUserData
+  ? localStorage
+  : sessionStorage
+
+const storedUserData = localUserData || sessionUserData
+
+const storedUser = (() => {
+  try {
+    return storedUserData
+      ? JSON.parse(storedUserData)
+      : null
+  } catch (error) {
+    console.error('Unable to read stored user:', error)
+    return null
+  }
+})()
 
   useEffect(() => {
   const fetchProfile = async () => {
@@ -38,8 +54,6 @@ function Profile() {
 
   if (id) {
     fetchProfile()
-  } else {
-    setLoading(false)
   }
 }, [id])
 
@@ -97,99 +111,174 @@ function Profile() {
   }
 
 
-  const saveSkills = async () => {
+//   const saveSkills = async () => {
 
-    if (!storedUser?.id) {
+//     if (!storedUser?.id) {
+//       return
+//     }
+
+//     try {
+
+//       setSaving(true)
+//       setMessage('')
+
+//       const response = await fetch(
+//         `http://localhost:5000/api/users/${storedUser.id}/skills`,
+//         {
+//           method: 'PUT',
+//           headers: {
+//             'Content-Type': 'application/json'
+//           },
+//           body: JSON.stringify({
+//             skills: selectedSkills
+//           })
+//         }
+//       )
+
+//       const data = await response.json()
+
+// const interestResponse = await fetch(
+//   `http://localhost:5000/api/users/${storedUser.id}/interest`,
+//   {
+//     method: 'PUT',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify({
+//       interest
+//     })
+//   }
+// )
+
+// const interestData = await interestResponse.json()
+
+// if (!interestResponse.ok) {
+
+//   setMessage(
+//     interestData.message ||
+//     'Failed to save interest'
+//   )
+
+//   return
+// }
+
+//       if (!response.ok) {
+
+//         setMessage(
+//           data.message || 'Something went wrong'
+//         )
+
+//         return
+//       }
+
+
+//       // Update localStorage
+
+//       const updatedUser = {
+//   ...storedUser,
+//   skills: data.user.skills,
+//   interest: interestData.user.interest
+// }
+
+//       localStorage.setItem(
+//         'user',
+//         JSON.stringify(updatedUser)
+//       )
+
+//       setMessage(
+//         'Skills saved successfully ✓'
+//       )
+
+//     } catch (error) {
+
+//       console.error(error)
+
+//       setMessage(
+//         'Unable to save skills'
+//       )
+
+//     } finally {
+
+//       setSaving(false)
+
+//     }
+
+//   }
+
+const saveSkills = async () => {
+  const userId = storedUser?.id || storedUser?._id
+
+  if (!userId) {
+    setMessage('User not found. Please log in again.')
+    return
+  }
+
+  try {
+    setSaving(true)
+    setMessage('')
+
+    // Save skills
+    const response = await fetch(
+      `http://localhost:5000/api/users/${userId}/skills`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          skills: selectedSkills
+        })
+      }
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      setMessage(data.message || 'Failed to save skills')
       return
     }
 
-    try {
-
-      setSaving(true)
-      setMessage('')
-
-      const response = await fetch(
-        `http://localhost:5000/api/users/${storedUser.id}/skills`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            skills: selectedSkills
-          })
-        }
-      )
-
-      const data = await response.json()
-
-const interestResponse = await fetch(
-  `http://localhost:5000/api/users/${storedUser.id}/interest`,
-  {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      interest
-    })
-  }
-)
-
-const interestData = await interestResponse.json()
-
-if (!interestResponse.ok) {
-
-  setMessage(
-    interestData.message ||
-    'Failed to save interest'
-  )
-
-  return
-}
-
-      if (!response.ok) {
-
-        setMessage(
-          data.message || 'Something went wrong'
-        )
-
-        return
+    // Save project preference
+    const interestResponse = await fetch(
+      `http://localhost:5000/api/users/${userId}/interest`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          interest
+        })
       }
+    )
 
+    const interestData = await interestResponse.json()
 
-      // Update localStorage
-
-      const updatedUser = {
-  ...storedUser,
-  skills: data.user.skills,
-  interest: interestData.user.interest
-}
-
-      localStorage.setItem(
-        'user',
-        JSON.stringify(updatedUser)
-      )
-
+    if (!interestResponse.ok) {
       setMessage(
-        'Skills saved successfully ✓'
+        interestData.message || 'Failed to save project preference'
       )
-
-    } catch (error) {
-
-      console.error(error)
-
-      setMessage(
-        'Unable to save skills'
-      )
-
-    } finally {
-
-      setSaving(false)
-
+      return
     }
 
+    // Update the same storage used by the login session
+    const updatedUser = {
+      ...storedUser,
+      skills: data.user?.skills || selectedSkills,
+      interest: interestData.user?.interest || interest
+    }
+
+    userStorage.setItem('user', JSON.stringify(updatedUser))
+
+    setMessage('Skills and project preference saved successfully ✓')
+
+  } catch (error) {
+    console.error('Save skills error:', error)
+    setMessage('Unable to save. Please check your server connection.')
+  } finally {
+    setSaving(false)
   }
+}
 
   if (loading) {
   return (

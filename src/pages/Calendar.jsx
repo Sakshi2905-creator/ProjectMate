@@ -6,7 +6,12 @@ function Calendar() {
 
   const navigate = useNavigate()
 
-  const [user, setUser] = useState(null)
+  const [user] = useState(() => {
+    const storedUser = localStorage.getItem('user') ||
+      sessionStorage.getItem('user')
+
+    return storedUser ? JSON.parse(storedUser) : null
+  })
   const [projects, setProjects] = useState([])
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(null)
@@ -25,8 +30,6 @@ function Calendar() {
     }
 
     const loggedInUser = JSON.parse(storedUser)
-
-    setUser(loggedInUser)
 
     const fetchProjects = async () => {
 

@@ -40,7 +40,7 @@ function ForgotPassword() {
 
       setMessage(data.message)
 
-    } catch (error) {
+    } catch {
 
       setError('Unable to connect to server')
 

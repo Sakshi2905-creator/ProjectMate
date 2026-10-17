@@ -105,7 +105,7 @@ function CreateProject() {
       navigate('/dashboard')
 
 
-    } catch (error) {
+    } catch {
 
       setError(
         'Unable to connect to server'
