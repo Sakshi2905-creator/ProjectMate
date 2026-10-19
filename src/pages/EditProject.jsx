@@ -21,6 +21,7 @@ function EditProject() {
   })
 
   const [loading, setLoading] = useState(true)
+  const [isOwner, setIsOwner] = useState(false)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
@@ -48,6 +49,28 @@ function EditProject() {
         }
 
         const project = data.project
+
+    const storedUser =
+  localStorage.getItem('user') ||
+  sessionStorage.getItem('user')
+
+const loggedInUser = storedUser
+  ? JSON.parse(storedUser)
+  : null
+
+const loggedInUserId =
+  loggedInUser?._id || loggedInUser?.id
+
+const projectOwnerId =
+  project.owner?._id || project.owner
+
+setIsOwner(
+  Boolean(
+    loggedInUserId &&
+    projectOwnerId &&
+    String(loggedInUserId) === String(projectOwnerId)
+  )
+)
 
         setFormData({
           title: project.title || '',
@@ -204,6 +227,16 @@ const handleChange = (event) => {
           },
 
           body: JSON.stringify({
+ userId: (() => {
+  const storedUser =
+      localStorage.getItem('user') ||
+      sessionStorage.getItem('user')
+
+    const user = storedUser
+      ? JSON.parse(storedUser)
+      : null
+    return user?._id || user?.id
+  })(),
 
             title: formData.title,
 
@@ -366,7 +399,13 @@ const handleChange = (event) => {
       {/* FORM */}
 
       <main className="edit-project-container">
-
+{!isOwner && (
+  <div className="edit-error-message">
+    Only the project owner can edit project details.
+    Redirecting to project details...
+  </div>
+)}
+        {isOwner && (
         <form
           className="edit-project-form"
           onSubmit={handleSubmit}
@@ -563,6 +602,7 @@ const handleChange = (event) => {
       name="status"
       value={formData.status}
       onChange={handleChange}
+      disabled={!isOwner}
     >
 
       <option value="Planning">
@@ -595,12 +635,13 @@ const handleChange = (event) => {
       max="100"
       value={formData.progress}
       onChange={handleChange}
+        disabled={!isOwner}
     />
 
     <small>
-      Update the project completion percentage.
-    </small>
-
+{isOwner
+    ? 'Update the project completion percentage.'
+    : 'Only the project owner can update progress.'}    </small>
   </div>
 
 </div>
@@ -653,6 +694,7 @@ const handleChange = (event) => {
           </div>
 
         </form>
+        )}
 
       </main>
 

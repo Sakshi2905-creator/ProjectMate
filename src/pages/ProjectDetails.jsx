@@ -9,6 +9,7 @@ function ProjectDetails() {
 
   const [project, setProject] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [isOwner, setIsOwner] = useState(false)
   const [error, setError] = useState('')
   const [joinStatus, setJoinStatus] = useState('')
   const [joining, setJoining] = useState(false)
@@ -36,7 +37,32 @@ const [matchLoading, setMatchLoading] = useState(true)
           return
         }
 
-        setProject(data.project)
+     const fetchedProject = data.project
+
+setProject(fetchedProject)
+
+const storedUser =
+  localStorage.getItem('user') ||
+  sessionStorage.getItem('user')
+
+const loggedInUser = storedUser
+  ? JSON.parse(storedUser)
+  : null
+
+const loggedInUserId =
+  loggedInUser?.id || loggedInUser?._id
+
+const projectOwnerId =
+  fetchedProject.owner?._id || fetchedProject.owner
+
+setIsOwner(
+  Boolean(
+    loggedInUserId &&
+    projectOwnerId &&
+    String(loggedInUserId) === String(projectOwnerId)
+  )
+)
+
 
       } catch (error) {
 
@@ -624,13 +650,14 @@ useEffect(() => {
 {/* ACTIONS */}
 
 <section className="details-card project-actions">
-
+{isOwner && (
   <button
     className="edit-project-btn"
     onClick={() => navigate(`/edit-project/${id}`)}
   >
     Edit Project
   </button>
+)}
 
   <button
     className="find-team-btn"

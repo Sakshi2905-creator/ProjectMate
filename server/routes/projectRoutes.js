@@ -648,28 +648,21 @@ router.get('/join-requests/:userId', async (req, res) => {
 
 })
 
-// UPDATE PROJECT
+// UPDATE PROJECT — OWNER ONLY
 
 router.put('/:id', async (req, res) => {
-
   try {
+    const { userId } = req.body
 
-    const {
-  title,
-  description,
-  category,
-  difficulty,
-  techStack,
-  requiredSkills,
-  teamSize,
-  deadline,
-  status,
-  progress
-} = req.body
+    // Check whether user ID was provided
+    if (!userId) {
+      return res.status(401).json({
+        message: 'Please log in to update this project'
+      })
+    }
 
-    const project = await Project.findById(
-      req.params.id
-    )
+    // Find the project
+    const project = await Project.findById(req.params.id)
 
     if (!project) {
       return res.status(404).json({
@@ -677,37 +670,52 @@ router.put('/:id', async (req, res) => {
       })
     }
 
-   project.title = title
-project.description = description
-project.category = category
-project.difficulty = difficulty
-project.techStack = techStack
-project.requiredSkills = requiredSkills
-project.teamSize = teamSize
-project.deadline = deadline
-project.status = status
-project.progress = progress
+    // Only the project owner can edit project details
+    if (project.owner.toString() !== String(userId)) {
+      return res.status(403).json({
+        message: 'Only the project owner can edit this project'
+      })
+    }
+
+    const {
+      title,
+      description,
+      category,
+      difficulty,
+      techStack,
+      requiredSkills,
+      teamSize,
+      deadline,
+      status,
+      progress
+    } = req.body
+
+    // Update project details
+    project.title = title
+    project.description = description
+    project.category = category
+    project.difficulty = difficulty
+    project.techStack = techStack
+    project.requiredSkills = requiredSkills
+    project.teamSize = teamSize
+    project.deadline = deadline
+    project.status = status
+    project.progress = progress
 
     await project.save()
 
-    res.status(200).json({
+    return res.status(200).json({
       message: 'Project updated successfully',
       project
     })
 
   } catch (error) {
+    console.error('Update project error:', error)
 
-    console.error(
-      'Update project error:',
-      error
-    )
-
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Failed to update project'
     })
-
   }
-
 })
 // ==========================================
 // DELETE COMPLETED PROJECT
