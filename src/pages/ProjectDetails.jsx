@@ -12,7 +12,8 @@ function ProjectDetails() {
   const [error, setError] = useState('')
   const [joinStatus, setJoinStatus] = useState('')
   const [joining, setJoining] = useState(false)
-
+const [joinMessage, setJoinMessage] = useState('')
+const [showJoinMessage, setShowJoinMessage] = useState(false)
 const [matchPercentage, setMatchPercentage] = useState(0)
 const [matchedSkills, setMatchedSkills] = useState([])
 const [missingSkills, setMissingSkills] = useState([])
@@ -59,76 +60,56 @@ const [matchLoading, setMatchLoading] = useState(true)
   }, [id])
 
 const handleJoinRequest = async () => {
+  const storedUser =
+    localStorage.getItem('user') ||
+    sessionStorage.getItem('user')
+
+  const user = storedUser ? JSON.parse(storedUser) : null
+  const userId = user?.id || user?._id
+
+  if (!userId) {
+    setJoinStatus('Please login first')
+    return
+  }
+
+  if (!joinMessage.trim()) {
+    setJoinStatus('Please enter why you want to join this project')
+    return
+  }
 
   try {
-
     setJoining(true)
     setJoinStatus('')
-
-  //   const user = JSON.parse(
-  //     localStorage.getItem('user')
-  //   )
-  const storedUser =
-  localStorage.getItem('user') ||
-  sessionStorage.getItem('user')
-
-const user = storedUser
-  ? JSON.parse(storedUser)
-  : null
-  
-    if (!user?.id) {
-      setJoinStatus('Please login first')
-      return
-    }
 
     const response = await fetch(
       `http://localhost:5000/api/projects/${id}/join`,
       {
         method: 'POST',
-
         headers: {
           'Content-Type': 'application/json'
         },
-
         body: JSON.stringify({
-          userId: user.id
+          userId,
+          message: joinMessage.trim()
         })
       }
     )
 
     const data = await response.json()
 
-    if (response.ok) {
-
-      setJoinStatus(
-        'Join request sent successfully! 🎉'
-      )
-
-    } else {
-
-      setJoinStatus(
-        data.message || 'Failed to send request'
-      )
-
+    if (!response.ok) {
+      setJoinStatus(data.message || 'Failed to send join request')
+      return
     }
 
+    setJoinStatus('Join request sent successfully!')
+    setJoinMessage('')
   } catch (error) {
-
-    console.error(
-      'Join request error:',
-      error
-    )
-
-    setJoinStatus(
-      'Unable to connect to server'
-    )
-
+    console.error('Join request error:', error)
+    setJoinStatus('Unable to send request. Please try again.')
   } finally {
-
     setJoining(false)
-
   }
-
 }
 
 // ================= SMART MATCH =================
@@ -639,97 +620,94 @@ useEffect(() => {
   )}
 
 </section>
-{/* TEAM */}
-{/* 
-           <section className="details-card">
 
-  <h2>
-    Team
-  </h2>
+{/* ACTIONS */}
 
-  <div className="team-list">
+<section className="details-card project-actions">
 
-    {project.members?.length > 0 ? (
+  <button
+    className="edit-project-btn"
+    onClick={() => navigate(`/edit-project/${id}`)}
+  >
+    Edit Project
+  </button>
 
-      project.members.map((member, index) => (
+  <button
+    className="find-team-btn"
+    onClick={() => navigate(`/project/${id}/find-teammates`)}
+  >
+    Find Teammates
+  </button>
 
-        <div
-          className="team-member"
-          key={member._id || index}
-        >
+  <button
+    className="join-project-btn"
+    onClick={() => {
+      setJoinStatus('')
+      setJoinMessage('')
+      setShowJoinMessage(true)
+    }}
+    disabled={joining}
+  >
+    Request to Join →
+  </button>
 
-          <div className="team-avatar">
-            {member.name
-              ?.charAt(0)
-              ?.toUpperCase() || 'U'}
-          </div>
+  {showJoinMessage && (
+    <div className="join-message-box">
 
-          <div>
-
-            <strong>
-              {member.name || 'Unknown User'}
-            </strong>
-
-            <span>
-              {index === 0
-                ? 'Project Owner'
-                : 'Team Member'}
-            </span>
-
-          </div>
-
-        </div>
-
-      ))
-
-    ) : (
+      <h3>Why do you want to join?</h3>
 
       <p>
-        No team members yet.
+        Tell the project owner about your interest and
+        how you can contribute to this project.
       </p>
 
-    )}
+      <textarea
+        className="join-message-input"
+        placeholder="Write your reason here..."
+        value={joinMessage}
+        onChange={(e) => setJoinMessage(e.target.value)}
+        maxLength={1000}
+        rows={5}
+      />
 
-  </div>
+      <p className="join-message-count">
+        {joinMessage.length}/1000 characters
+      </p>
 
-</section> */}
+      {joinStatus && (
+        <p className="join-status">{joinStatus}</p>
+      )}
 
-            {/* ACTIONS */}
+      <div className="join-message-actions">
 
-            <section className="details-card project-actions">
+        <button
+          type="button"
+          className="cancel-join-btn"
+          onClick={() => {
+            setShowJoinMessage(false)
+            setJoinMessage('')
+            setJoinStatus('')
+          }}
+          disabled={joining}
+        >
+          Cancel
+        </button>
 
-              <button
-  className="edit-project-btn"
-  onClick={() =>
-    navigate(`/edit-project/${id}`)
-  }>
-  Edit Project
-</button>
-              <button
-  className="find-team-btn"
-  onClick={() =>
-    navigate(`/project/${id}/find-teammates`)
-  }
->
-  Find Teammates
-</button>
-              <button
-  className="join-project-btn"
-  onClick={handleJoinRequest}
-  disabled={joining}
->
-  {joining
-    ? 'Sending...'
-    : 'Request to Join →'}
-</button>
+        <button
+          type="button"
+          className="send-join-btn"
+          onClick={handleJoinRequest}
+          disabled={joining || !joinMessage.trim()}
+        >
+          {joining ? 'Sending...' : 'Send Request'}
+        </button>
 
-{joinStatus && (
-  <p className="join-status">
-    {joinStatus}
-  </p>
-)}
+      </div>
 
-            </section>
+    </div>
+  )}
+
+</section>
 
 
           </aside>

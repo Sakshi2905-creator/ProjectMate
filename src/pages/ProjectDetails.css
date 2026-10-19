@@ -505,3 +505,82 @@
   background: #f3f4f6;
   font-size: 13px;
 }
+
+.join-message-box {
+  width: 100%;
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid #dbe3ee;
+  border-radius: 12px;
+  background: #f8fafc;
+  box-sizing: border-box;
+}
+
+.join-message-box h3 {
+  margin: 0 0 8px;
+  color: #1e293b;
+  font-size: 18px;
+}
+
+.join-message-box > p:not(.join-status):not(.join-message-count) {
+  margin: 0 0 14px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.join-message-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #1e293b;
+  font: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.join-message-input:focus {
+  outline: 2px solid #93c5fd;
+  border-color: #3b82f6;
+}
+
+.join-message-count {
+  margin: 6px 0 12px;
+  color: #64748b;
+  font-size: 12px;
+  text-align: right;
+}
+
+.join-message-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cancel-join-btn,
+.send-join-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-join-btn {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.send-join-btn {
+  background: #2563eb;
+  color: #fff;
+}
+
+.cancel-join-btn:disabled,
+.send-join-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

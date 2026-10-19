@@ -552,3 +552,100 @@
   }
 
 }
+
+.request-reason {
+  margin: 18px 0;
+  padding: 14px 16px;
+  border: 1px solid #dbeafe;
+  border-left: 4px solid #3b82f6;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.request-reason .request-section-title {
+  display: block;
+  margin-bottom: 8px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.request-reason p {
+  margin: 0;
+  color: #1e293b;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Fix Join Request card layout */
+
+.request-card {
+  display: grid;
+  grid-template-columns:
+    minmax(180px, 1.1fr)
+    minmax(120px, 0.7fr)
+    minmax(220px, 1.3fr)
+    minmax(180px, 1fr);
+  align-items: start;
+  gap: 24px;
+  padding: 28px;
+  box-sizing: border-box;
+}
+
+.request-user,
+.request-project,
+.request-reason,
+.request-skills {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.request-project,
+.request-skills {
+  text-align: center;
+}
+
+.request-reason {
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.request-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+@media (max-width: 1000px) {
+  .request-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .request-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .request-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .request-project,
+  .request-skills {
+    text-align: left;
+  }
+
+  .request-actions {
+    grid-column: 1;
+  }
+}

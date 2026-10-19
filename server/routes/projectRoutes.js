@@ -304,18 +304,31 @@ router.get('/:projectId/match/:userId', async (req, res) => {
 // REQUEST TO JOIN PROJECT
 
 router.post('/:projectId/join', async (req, res) => {
-
   try {
-
     const { projectId } = req.params
-    const { userId } = req.body
+    const { userId, message } = req.body
 
+    // Validate user ID
     if (!userId) {
       return res.status(400).json({
         message: 'User ID is required'
       })
     }
 
+    // Validate message
+    if (!message || !message.trim()) {
+      return res.status(400).json({
+        message: 'Please tell the project owner why you want to join'
+      })
+    }
+
+    if (message.trim().length > 1000) {
+      return res.status(400).json({
+        message: 'Message cannot exceed 1000 characters'
+      })
+    }
+
+    // Find project
     const project = await Project.findById(projectId)
 
     if (!project) {
@@ -325,7 +338,6 @@ router.post('/:projectId/join', async (req, res) => {
     }
 
     // Check if user is already a member
-
     const alreadyMember = project.members.some(
       member => member.toString() === userId
     )
@@ -336,14 +348,12 @@ router.post('/:projectId/join', async (req, res) => {
       })
     }
 
-    // Check existing request
-
-    const existingRequest =
-      project.joinRequests.find(
-        request =>
-          request.user.toString() === userId &&
-          request.status === 'pending'
-      )
+    // Check existing pending request
+    const existingRequest = project.joinRequests.find(
+      request =>
+        request.user.toString() === userId &&
+        request.status === 'pending'
+    )
 
     if (existingRequest) {
       return res.status(400).json({
@@ -351,43 +361,38 @@ router.post('/:projectId/join', async (req, res) => {
       })
     }
 
-    // Add request
-
+    // Save join request with message
     project.joinRequests.push({
       user: userId,
+      message: message.trim(),
       status: 'pending'
     })
 
     await project.save()
 
-    // CREATE ACTIVITY
-const joiningUser = await User.findById(userId)
+    // Create activity for project owner
+    const joiningUser = await User.findById(userId)
 
-await Activity.create({
-  user: project.owner,
-  type: 'JOIN_REQUEST',
-  message: `${joiningUser.name} sent a join request`,
-  project: project._id
-})
+    if (joiningUser) {
+      await Activity.create({
+        user: project.owner,
+        type: 'JOIN_REQUEST',
+        message: `${joiningUser.name} sent a join request`,
+        project: project._id
+      })
+    }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: 'Join request sent successfully',
       project
     })
-
   } catch (error) {
+    console.error('Join request error:', error)
 
-    console.error(
-      'Join request error:',
-      error
-    )
-
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Failed to send join request'
     })
-
   }
-
 })
 // GET JOIN REQUESTS FOR A PROJECT
 
@@ -614,6 +619,7 @@ router.get('/join-requests/:userId', async (req, res) => {
             projectId: project._id,
             projectTitle: project.title,
             user: request.user,
+             message: request.message || '',
             createdAt: request.createdAt
           })
 

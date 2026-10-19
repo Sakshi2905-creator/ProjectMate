@@ -94,7 +94,7 @@ const handleRequest = async (
         // Fetch projects owned by current user
 
         const projectResponse = await fetch(
-          `http://localhost:5000/api/projects/user/${user.id}`
+          `http://localhost:5000/api/projects/user/${userId}`
         )
 
         const projectData =
@@ -306,6 +306,19 @@ const handleRequest = async (
                   </strong>
 
                 </div>
+
+<div className="request-reason">
+
+  <span className="request-section-title">
+    WHY THEY WANT TO JOIN
+  </span>
+
+  <p>
+    {request.message?.trim()
+      || 'No message provided for this request.'}
+  </p>
+
+</div>
 
 
                 <div className="request-skills">
