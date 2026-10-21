@@ -361,30 +361,19 @@
 .discover-back {
   position: relative;
   z-index: 1;
-
   display: inline-flex;
   align-items: center;
-
   gap: 6px;
-
   border: none;
   outline: none;
-
   padding: 0;
-
   margin: 0 0 26px;
-
   background: transparent;
-
   color: #635bff;
-
   font-family: inherit;
-
   font-size: 12px;
   font-weight: 750;
-
   cursor: pointer;
-
   transition:
     color 0.2s ease,
     transform 0.2s ease;
@@ -446,17 +435,11 @@
 .discover-header p {
   position: relative;
   z-index: 1;
-
   max-width: 610px;
-
   margin: 11px 0 0;
-
   color: #475569;
-
   font-size: 14px;
-
   line-height: 1.7;
-
   text-align: left;
 }
 
@@ -468,12 +451,9 @@
 .discover-container {
   position: relative;
   z-index: 2;
-
   width: 100%;
   max-width: 1240px;
-
   margin: 0 auto;
-
   padding:
     0 32px
     75px;
@@ -487,27 +467,21 @@
 .discover-grid {
   display: grid;
 
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
-
   align-items: stretch;
 }
 
 
-/* =========================================================
+/* =======================================================
    PROJECT CARD
 ========================================================= */
 
 .discover-card {
   position: relative;
-
   min-width: 0;
-
   display: flex;
   flex-direction: column;
-
   padding: 22px;
 
   background:
@@ -518,7 +492,6 @@
     );
 
   border: 1px solid #e4e7ef;
-
   border-radius: 17px;
 
   box-shadow:
@@ -527,7 +500,6 @@
     0 20px 40px rgba(15, 23, 42, 0.015);
 
   overflow: hidden;
-
   transition:
     transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1),
     box-shadow 0.28s ease,
@@ -541,15 +513,11 @@
 
 .discover-card::before {
   content: '';
-
   position: absolute;
-
   top: 0;
   left: 22px;
   right: 22px;
-
   height: 2px;
-
   border-radius:
     0 0
     5px
@@ -581,7 +549,6 @@
 
 .discover-card:hover {
   transform: translateY(-6px);
-
   border-color: #d8d5ff;
 
   box-shadow:
@@ -591,7 +558,6 @@
 
 .discover-card:hover::before {
   opacity: 1;
-
   transform: scaleX(1);
 }
 
@@ -636,58 +602,40 @@
     );
 
   border: 1px solid #dfdcff;
-
   color: #5a52e5;
-
   font-size: 15px;
   font-weight: 850;
-
-  box-shadow:
-    0 4px 10px rgba(91, 82, 232, 0.08);
+  box-shadow: 0 4px 10px rgba(91, 82, 232, 0.08);
 }
 
 .discover-logo::after {
   content: '';
-
   position: absolute;
-
   width: 7px;
   height: 7px;
-
   top: 5px;
   right: 5px;
-
   border-radius: 50%;
-
   background: #ffffff;
-
   opacity: 0.8;
 }
 
 
 /* =========================================================
-   DIFFICULTY
+ DIFFICULTY
 ========================================================= */
 
 .difficulty {
   display: inline-flex;
   align-items: center;
-
   min-height: 27px;
-
   padding: 0 10px;
-
   border-radius: 20px;
-
   background: #f4f2ff;
-
   border: 1px solid #e8e5ff;
-
   color: #6158d4;
-
   font-size: 10px;
   font-weight: 750;
-
   white-space: nowrap;
 }
 
@@ -698,14 +646,10 @@
 
 .match-score {
   margin-left: auto;
-
   display: inline-flex;
   align-items: center;
-
   min-height: 27px;
-
   padding: 0 10px;
-
   border-radius: 20px;
 
   background:
@@ -729,7 +673,7 @@
 }
 
 
-/* =========================================================
+/*=========================================================
    CATEGORY
 ========================================================= */
 
@@ -749,22 +693,17 @@
 }
 
 
-/* =========================================================
+/*=========================================================
    TITLE
 ========================================================= */
 
 .discover-card h2 {
   margin: 7px 0 10px;
-
   color:#111827;
-
   font-size: 16px;
   font-weight: 700;
-
   letter-spacing: -0.3px;
-
   line-height: 1.35;
-
   text-align: left;
 }
 
@@ -815,15 +754,10 @@
 
 .discover-tags span {
   padding: 6px 9px;
-
   border-radius: 7px;
-
   background: #f6f7fa;
-
   border: 1px solid #eceef3;
-
   color: #475569;
-
   font-size: 10px;
   font-weight: 650;
 
@@ -842,8 +776,6 @@
 
   color: #5f58a8;
 }
-
-
 /* =========================================================
    FOOTER
 ========================================================= */
@@ -957,9 +889,7 @@
 
 .empty-discover h2 {
   margin: 0 0 9px;
-
   color: #172033;
-
   font-size: 22px;
   font-weight: 800;
 }
@@ -997,8 +927,7 @@
 
   cursor: pointer;
 
-  box-shadow:
-    0 7px 18px rgba(99, 91, 255, 0.2);
+  box-shadow: 0 7px 18px rgba(99, 91, 255, 0.2);
 
   transition:
     transform 0.2s ease,
@@ -1007,7 +936,6 @@
 
 .empty-discover button:hover {
   transform: translateY(-2px);
-
   box-shadow:
     0 11px 25px rgba(99, 91, 255, 0.25);
 }
@@ -1019,16 +947,12 @@
 
 .discover-loading {
   min-height: 320px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color:#475569;
-
   font-size: 13px;
 }
-
 
 /* =========================================================
    ERROR
@@ -1050,7 +974,6 @@
   font-size: 13px;
 }
 
-
 /* =========================================================
    CLICKABLE ACTIVITY
 ========================================================= */
@@ -1066,7 +989,6 @@
 .activity-item:hover {
   transform: translateX(4px);
 }
-
 
 /* =========================================================
    LARGE TABLET
@@ -1094,8 +1016,6 @@
   }
 
 }
-
-
 /* =========================================================
    TABLET
 ========================================================= */
@@ -1129,10 +1049,7 @@
       0 22px
       55px;
   }
-
 }
-
-
 /* =========================================================
    MOBILE
 ========================================================= */
@@ -1220,7 +1137,6 @@
 
   .discover-logout-btn {
     padding: 7px 10px;
-
     font-size: 11px;
   }
 
@@ -1244,4 +1160,161 @@
     gap: 10px;
   }
 
+}
+/* ================================
+   SEARCH AND FILTERS
+================================ */
+
+.discover-search-section {
+  max-width: 1220px;
+  margin: 8px auto 28px;
+  padding: 0 36px;
+}
+
+.discover-search-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 58px;
+  padding: 0 18px;
+  background: #ffffff;
+  border: 1px solid #e1e3f0;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(39, 35, 100, 0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.discover-search-box:focus-within {
+  border-color: #7161ff;
+  box-shadow: 0 0 0 4px rgba(113, 97, 255, 0.1);
+}
+
+.discover-search-icon {
+  font-size: 28px;
+  color: #6d5dfc;
+  line-height: 1;
+}
+
+.discover-search-input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #17172b;
+  font-size: 15px;
+}
+
+.discover-search-input::placeholder {
+  color: #9294a8;
+}
+
+.discover-search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.discover-clear-search {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: #f0eeff;
+  color: #6252ed;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.discover-filter-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.discover-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.discover-filter-group label {
+  color: #686982;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.discover-filter-group select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid #e1e3f0;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #25253a;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+
+.discover-filter-group select:focus {
+  border-color: #7161ff;
+}
+
+.discover-reset-filters {
+  min-height: 44px;
+  padding: 0 17px;
+  border: 1px solid #ddd8ff;
+  border-radius: 11px;
+  background: #f4f1ff;
+  color: #6252ed;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.discover-reset-filters:hover {
+  background: #eae5ff;
+  transform: translateY(-1px);
+}
+
+.discover-results-count {
+  margin: 16px 0 0;
+  color: #77788f;
+  font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+  .discover-search-section {
+    padding: 0 16px;
+    margin-top: 0;
+  }
+
+  .discover-search-box {
+    min-height: 52px;
+    padding: 0 13px;
+    gap: 10px;
+  }
+
+  .discover-search-input {
+    font-size: 13px;
+  }
+
+  .discover-filter-row {
+    gap: 12px;
+  }
+
+  .discover-filter-group {
+    min-width: 100%;
+  }
+
+  .discover-reset-filters {
+    width: 100%;
+  }
 }

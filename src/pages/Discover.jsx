@@ -22,6 +22,9 @@ function Discover() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [matches, setMatches] = useState({})
+  const [searchQuery, setSearchQuery] = useState('')
+const [selectedCategory, setSelectedCategory] = useState('All')
+const [sortBy, setSortBy] = useState('newest')
 
   // ================================
   // CHECK LOGIN + GET USER
@@ -113,6 +116,68 @@ function Discover() {
 
     navigate('/login')
   }
+
+  // ================================
+// SEARCH, FILTER AND SORT
+// ================================
+
+const categories = [
+  ...new Set(
+    projects
+      .map(project => project.category)
+      .filter(Boolean)
+  )
+].sort()
+
+const filteredProjects = projects
+  .filter(project => {
+    const query = searchQuery.trim().toLowerCase()
+
+    const searchableText = [
+      project.title,
+      project.description,
+      project.category,
+      project.difficulty,
+      ...(project.techStack || []),
+      ...(project.requiredSkills || [])
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase()
+
+    const matchesSearch = searchableText.includes(query)
+
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      project.category === selectedCategory
+
+    return matchesSearch && matchesCategory
+  })
+  .sort((a, b) => {
+    if (sortBy === 'newest') {
+      return new Date(b.createdAt || 0) -
+        new Date(a.createdAt || 0)
+    }
+
+    if (sortBy === 'oldest') {
+      return new Date(a.createdAt || 0) -
+        new Date(b.createdAt || 0)
+    }
+
+    if (sortBy === 'team-availability') {
+      const availableA =
+        Number(a.teamSize || 0) -
+        (a.members?.length || 0)
+
+      const availableB =
+        Number(b.teamSize || 0) -
+        (b.members?.length || 0)
+
+      return availableB - availableA
+    }
+
+    return 0
+  })
 
   // ================================
   // LOADING
@@ -289,7 +354,93 @@ function Discover() {
 
       </header>
 
+      {/* SEARCH AND FILTERS */}
 
+<section className="discover-search-section">
+
+  <div className="discover-search-box">
+    <span className="discover-search-icon">⌕</span>
+
+    <input
+      type="search"
+      className="discover-search-input"
+      placeholder="Search projects, technologies, or skills..."
+      value={searchQuery}
+      onChange={e => setSearchQuery(e.target.value)}
+      aria-label="Search projects"
+    />
+
+    {searchQuery && (
+      <button
+        type="button"
+        className="discover-clear-search"
+        onClick={() => setSearchQuery('')}
+        aria-label="Clear search"
+      >
+        ×
+      </button>
+    )}
+  </div>
+
+  <div className="discover-filter-row">
+
+    <div className="discover-filter-group">
+      <label htmlFor="project-category-filter">
+        Category
+      </label>
+
+      <select
+        id="project-category-filter"
+        value={selectedCategory}
+        onChange={e => setSelectedCategory(e.target.value)}
+      >
+        <option value="All">All Categories</option>
+
+        {categories.map(category => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div className="discover-filter-group">
+      <label htmlFor="project-sort">
+        Sort by
+      </label>
+
+      <select
+        id="project-sort"
+        value={sortBy}
+        onChange={e => setSortBy(e.target.value)}
+      >
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="team-availability">
+          Most Team Availability
+        </option>
+      </select>
+    </div>
+
+    <button
+      type="button"
+      className="discover-reset-filters"
+      onClick={() => {
+        setSearchQuery('')
+        setSelectedCategory('All')
+        setSortBy('newest')
+      }}
+    >
+      Reset Filters
+    </button>
+
+  </div>
+
+  <p className="discover-results-count" aria-live="polite">
+    Showing {filteredProjects.length} of {projects.length} projects
+  </p>
+
+</section>
       {/* =================================
           PROJECTS
       ================================= */}
@@ -302,25 +453,29 @@ function Discover() {
           </div>
         )}
 
-        {projects.length === 0 ? (
+        {filteredProjects.length === 0 ? (
 
           <div className="empty-discover">
 
-            <h2>
-              No projects found
-            </h2>
+           <h2>
+  {projects.length === 0
+    ? 'No projects found'
+    : 'No matching projects'}
+</h2>
 
-            <p>
-              Be the first to create a project.
-            </p>
+<p>
+  {projects.length === 0
+    ? 'Be the first to create a project.'
+    : 'Try a different keyword or reset your filters.'}
+</p>
 
-            <button
-              onClick={() =>
-                navigate('/create-project')
-              }
-            >
-              + Create Project
-            </button>
+{projects.length === 0 && (
+  <button
+    onClick={() => navigate('/create-project')}
+  >
+    + Create Project
+  </button>
+)}
 
           </div>
 
@@ -328,7 +483,7 @@ function Discover() {
 
           <div className="discover-grid">
 
-            {projects.map(project => (
+            {filteredProjects.map(project => (
 
               <article
                 className="discover-card"
