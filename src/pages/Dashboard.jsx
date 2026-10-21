@@ -1047,7 +1047,7 @@ const handleActivityClick = (activity) => {
               </div>
 
               <p>
-                Add 2 more skills to improve
+                Add more skills to improve
                 your teammate matches.
               </p>
 

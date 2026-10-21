@@ -29,6 +29,7 @@ const storedUser = (() => {
     return null
   }
 })()
+const storedUserId = storedUser?.id || storedUser?._id
 
   useEffect(() => {
   const fetchProfile = async () => {
@@ -65,11 +66,48 @@ const storedUser = (() => {
   storedUser?.interest || 'both'
 )
 
+// Load saved skills and preference from the database
+useEffect(() => {
+  const fetchSavedSkills = async () => {
+    // Only fetch for the logged-in user's own profile
+    if (id) return
+
+    if (!storedUserId) return
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/users/${storedUserId}`
+      )
+
+      const data = await response.json()
+
+      if (!response.ok || !data.user) {
+        console.error(
+          data.message || 'Failed to load saved skills'
+        )
+        return
+      }
+
+      // Restore saved skills from the database
+      setSelectedSkills(
+        Array.isArray(data.user.skills)
+          ? data.user.skills
+          : []
+      )
+
+      setInterest(data.user.interest || 'both')
+
+    } catch (error) {
+      console.error('Error loading saved skills:', error)
+    }
+  }
+
+  fetchSavedSkills()
+}, [id, storedUserId])
+
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
-  
-
-
+ 
   const skills = [
     'C++',
     'Java',
@@ -91,7 +129,6 @@ const storedUser = (() => {
     'GitHub'
   ]
 
-
   const toggleSkill = (skill) => {
 
     setSelectedSkills(prev => {
@@ -110,100 +147,6 @@ const storedUser = (() => {
 
   }
 
-
-//   const saveSkills = async () => {
-
-//     if (!storedUser?.id) {
-//       return
-//     }
-
-//     try {
-
-//       setSaving(true)
-//       setMessage('')
-
-//       const response = await fetch(
-//         `http://localhost:5000/api/users/${storedUser.id}/skills`,
-//         {
-//           method: 'PUT',
-//           headers: {
-//             'Content-Type': 'application/json'
-//           },
-//           body: JSON.stringify({
-//             skills: selectedSkills
-//           })
-//         }
-//       )
-
-//       const data = await response.json()
-
-// const interestResponse = await fetch(
-//   `http://localhost:5000/api/users/${storedUser.id}/interest`,
-//   {
-//     method: 'PUT',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({
-//       interest
-//     })
-//   }
-// )
-
-// const interestData = await interestResponse.json()
-
-// if (!interestResponse.ok) {
-
-//   setMessage(
-//     interestData.message ||
-//     'Failed to save interest'
-//   )
-
-//   return
-// }
-
-//       if (!response.ok) {
-
-//         setMessage(
-//           data.message || 'Something went wrong'
-//         )
-
-//         return
-//       }
-
-
-//       // Update localStorage
-
-//       const updatedUser = {
-//   ...storedUser,
-//   skills: data.user.skills,
-//   interest: interestData.user.interest
-// }
-
-//       localStorage.setItem(
-//         'user',
-//         JSON.stringify(updatedUser)
-//       )
-
-//       setMessage(
-//         'Skills saved successfully ✓'
-//       )
-
-//     } catch (error) {
-
-//       console.error(error)
-
-//       setMessage(
-//         'Unable to save skills'
-//       )
-
-//     } finally {
-
-//       setSaving(false)
-
-//     }
-
-//   }
 
 const saveSkills = async () => {
   const userId = storedUser?.id || storedUser?._id
