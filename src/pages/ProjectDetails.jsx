@@ -146,17 +146,20 @@ useEffect(() => {
 
     try {
 
-      const user = JSON.parse(
-        localStorage.getItem('user')
-      )
+      const storedUser =
+  localStorage.getItem('user') ||
+  sessionStorage.getItem('user')
 
-      if (!user?.id) {
-        setMatchLoading(false)
-        return
-      }
+const user = storedUser ? JSON.parse(storedUser) : null
+const userId = user?.id || user?._id
+
+if (!userId) {
+  setMatchLoading(false)
+  return
+}
 
       const response = await fetch(
-        `http://localhost:5000/api/projects/${id}/match/${user.id}`
+        `http://localhost:5000/api/projects/${id}/match/${userId}`
       )
 
       const data = await response.json()

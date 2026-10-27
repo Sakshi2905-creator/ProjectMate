@@ -234,14 +234,21 @@ router.get('/:projectId/match/:userId', async (req, res) => {
       })
 
     }
+   const requiredSkills = Array.isArray(project.requiredSkills)
+  ? project.requiredSkills.filter(
+      skill => typeof skill === 'string' && skill.trim()
+    )
+  : []
+
+const userSkills = Array.isArray(user.skills)
+  ? user.skills.filter(
+      skill => typeof skill === 'string' && skill.trim()
+    )
+  : []
 
 
-    const requiredSkills =
-      project.requiredSkills || []
-
-    const userSkills =
-      user.skills || []
-
+console.log('Project Required Skills:', requiredSkills)
+console.log('User Saved Skills:', userSkills)
 
     const normalizedUserSkills =
       userSkills.map(skill =>
