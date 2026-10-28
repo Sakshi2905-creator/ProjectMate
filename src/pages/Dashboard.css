@@ -577,8 +577,9 @@
 .profile-strength {
   margin-top: 18px;
   padding: 18px;
+  border: 1px solid #dddced;
   border-radius: 11px;
-  background: #f1f0ff;
+  background: #f5f5fc;
 }
 
 .profile-strength > div:first-child {

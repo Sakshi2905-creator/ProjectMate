@@ -19,10 +19,10 @@ console.log('USER DATA:', user)
     title: '',
     description: '',
     category: '',
-    difficulty: 'Intermediate',
+    difficulty: '',
     techStack: '',
     requiredSkills: '',
-    teamSize: 2,
+    teamSize: '',
     deadline: ''
 
   })
@@ -291,7 +291,11 @@ console.log('USER DATA:', user)
                   name="difficulty"
                   value={formData.difficulty}
                   onChange={handleChange}
+                  required
                 >
+                  <option value="">
+                    Select Difficulty Level
+                  </option>
 
                   <option value="Beginner">
                     Beginner
@@ -419,7 +423,12 @@ console.log('USER DATA:', user)
                   name="teamSize"
                   value={formData.teamSize}
                   onChange={handleChange}
+                  required
                 >
+
+                 <option value="">
+                   Select Team Size
+                  </option>
 
                   <option value="1">
                     1 member
@@ -461,6 +470,8 @@ console.log('USER DATA:', user)
                   name="deadline"
                   value={formData.deadline}
                   onChange={handleChange}
+                  min={new Date().toLocaleDateString('en-CA')}
+                  required
                 />
 
               </div>
