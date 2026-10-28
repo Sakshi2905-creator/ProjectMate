@@ -344,6 +344,17 @@ router.post('/:projectId/join', async (req, res) => {
       })
     }
 
+// Check whether the team is full
+const currentMembers = project.members.length
+const maxTeamSize = Number(project.teamSize)
+
+if (currentMembers >= maxTeamSize) {
+  return res.status(400).json({
+    message: 'Team is full. No more join requests are allowed.',
+    teamFull: true
+  })
+}
+
     // Check if user is already a member
     const alreadyMember = project.members.some(
       member => member.toString() === userId
@@ -479,11 +490,25 @@ router.post('/:projectId/join/:requestId/accept', async (req, res) => {
       })
     }
 
+// Check capacity before accepting the request
+const currentMembers = project.members.length
+const maxTeamSize = Number(project.teamSize)
+
+const isAlreadyMember = project.members.some(
+  member => member.toString() === request.user.toString()
+)
+
+if (!isAlreadyMember && currentMembers >= maxTeamSize) {
+  return res.status(400).json({
+    message: 'Team is full. You cannot accept more members.',
+    teamFull: true
+  })
+}
+
     // Add user to members
 
     const alreadyMember = project.members.some(
-      member =>
-        member.toString() === request.user.toString()
+      member => member.toString() === request.user.toString()
     )
 
     if (!alreadyMember) {
@@ -1042,6 +1067,17 @@ router.post('/:projectId/invite', async (req, res) => {
       })
     }
 
+  // Do not invite users if the team is full
+const currentMembers = project.members.length
+const maxTeamSize = Number(project.teamSize)
+
+if (currentMembers >= maxTeamSize) {
+  return res.status(400).json({
+    message: 'Team is full. No more invitations can be sent.',
+    teamFull: true
+  })
+}
+
     const user = await User.findById(userId)
 
     if (!user) {
@@ -1250,6 +1286,20 @@ router.post(
 
       }
 
+      // Check team capacity before accepting an invitation
+const currentMembers = project.members.length
+const maxTeamSize = Number(project.teamSize)
+
+const isAlreadyMember = project.members.some(
+  member => member.toString() === invitation.user.toString()
+)
+
+if (!isAlreadyMember && currentMembers >= maxTeamSize) {
+  return res.status(400).json({
+    message: 'Team is full. This invitation cannot be accepted.',
+    teamFull: true
+  })
+}
       // Check whether user is already a member
       const alreadyMember =
         project.members.some(

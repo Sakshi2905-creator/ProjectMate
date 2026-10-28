@@ -6,10 +6,14 @@ function CreateProject() {
 
   const navigate = useNavigate()
 
-  const user = JSON.parse(
-    localStorage.getItem('user')
-  )
- console.log("USER DATA:", user)
+ const storedUser =
+  localStorage.getItem('user') ||
+  sessionStorage.getItem('user')
+
+const user = storedUser ? JSON.parse(storedUser) : null
+
+console.log('USER DATA:', user)
+
   const [formData, setFormData] = useState({
 
     title: '',
@@ -44,10 +48,18 @@ function CreateProject() {
 
   const handleSubmit = async (e) => {
 
-    e.preventDefault()
+  e.preventDefault()
 
-    setError('')
-    setLoading(true)
+  setError('')
+
+  const userId = user?._id || user?.id
+
+  if (!userId) {
+    setError('Your login session was not found. Please log in again.')
+    return
+  }
+
+  setLoading(true)
 
 
     try {
@@ -78,7 +90,7 @@ function CreateProject() {
 
             teamSize: Number(formData.teamSize),
 
-            owner: user.id
+            owner: userId
 
           })
 
