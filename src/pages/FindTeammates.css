@@ -17,7 +17,7 @@
 .find-teammates-header {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 34px 24px 32px;
+  padding: 55px 30px 35px;
   text-align: center;
 }
 
@@ -25,25 +25,27 @@
 /* BACK BUTTON */
 
 .find-back-btn {
-  display: block;
-
-  margin: 0 auto 34px;
-
-  border: none;
-  background: transparent;
-
-  color: #111827;
-
-  font-size: 14px;
-  font-weight: 500;
-
+   align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 42px;
+  padding: 10px 16px;
+  border: 1px solid #d8d9dc;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #5b50f5;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-
-  transition: color 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease,
+  transform 0.2s ease;
 }
 
 .find-back-btn:hover {
-  color: #635bff;
+  background: #f0efff;
+  border-color: #c9c4ff;
+  transform: translateX(-2px);
 }
 
 
@@ -51,14 +53,10 @@
 
 .find-label {
   display: block;
-
   margin-bottom: 8px;
-
   color: #635bff;
-
   font-size: 11px;
   font-weight: 800;
-
   letter-spacing: 1.8px;
 }
 
@@ -66,25 +64,22 @@
 /* TITLE */
 
 .find-teammates-header h1 {
-  margin: 0;
-
-  color: #111827;
-
-  font-size: 42px;
-  font-weight: 750;
-
+   margin:0px;
+  font-size: 46px;
+  font-weight:750;
+  /* line-height: 1.1; */
   letter-spacing: -1.5px;
+  color: #0b0b12;
 }
 
 
 /* SUBTITLE */
 
 .find-teammates-header p {
-  margin: 10px 0 0;
-
+  margin: 5px 0 0;
   color: #64748b;
-
-  font-size: 15px;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 

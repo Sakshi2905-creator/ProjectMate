@@ -4,7 +4,7 @@ import './Teams.css'
 
 function Teams() {
   const navigate = useNavigate()
-
+const [menuOpen, setMenuOpen] = useState(false)
   const [user] = useState(() => {
     const token =
       localStorage.getItem('token') ||
@@ -76,57 +76,85 @@ function Teams() {
 
       {/* ================= NAVBAR ================= */}
 
-      <nav className="teams-navbar">
+<nav className="teams-navbar">
 
-        <div
-          className="teams-brand"
-          onClick={() => navigate('/dashboard')}
-        >
-          Project<span>Mate</span>
-        </div>
+  {/* HAMBURGER MENU */}
 
-        <div className="teams-nav-links">
+  <button
+    className="teams-menu-toggle"
+    onClick={() => setMenuOpen(!menuOpen)}
+    aria-label="Toggle navigation menu"
+    aria-expanded={menuOpen}
+  >
+    {menuOpen ? '✕' : '☰'}
+  </button>
 
-          <button onClick={() => navigate('/dashboard')}>
-            Dashboard
-          </button>
+  {/* BRAND */}
 
-          <button onClick={() => navigate('/discover')}>
-            Discover
-          </button>
+  <div
+    className="teams-brand"
+    onClick={() => navigate('/dashboard')}
+  >
+    Project<span>Mate</span>
+  </div>
 
-          <button onClick={() => navigate('/projects')}>
-            My Projects
-          </button>
+  {/* NAVIGATION LINKS */}
 
-          <button className="active">
-            Teams
-          </button>
+  <div className={`teams-nav-links ${menuOpen ? 'show-menu' : ''}`}>
 
-        </div>
+    <button onClick={() => {
+      navigate('/dashboard')
+      setMenuOpen(false)
+    }}>
+      Dashboard
+    </button>
 
-        <div className="teams-profile">
+    <button onClick={() => {
+      navigate('/discover')
+      setMenuOpen(false)
+    }}>
+      Discover
+    </button>
 
-          <div className="teams-user-avatar">
-            {user.name?.charAt(0).toUpperCase()}
-          </div>
+    <button onClick={() => {
+      navigate('/projects')
+      setMenuOpen(false)
+    }}>
+      My Projects
+    </button>
 
-          <div className="teams-user-info">
-            <strong>{user.name}</strong>
-            <small>Builder</small>
-          </div>
+    <button
+      className="active"
+      onClick={() => setMenuOpen(false)}
+    >
+      Teams
+    </button>
 
-          <button
-            className="teams-logout-btn"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
+  </div>
 
-        </div>
+  {/* PROFILE */}
 
-      </nav>
+  <div className="teams-profile">
 
+    <div className="teams-user-avatar">
+      {user.name?.charAt(0).toUpperCase()}
+    </div>
+
+    <div className="teams-user-info">
+      <strong>{user.name}</strong>
+      <small>Builder</small>
+    </div>
+
+    <button
+      className="teams-logout-btn"
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
+
+  </div>
+
+</nav>
 
       {/* ================= MAIN ================= */}
 

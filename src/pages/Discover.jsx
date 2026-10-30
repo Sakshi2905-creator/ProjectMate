@@ -6,6 +6,7 @@ function Discover() {
   const navigate = useNavigate()
 
   const [user] = useState(() => {
+  
     const storedUser =
       localStorage.getItem('user') ||
       sessionStorage.getItem('user')
@@ -18,6 +19,7 @@ function Discover() {
       return null
     }
   })
+   const [menuOpen, setMenuOpen] = useState(false)
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -192,37 +194,51 @@ const filteredProjects = projects
 
         {/* NAVBAR */}
         <nav className="discover-navbar">
+  <button
+    className="discover-menu-toggle"
+    onClick={() => setMenuOpen(!menuOpen)}
+    aria-label="Toggle navigation menu"
+    aria-expanded={menuOpen}
+  >
+    {menuOpen ? '✕' : '☰'}
+  </button>
 
-          <div
-            className="discover-brand"
-            onClick={() => navigate('/dashboard')}
-          >
-            Project<span>Mate</span>
-          </div>
+  <div
+    className="discover-brand"
+    onClick={() => navigate('/dashboard')}
+  >
+    Project<span>Mate</span>
+  </div>
 
-          <div className="discover-nav-links">
+         <div className={`discover-nav-links ${menuOpen ? 'show-menu' : ''}`}>
 
-            <button
-              onClick={() => navigate('/dashboard')}
-            >
-              Dashboard
-            </button>
+           <button onClick={() => {
+  setMenuOpen(false)
+  navigate('/dashboard')
+}}>
+  Dashboard
+</button>
 
-            <button className="active">
-              Discover
-            </button>
+<button
+  className="active"
+  onClick={() => setMenuOpen(false)}
+>
+  Discover
+</button>
 
-            <button
-              onClick={() => navigate('/my-projects')}
-            >
-              My Projects
-            </button>
+<button onClick={() => {
+  setMenuOpen(false)
+  navigate('/projects')
+}}>
+  My Projects
+</button>
 
-            <button
-              onClick={() => navigate('/teams')}
-            >
-              Teams
-            </button>
+<button onClick={() => {
+  setMenuOpen(false)
+  navigate('/teams')
+}}>
+  Teams
+</button>
 
           </div>
 
@@ -266,40 +282,54 @@ const filteredProjects = projects
       <nav className="discover-navbar">
 
         {/* LOGO */}
+  <button
+    className="discover-menu-toggle"
+    onClick={() => setMenuOpen(!menuOpen)}
+    aria-label="Toggle navigation menu"
+    aria-expanded={menuOpen}
+  >
+    {menuOpen ? '✕' : '☰'}
+  </button>
 
-        <div
-          className="discover-brand"
-          onClick={() => navigate('/dashboard')}
-        >
-          Project<span>Mate</span>
-        </div>
+  <div
+    className="discover-brand"
+    onClick={() => navigate('/dashboard')}
+  >
+    Project<span>Mate</span>
+  </div>
 
 
         {/* NAVIGATION LINKS */}
 
-        <div className="discover-nav-links">
+       <div className={`discover-nav-links ${menuOpen ? 'show-menu' : ''}`}>
 
-          <button
-            onClick={() => navigate('/dashboard')}
-          >
-            Dashboard
-          </button>
+          <button onClick={() => {
+  setMenuOpen(false)
+  navigate('/dashboard')
+}}>
+  Dashboard
+</button>
 
-          <button className="active">
-            Discover
-          </button>
+<button
+  className="active"
+  onClick={() => setMenuOpen(false)}
+>
+  Discover
+</button>
 
-          <button
-            onClick={() => navigate('/projects')}
-            >
-            My Projects
-          </button>
+<button onClick={() => {
+  setMenuOpen(false)
+  navigate('/projects')
+}}>
+  My Projects
+</button>
 
-          <button
-            onClick={() => navigate('/teams')}
-          >
-            Teams
-          </button>
+<button onClick={() => {
+  setMenuOpen(false)
+  navigate('/teams')
+}}>
+  Teams
+</button>
 
         </div>
 

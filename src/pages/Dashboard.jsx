@@ -4,6 +4,7 @@ import './Dashboard.css'
 
 function Dashboard() {
 
+  const [menuOpen, setMenuOpen] = useState(false)
   const navigate = useNavigate()
   const getTimeBasedGreeting = () => {
 
@@ -423,29 +424,47 @@ const handleActivityClick = (activity) => {
       {/* ================= NAVBAR ================= */}
 
       <nav className="dashboard-navbar">
+               <button
+  className="menu-toggle"
+  onClick={() => setMenuOpen(!menuOpen)}
+  aria-label="Toggle navigation menu"
+  aria-expanded={menuOpen}
+>
+  {menuOpen ? '✕' : '☰'}
+</button>
 
         <div className="dashboard-brand">
           Project<span>Mate</span>
         </div>
+ 
+  <div className={`dashboard-nav-links ${menuOpen ? 'show-menu' : ''}`}>
+          <button
+  className="active"
+  onClick={() => setMenuOpen(false)}
+>
+  Dashboard
+</button>
 
+<button onClick={() => {
+  setMenuOpen(false)
+  navigate('/discover')
+}}>
+  Discover
+</button>
 
-        <div className="dashboard-nav-links">
+<button onClick={() => {
+  setMenuOpen(false)
+  navigate('/projects')
+}}>
+  My Projects
+</button>
 
-          <button className="active">
-            Dashboard
-          </button>
-
-          <button onClick={() => navigate('/discover')}>
-            Discover
-          </button>
-
-          <button onClick={() => navigate('/projects')}>
-            My Projects
-          </button>
-
-          <button onClick={() => navigate('/teams')}>
-            Teams
-          </button>
+<button onClick={() => {
+  setMenuOpen(false)
+  navigate('/teams')
+}}>
+  Teams
+</button>
       
 
         </div>

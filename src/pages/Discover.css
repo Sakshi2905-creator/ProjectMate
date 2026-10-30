@@ -1425,3 +1425,72 @@
     line-height: 1.7;
   }
 }
+
+/* ===============================
+   RESPONSIVE HAMBURGER MENU
+================================ */
+
+.discover-menu-toggle {
+  display: none;
+  flex-shrink: 0;
+  border: none;
+  background: #f1f0ff;
+  color: #635bff;
+  font-size: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 7px 12px;
+  border-radius: 9px;
+}
+
+@media (max-width: 1050px) {
+
+  .discover-navbar {
+    position: relative;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+  }
+
+  .discover-menu-toggle {
+    display: block;
+    order: 0;
+    margin-right: 15px;
+  }
+
+  .discover-brand {
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  .discover-profile {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .discover-nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    flex-direction: column;
+    gap: 5px;
+
+    padding: 15px 5%;
+    background: white;
+    border-bottom: 1px solid #e8eaf0;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  .discover-nav-links.show-menu {
+    display: flex;
+  }
+
+  .discover-nav-links button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+  }
+}

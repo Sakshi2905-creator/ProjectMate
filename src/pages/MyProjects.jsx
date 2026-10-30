@@ -4,6 +4,7 @@ import './MyProjects.css'
 
 function MyProjects() {
   const navigate = useNavigate()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const [user] = useState(() => {
     const storedUser =
@@ -141,56 +142,76 @@ function MyProjects() {
 
       {/* ================= NAVBAR ================= */}
 
-      <nav className="projects-navbar">
+<nav className="projects-navbar">
+  {/* Hamburger Menu */}
+  <button
+    className="projects-menu-toggle"
+    onClick={() => setMenuOpen(!menuOpen)}
+    aria-label="Toggle navigation menu"
+  >
+    {menuOpen ? '✕' : '☰'}
+  </button>
 
-        <div
-          className="projects-brand"
-          onClick={() => navigate('/dashboard')}
-        >
-          Project<span>Mate</span>
-        </div>
+  {/* Brand */}
+  <div
+    className="projects-brand"
+    onClick={() => navigate('/dashboard')}
+  >
+    Project<span>Mate</span>
+  </div>
 
-        <div className="projects-nav-links">
+  {/* Navigation Links */}
+  <div className={`projects-nav-links ${menuOpen ? 'show-menu' : ''}`}>
 
-          <button onClick={() => navigate('/dashboard')}>
-            Dashboard
-          </button>
+    <button onClick={() => {
+      navigate('/dashboard')
+      setMenuOpen(false)
+    }}>
+      Dashboard
+    </button>
 
-          <button onClick={() => navigate('/discover')}>
-            Discover
-          </button>
+    <button onClick={() => {
+      navigate('/discover')
+      setMenuOpen(false)
+    }}>
+      Discover
+    </button>
 
-          <button className="active">
-            My Projects
-          </button>
+    <button className="active" onClick={() => setMenuOpen(false)}>
+      My Projects
+    </button>
 
-          <button onClick={() => navigate('/teams')}>
-           Teams
-          </button>
+    <button onClick={() => {
+      navigate('/teams')
+      setMenuOpen(false)
+    }}>
+      Teams
+    </button>
 
-        </div>
+  </div>
 
-        <div className="projects-profile">
+  {/* Profile */}
+  <div className="projects-profile">
 
-          <div className="user-avatar">
-            {user.name.charAt(0).toUpperCase()}
-          </div>
+    <div className="user-avatar">
+      {user.name.charAt(0).toUpperCase()}
+    </div>
 
-          <div className="user-info">
-            <strong>{user.name}</strong>
-            <small>Builder</small>
-          </div>
+    <div className="user-info">
+      <strong>{user.name}</strong>
+      <small>Builder</small>
+    </div>
 
-          <button
-            className="logout-btn"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
+    <button
+      className="logout-btn"
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
 
-        </div>
+  </div>
 
-      </nav>
+</nav>
 
 
       {/* ================= MAIN ================= */}

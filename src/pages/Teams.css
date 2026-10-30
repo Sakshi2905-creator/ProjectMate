@@ -920,3 +920,119 @@
   }
 
 }
+/* =================================
+   RESPONSIVE HAMBURGER MENU
+================================= */
+
+.teams-menu-toggle {
+  display: none;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #f1f0ff;
+  color: #635bff;
+
+  font-size: 25px;
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+/* TABLET AND MOBILE */
+
+@media (max-width: 1050px) {
+
+  .teams-navbar {
+    position: relative;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Hamburger */
+
+  .teams-menu-toggle {
+    display: flex;
+    order: 0;
+    margin-right: 15px;
+  }
+
+  /* Brand */
+
+  .teams-brand {
+    order: 1;
+    margin-right: auto;
+    flex-shrink: 0;
+  }
+
+  /* Profile */
+
+  .teams-profile {
+    order: 2;
+    margin-left: auto;
+  }
+
+  /* Dropdown */
+
+  .teams-nav-links {
+    display: none;
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    z-index: 100;
+
+    flex-direction: column;
+    gap: 7px;
+
+    padding: 15px 5%;
+
+    background: #ffffff;
+    border: 1px solid #e8eaf0;
+    border-radius: 0 0 12px 12px;
+
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.07);
+  }
+
+  .teams-nav-links.show-menu {
+    display: flex;
+  }
+
+  .teams-nav-links button {
+    width: 100%;
+    padding: 12px 14px;
+    text-align: left;
+  }
+
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 550px) {
+
+  .teams-navbar {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .teams-brand {
+    font-size: 1.2rem;
+  }
+
+  .teams-user-info,
+  .teams-logout-btn {
+    display: none;
+  }
+
+}
