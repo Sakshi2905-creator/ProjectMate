@@ -2,10 +2,16 @@ const express = require('express')
 const Project = require('../models/Project')
 const User = require('../models/User')
 const Activity = require('../models/Activity')
+const {
+  sendInvitationEmail,
+  sendInvitationAcceptedEmail,
+  sendInvitationRejectedEmail,
+  sendJoinRequestEmail,
+  sendJoinRequestAcceptedEmail,
+  sendJoinRequestRejectedEmail
+} = require('../utils/emailService')
 
 const router = express.Router()
-
-
 // CREATE PROJECT
 
 router.post('/', async (req, res) => {
@@ -389,16 +395,33 @@ if (currentMembers >= maxTeamSize) {
     await project.save()
 
     // Create activity for project owner
-    const joiningUser = await User.findById(userId)
+    // Find joining user and project owner
+const joiningUser = await User.findById(userId)
+const projectOwner = await User.findById(project.owner)
 
-    if (joiningUser) {
-      await Activity.create({
-        user: project.owner,
-        type: 'JOIN_REQUEST',
-        message: `${joiningUser.name} sent a join request`,
-        project: project._id
-      })
-    }
+// Create activity for project owner
+if (joiningUser) {
+  await Activity.create({
+    user: project.owner,
+    type: 'JOIN_REQUEST',
+    message: `${joiningUser.name} sent a join request`,
+    project: project._id
+  })
+}
+
+// Send email notification to project owner
+if (joiningUser && projectOwner) {
+  try {
+    await sendJoinRequestEmail(
+      projectOwner,
+      joiningUser,
+      project,
+      message.trim()
+    )
+  } catch (emailError) {
+    console.error('Join request email error:', emailError.message)
+  }
+}
 
     return res.status(200).json({
       message: 'Join request sent successfully',
@@ -530,6 +553,23 @@ await Activity.create({
   message: `${joiningUser.name} joined your project`,
   project: project._id
 })
+// Send acceptance email to the user who requested to join
+const projectOwner = await User.findById(project.owner)
+
+if (joiningUser && projectOwner) {
+  try {
+    await sendJoinRequestAcceptedEmail(
+      joiningUser,
+      projectOwner,
+      project
+    )
+  } catch (emailError) {
+    console.error(
+      'Join request acceptance email error:',
+      emailError.message
+    )
+  }
+}
 
     res.status(200).json({
       message: 'Join request accepted successfully',
@@ -600,6 +640,24 @@ await Activity.create({
   message: `${rejectedUser.name}'s join request was rejected`,
   project: project._id
 })
+
+// Send rejection email to the user who requested to join
+const projectOwner = await User.findById(project.owner)
+
+if (rejectedUser && projectOwner) {
+  try {
+    await sendJoinRequestRejectedEmail(
+      rejectedUser,
+      projectOwner,
+      project
+    )
+  } catch (emailError) {
+    console.error(
+      'Join request rejection email error:',
+      emailError.message
+    )
+  }
+}
 
 res.status(200).json({
   message: 'Join request rejected',
@@ -1115,19 +1173,36 @@ if (currentMembers >= maxTeamSize) {
     }
 
     // Create invitation
+project.invitations.push({
+  user: userId,
+  status: 'pending'
+})
 
-    project.invitations.push({
-      user: userId,
-      status: 'pending'
-    })
+await project.save()
 
-    await project.save()
+// Find project owner
+const projectOwner = await User.findById(project.owner)
 
-    res.status(200).json({
-      message: `Invitation sent to ${user.name}`,
-      project
-    })
+// Send invitation email to invited member
+if (projectOwner && user) {
+  try {
+    await sendInvitationEmail(
+      user,
+      project,
+      projectOwner
+    )
+  } catch (emailError) {
+    console.error(
+      'Invitation email error:',
+      emailError.message
+    )
+  }
+}
 
+res.status(200).json({
+  message: `Invitation sent to ${user.name}`,
+  project
+})
   } catch (error) {
 
     console.error(
@@ -1317,18 +1392,33 @@ if (!isAlreadyMember && currentMembers >= maxTeamSize) {
       }
 
       // Mark invitation as accepted
-      invitation.status = 'accepted'
+invitation.status = 'accepted'
+await project.save()
+// Find the invited member and project owner
+const invitedUser = await User.findById(invitation.user)
+const projectOwner = await User.findById(project.owner)
 
-      await project.save()
+// Send acceptance email to project owner
+if (invitedUser && projectOwner) {
+  try {
+    await sendInvitationAcceptedEmail(
+      projectOwner,
+      invitedUser,
+      project
+    )
+  } catch (emailError) {
+    console.error(
+      'Invitation acceptance email error:',
+      emailError.message
+    )
+  }
+}
 
-      res.status(200).json({
-
-        message:
-          'Invitation accepted successfully! 🎉',
-
-        project
-
-      })
+res.status(200).json({
+  message:
+    'Invitation accepted successfully! 🎉',
+  project
+})
 
     } catch (error) {
 
@@ -1389,18 +1479,35 @@ router.post(
       }
 
       // Mark invitation as rejected
-      invitation.status = 'rejected'
+invitation.status = 'rejected'
 
-      await project.save()
+await project.save()
 
-      res.status(200).json({
+// Find the invited member and project owner
+const invitedUser = await User.findById(invitation.user)
+const projectOwner = await User.findById(project.owner)
 
-        message:
-          'Invitation rejected successfully',
+// Send rejection email to project owner
+if (invitedUser && projectOwner) {
+  try {
+    await sendInvitationRejectedEmail(
+      projectOwner,
+      invitedUser,
+      project
+    )
+  } catch (emailError) {
+    console.error(
+      'Invitation rejection email error:',
+      emailError.message
+    )
+  }
+}
 
-        project
-
-      })
+res.status(200).json({
+  message:
+    'Invitation rejected successfully',
+  project
+})
 
     } catch (error) {
 
