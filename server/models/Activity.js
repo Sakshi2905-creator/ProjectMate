@@ -22,7 +22,12 @@ const activitySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Project',
       default: null
-    }
+    },
+    task: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Task',
+  default: null
+}
   },
   {
     timestamps: true

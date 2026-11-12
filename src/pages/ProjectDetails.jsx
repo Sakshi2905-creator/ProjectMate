@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import TaskBoard from '../components/tasks/TaskBoard'
+import TeamWorkload from '../components/tasks/TeamWorkload'
+import ActivityFeed from '../components/tasks/ActivityFeed'
+
 import './ProjectDetails.css'
 
 function ProjectDetails() {
@@ -10,6 +14,8 @@ function ProjectDetails() {
   const [project, setProject] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isOwner, setIsOwner] = useState(false)
+  const [isProjectMember, setIsProjectMember] = useState(false)
+const [activeTab, setActiveTab] = useState('Overview')
   const [error, setError] = useState('')
   const [joinStatus, setJoinStatus] = useState('')
   const [joining, setJoining] = useState(false)
@@ -19,6 +25,25 @@ const [matchPercentage, setMatchPercentage] = useState(0)
 const [matchedSkills, setMatchedSkills] = useState([])
 const [missingSkills, setMissingSkills] = useState([])
 const [matchLoading, setMatchLoading] = useState(true)
+// Refresh project details after task changes
+const refreshProject = async () => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/projects/${id}`
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Unable to refresh project')
+    }
+
+    setProject(data.project)
+  } catch (error) {
+    console.error('Project refresh error:', error)
+  }
+}
+
 
   useEffect(() => {
 
@@ -55,13 +80,18 @@ const loggedInUserId =
 const projectOwnerId =
   fetchedProject.owner?._id || fetchedProject.owner
 
-setIsOwner(
-  Boolean(
-    loggedInUserId &&
-    projectOwnerId &&
-    String(loggedInUserId) === String(projectOwnerId)
-  )
+const ownerMatch =
+  loggedInUserId &&
+  projectOwnerId &&
+  String(loggedInUserId) === String(projectOwnerId)
+
+const memberMatch = fetchedProject.members?.some(
+  (member) =>
+    String(member._id || member) === String(loggedInUserId)
 )
+
+setIsOwner(Boolean(ownerMatch))
+setIsProjectMember(Boolean(ownerMatch || memberMatch))
 
 
       } catch (error) {
@@ -272,6 +302,45 @@ if (!userId) {
 
       <main className="project-details-container">
 
+{/* PROJECT NAVIGATION TABS */}
+
+<div className="project-tabs">
+
+  <button
+    className={activeTab === 'Overview' ? 'active' : ''}
+    onClick={() => setActiveTab('Overview')}
+  >
+    Overview
+  </button>
+
+  {isProjectMember && (
+    <>
+      <button
+        className={activeTab === 'Tasks' ? 'active' : ''}
+        onClick={() => setActiveTab('Tasks')}
+      >
+        Tasks
+      </button>
+
+      <button
+        className={activeTab === 'Team' ? 'active' : ''}
+        onClick={() => setActiveTab('Team')}
+      >
+        Team
+      </button>
+
+      <button
+        className={activeTab === 'Activity' ? 'active' : ''}
+        onClick={() => setActiveTab('Activity')}
+      >
+        Activity
+      </button>
+    </>
+  )}
+
+</div>
+{activeTab === 'Overview' && (
+  <>
 
         {/* PROJECT HERO */}
 
@@ -744,6 +813,27 @@ if (!userId) {
 
 
         </div>
+        </>
+  )}
+  {activeTab === 'Tasks' && (
+  <TaskBoard
+    projectId={id}
+    members={project?.members || []}
+    projectOwnerId={project?.owner?._id || project?.owner}
+    onTasksChanged={refreshProject}
+  />
+)}
+
+{activeTab === 'Team' && (
+  <TeamWorkload
+    projectId={id}
+    members={project?.members || []}
+    projectOwner={project?.owner}
+  />
+)}
+{activeTab === 'Activity' && (
+  <ActivityFeed projectId={id} />
+)}
 
       </main>
 

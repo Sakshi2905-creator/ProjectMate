@@ -8,8 +8,8 @@ const projectRoutes = require('./routes/projectRoutes')
 const userRoutes = require('./routes/userRoutes')
 const notificationRoutes = require('./routes/notificationRoutes')
 const matchRoutes = require('./routes/matchRoutes')
-const activityRoutes =
-  require('./routes/activityRoutes')
+const activityRoutes = require('./routes/activityRoutes')
+const taskRoutes = require('./routes/taskRoutes')
 
 const app = express()
 
@@ -26,11 +26,8 @@ app.use('/api/projects', projectRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/notifications',notificationRoutes)
 app.use('/api/matches', matchRoutes)
-app.use(
-  '/api/activities',
-  activityRoutes
-)
-
+app.use( '/api/activities',  activityRoutes)
+app.use('/api/tasks', taskRoutes)
 
 // Test route
 app.get('/', (req, res) => {

@@ -73,22 +73,18 @@
 }
 
 .project-details-logo {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   flex-shrink: 0;
-
   border-radius: 22px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: linear-gradient(
     135deg,
     #6366f1,
     #8b5cf6
   );
-
   color: white;
   font-size: 28px;
   font-weight: 800;
@@ -104,7 +100,7 @@
 
 .project-details-title h1 {
   margin: 7px 0 10px;
-  font-size: 38px;
+  font-size: 35px;
   line-height: 1.1;
   color: #111827;
 }
@@ -359,6 +355,9 @@
   .project-details-header {
     padding: 0 20px;
   }
+  .project-details-title h1{
+    font-size: 28px;
+  }
 
   .project-details-container {
     width: 92%;
@@ -369,16 +368,6 @@
     padding: 25px;
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .project-details-logo {
-    width: 70px;
-    height: 70px;
-    font-size: 22px;
-  }
-
-  .project-details-title h1 {
-    font-size: 28px;
   }
 
   .project-info-grid {
@@ -594,4 +583,74 @@
 .send-join-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* ================= PROJECT NAVIGATION TABS ================= */
+
+.project-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 30px 0;
+  padding: 8px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.project-tabs button {
+  border: none;
+  background: transparent;
+  color: #64748b;
+  padding: 11px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.project-tabs button:hover {
+  background: #f3f4ff;
+  color: #635bff;
+}
+
+.project-tabs button.active {
+  background: #635bff;
+  color: #ffffff;
+}
+/* Prevent long project titles from overflowing */
+.project-details-page,
+.project-details-container,
+.project-details-hero {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Project title section */
+.project-details-title {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Project title */
+.project-details-title h1 {
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-height: 1.4;
+}
+
+/* Project description */
+.project-details-title p {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
 }

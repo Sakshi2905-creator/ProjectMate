@@ -1,0 +1,187 @@
+.team-workload {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.team-workload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 24px;
+}
+
+.team-workload-header h2 {
+  margin: 0 0 10px;
+    color: #1e293b;
+    font-size: 33px;
+    font-weight: 650;
+}
+
+.team-workload-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.team-member-count {
+  padding: 8px 14px;
+  background: #f1f0ff;
+  color: #635bff;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.team-workload-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.team-workload-card {
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+.team-member-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.team-avatar {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #eeedff;
+  color: #635bff;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.team-member-info h3 {
+  margin: 0 0 4px;
+  color: #1e293b;
+  font-size: 16px;
+}
+
+.team-member-info p {
+  margin: 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.team-total-tasks {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  margin-bottom: 16px;
+  background: #f8fafc;
+  border-radius: 9px;
+}
+
+.team-total-tasks span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.team-total-tasks strong {
+  color: #1e293b;
+  font-size: 22px;
+}
+
+.team-task-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.team-task-stats div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 5px;
+  background: #f8fafc;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.team-task-stats strong {
+  color: #334155;
+  font-size: 19px;
+}
+
+.team-task-stats span {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.team-progress-heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 9px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.team-progress-heading strong {
+  color: #635bff;
+}
+
+.team-progress-track {
+  height: 8px;
+  overflow: hidden;
+  background: #e9eaf2;
+  border-radius: 10px;
+}
+
+.team-progress-fill {
+  height: 100%;
+  background: #635bff;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.team-empty {
+  padding: 40px 20px;
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.team-empty h3 {
+  color: #334155;
+}
+
+.team-empty p,
+.team-loading {
+  color: #64748b;
+}
+
+@media (max-width: 700px) {
+  .team-workload-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-workload-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .team-workload-header h2{
+    font-size: 28px;
+  }
+}

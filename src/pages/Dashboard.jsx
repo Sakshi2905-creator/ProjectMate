@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getMyTasks } from '../services/taskService'
 import './Dashboard.css'
 
 function Dashboard() {
@@ -63,6 +64,9 @@ function Dashboard() {
   })
   const [projects, setProjects] = useState([])
   const [loadingProjects, setLoadingProjects] = useState(true)
+  const [myTasks, setMyTasks] = useState([])
+const [loadingMyTasks, setLoadingMyTasks] = useState(true)
+const [myTasksError, setMyTasksError] = useState('')
   const [invitationCount, setInvitationCount] = useState(0)
   const [smartMatches, setSmartMatches] = useState([])
 const [loadingMatches, setLoadingMatches] = useState(true)
@@ -251,6 +255,7 @@ const fetchProfile = async () => {
   }
 
 }
+//FETCH ACTIVITIES
 
   const fetchActivities = async () => {
 
@@ -279,12 +284,31 @@ const fetchProfile = async () => {
 
   }
 }
+// =========================
+// FETCH MY ASSIGNED TASKS
+// =========================
 
+const fetchMyTasks = async () => {
+  try {
+    setLoadingMyTasks(true)
+    setMyTasksError('')
+
+    const data = await getMyTasks()
+
+    setMyTasks(data.tasks || [])
+  } catch (error) {
+    console.error('Error fetching my tasks:', error)
+    setMyTasksError(error.message || 'Unable to load your tasks.')
+  } finally {
+    setLoadingMyTasks(false)
+  }
+}
   // =========================
   // CALL ALL FUNCTIONS
   // =========================
 
   fetchProjects()
+  fetchMyTasks()
   fetchInvitationCount()
   fetchSmartMatches()
   fetchActivities()
@@ -341,6 +365,45 @@ const upcomingProjects = projects
       new Date(a.deadline) - new Date(b.deadline)
   )
   .slice(0, 3)
+
+  // =========================
+// TASK HELPERS
+// =========================
+
+const getTaskDueStatus = (task) => {
+  if (!task.dueDate || task.status === 'Completed') {
+    return ''
+  }
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const dueDate = new Date(task.dueDate)
+  dueDate.setHours(0, 0, 0, 0)
+
+  return dueDate < today ? 'Overdue' : ''
+}
+
+const formatTaskDate = (date) => {
+  if (!date) return 'No due date'
+
+  return new Date(date).toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  })
+}
+
+const handleTaskClick = (task) => {
+  const projectId =
+    typeof task.project === 'object'
+      ? task.project?._id
+      : task.project
+
+  if (projectId) {
+    navigate(`/project/${projectId}`)
+  }
+}
 
 const getActivityIcon = (type) => {
   switch (type) {
@@ -644,6 +707,136 @@ const handleActivityClick = (activity) => {
 
         </section>
 
+{/* ================= MY TASKS ================= */}
+
+<section className="my-tasks-section">
+
+  <div className="section-header">
+
+    <div>
+      <span className="section-label">
+        YOUR WORK
+      </span>
+
+      <h2>My Tasks</h2>
+
+      <p>
+        Tasks assigned to you across all your projects.
+      </p>
+    </div>
+
+    <span className="my-tasks-count">
+      {loadingMyTasks ? '...' : `${myTasks.length} Assigned`}
+    </span>
+
+  </div>
+
+  {loadingMyTasks ? (
+
+    <div className="my-tasks-message">
+      Loading your tasks...
+    </div>
+
+  ) : myTasksError ? (
+
+    <div className="my-tasks-error">
+      {myTasksError}
+    </div>
+
+  ) : myTasks.length === 0 ? (
+
+    <div className="my-tasks-empty">
+      <div className="my-tasks-empty-icon">✓</div>
+
+      <h3>No tasks assigned yet</h3>
+
+      <p>
+        Tasks assigned to you across your projects
+        will appear here.
+      </p>
+    </div>
+
+  ) : (
+
+    <div className="my-tasks-list">
+
+      {myTasks.slice(0, 5).map((task) => {
+
+        const overdueStatus = getTaskDueStatus(task)
+
+        return (
+          <div
+            className="my-task-card"
+            key={task._id}
+            onClick={() => handleTaskClick(task)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleTaskClick(task)
+              }
+            }}
+          >
+
+            <div className="my-task-main">
+
+              <div className="my-task-title-row">
+                <h3>{task.title}</h3>
+
+                <span
+                  className={`task-priority priority-${(
+                    task.priority || 'Medium'
+                  ).toLowerCase()}`}
+                >
+                  {task.priority || 'Medium'}
+                </span>
+              </div>
+
+              <p className="my-task-project">
+                {task.project?.title || 'Project'}
+              </p>
+
+              <div className="my-task-meta">
+
+                <span
+                  className={`task-status status-${(
+                    task.status || 'To Do'
+                  ).toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {task.status}
+                </span>
+
+                <span className="my-task-date">
+                  Due: {formatTaskDate(task.dueDate)}
+                </span>
+
+                {overdueStatus && (
+                  <span className="task-overdue">
+                    {overdueStatus}
+                  </span>
+                )}
+
+              </div>
+
+            </div>
+
+            <span className="my-task-arrow">→</span>
+
+          </div>
+        )
+      })}
+
+    </div>
+
+  )}
+
+  {myTasks.length > 5 && (
+    <p className="my-tasks-footer">
+      Showing 5 of {myTasks.length} assigned tasks
+    </p>
+  )}
+
+</section>
 
         {/* ================= CONTENT GRID ================= */}
 
