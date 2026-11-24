@@ -2,6 +2,8 @@ const express = require('express')
 const Project = require('../models/Project')
 const User = require('../models/User')
 const Activity = require('../models/Activity')
+const CompletedProject = require('../models/CompletedProject')
+const saveCompletedProjectHistory = require('../utils/saveCompletedProjectHistory')
 const {
   sendInvitationEmail,
   sendInvitationAcceptedEmail,
@@ -104,9 +106,12 @@ router.get('/user/:userId', async (req, res) => {
   try {
 
     const projects = await Project.find({
-      owner: req.params.userId
-    }).sort({
-      createdAt: -1
+     $or: [
+    { owner: req.params.userId },
+    { members: req.params.userId }
+  ]
+}).sort({
+  createdAt: -1
     })
 
     res.status(200).json({
@@ -151,6 +156,31 @@ router.get('/teams/:userId', async (req, res) => {
     })
   }
 })
+
+// GET COMPLETED PROJECT HISTORY FOR A USER
+router.get('/completed-history/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params
+
+    const completedProjects = await CompletedProject.find({
+      user: userId
+    }).sort({
+      completedAt: -1
+    })
+
+    return res.status(200).json({
+      count: completedProjects.length,
+      completedProjects
+    })
+  } catch (error) {
+    console.error('Completed history error:', error)
+
+    return res.status(500).json({
+      message: 'Failed to fetch completed project history'
+    })
+  }
+})
+
 // GET SINGLE PROJECT
 
 router.get('/:id', async (req, res) => {
@@ -794,6 +824,10 @@ router.put('/:id', async (req, res) => {
 
     await project.save()
 
+    if (project.status === 'Completed') {
+  await saveCompletedProjectHistory(project)
+}
+
     return res.status(200).json({
       message: 'Project updated successfully',
       project
@@ -858,9 +892,9 @@ router.delete('/:id', async (req, res) => {
         message:
           'Only completed projects can be deleted'
       })
-
     }
-
+// Ensure history exists before deleting the original project
+await saveCompletedProjectHistory(project)
 
     // Delete activities related to this project
     await Activity.deleteMany({

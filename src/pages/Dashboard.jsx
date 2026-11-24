@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getMyTasks } from '../services/taskService'
+
 import './Dashboard.css'
 
 function Dashboard() {
@@ -64,6 +65,8 @@ function Dashboard() {
   })
   const [projects, setProjects] = useState([])
   const [loadingProjects, setLoadingProjects] = useState(true)
+  const [completedProjects, setCompletedProjects] = useState([])
+const [loadingCompletedProjects, setLoadingCompletedProjects] = useState(true)
   const [myTasks, setMyTasks] = useState([])
 const [loadingMyTasks, setLoadingMyTasks] = useState(true)
 const [myTasksError, setMyTasksError] = useState('')
@@ -74,6 +77,7 @@ const [activities, setActivities] = useState([])
 const [loadingActivities, setLoadingActivities] = useState(true)
 const [profileData, setProfileData] = useState(null)
 const [loadingProfile, setLoadingProfile] = useState(true)
+
 
 useEffect(() => {
 
@@ -132,6 +136,28 @@ useEffect(() => {
 
   }
 
+  // FETCH COMPLETED PROJECT HISTORY
+const fetchCompletedHistory = async () => {
+  try {
+    const userId = loggedInUser.id || loggedInUser._id
+
+    const response = await fetch(
+      `http://localhost:5000/api/projects/completed-history/${userId}`
+    )
+
+    const data = await response.json()
+
+    if (response.ok) {
+      setCompletedProjects(data.completedProjects || [])
+    } else {
+      console.error(data.message)
+    }
+  } catch (error) {
+    console.error('Completed history error:', error)
+  } finally {
+    setLoadingCompletedProjects(false)
+  }
+}
 
   // =========================
   // FETCH INVITATION COUNT
@@ -313,6 +339,7 @@ const fetchMyTasks = async () => {
   fetchSmartMatches()
   fetchActivities()
   fetchProfile()
+  fetchCompletedHistory()
 
 }, [navigate])
 
@@ -328,7 +355,12 @@ const fetchMyTasks = async () => {
   navigate('/login')
 }
 
-  const totalProjects = projects.length
+const activeProjects = projects.filter(
+  project => project.status !== 'Completed'
+)
+
+const totalProjects = projects.length
+
   const bestMatch =
   smartMatches.length > 0
     ? Math.max(
@@ -629,24 +661,40 @@ const handleActivityClick = (activity) => {
         <section className="stats-grid">
 
 
-          <div className="stat-card">
+          <div className="stat-card completed-stat-card">
+  <div className="stat-icon purple">
+    🚀
+  </div>
 
-            <div className="stat-icon purple">
-              🚀
-            </div>
- <div>
+  <div className="completed-stat-content">
     <span>My Projects</span>
 
     <strong>
-      {totalProjects}
+      {loadingProjects ? '—' : totalProjects}
     </strong>
 
-    <small>
-      Your projects
-    </small>
-  </div>
+    <div className="project-stat-breakdown">
+      <span>
+        Active: {loadingProjects ? '—' : activeProjects.length}
+      </span>
 
-          </div>
+      <span>
+        Completed: {
+          loadingCompletedProjects
+            ? '—'
+            : completedProjects.length
+        }
+      </span>
+    </div>
+
+    <button
+      className="completed-history-link"
+      onClick={() => navigate('/completed-projects')}
+    >
+   Completed Projects
+    </button>
+  </div>
+</div>
 
 
           <div className="stat-card">
@@ -719,10 +767,10 @@ const handleActivityClick = (activity) => {
       </span>
 
       <h2>My Tasks</h2>
-
+{/* 
       <p>
         Tasks assigned to you across all your projects.
-      </p>
+      </p> */}
     </div>
 
     <span className="my-tasks-count">
@@ -876,7 +924,7 @@ const handleActivityClick = (activity) => {
     Loading your projects...
   </div>
 
-) : projects.length === 0 ? (
+) : activeProjects.length === 0 ? (
 
   <div className="project-empty">
 
@@ -904,7 +952,8 @@ const handleActivityClick = (activity) => {
 
 ) : (
 
-  projects.slice(0, 8).map((project) => (
+  // projects.slice(0, 8).map((project) => (
+    activeProjects.slice(0, 8).map((project) => (
 
     <div
   className="project-card"

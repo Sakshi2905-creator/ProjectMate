@@ -1400,3 +1400,41 @@
     flex-direction: column;
   }
 }
+
+/* COMPLETED PROJECT HISTORY STAT */
+
+.completed-stat-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.project-stat-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.project-stat-breakdown span {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.completed-history-link {
+  margin-top: 7px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #635bff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.completed-history-link:hover {
+  text-decoration: underline;
+}
+
+.completed-stat-card {
+  min-width: 0;
+}

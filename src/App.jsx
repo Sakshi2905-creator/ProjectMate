@@ -17,6 +17,7 @@ import MyInvitations from './pages/MyInvitations'
 import Calendar from './pages/Calendar'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
+import CompletedProjects from './pages/CompletedProjects'
 import './App.css'
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/calendar" element={<Calendar />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
         <Route path="/reset-password/:token" element={<ResetPassword />}/>
+        <Route path="/completed-projects" element={<CompletedProjects />}/>
         
       </Routes>
 
