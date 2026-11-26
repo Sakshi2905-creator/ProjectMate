@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import './TaskBoard.css'
 import TaskModal from './TaskModal'
 
@@ -94,7 +94,7 @@ function TaskBoard({ projectId, members = [], projectOwnerId, onTasksChanged }) 
     assignedTo: ''
   })
 
-  const loadTasks = async () => {
+  const loadTasks = useCallback(async () => {
     try {
       setLoading(true)
       setError('')
@@ -106,16 +106,32 @@ function TaskBoard({ projectId, members = [], projectOwnerId, onTasksChanged }) 
     } finally {
       setLoading(false)
     }
-  }
+  }, [projectId])
 
   useEffect(() => {
     if (projectId) {
-      loadTasks()
+      const timeoutId = setTimeout(() => {
+        loadTasks()
+      }, 0)
+
+      return () => clearTimeout(timeoutId)
     }
-  }, [projectId])
+  }, [loadTasks, projectId])
 
   const handleCreateTask = async (e) => {
     e.preventDefault()
+
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    if (formData.dueDate) {
+      const selectedDate = new Date(`${formData.dueDate}T00:00:00`)
+
+      if (selectedDate < today) {
+        setError('Due date cannot be in the past')
+        return
+      }
+    }
 
     try {
       setError('')
@@ -398,6 +414,7 @@ function TaskBoard({ projectId, members = [], projectOwnerId, onTasksChanged }) 
 
           <select
             value={formData.priority}
+
             onChange={(e) =>
               setFormData({ ...formData, priority: e.target.value })
             }
@@ -425,6 +442,7 @@ function TaskBoard({ projectId, members = [], projectOwnerId, onTasksChanged }) 
           <input
             type="date"
             value={formData.dueDate}
+             min={new Date().toLocaleDateString('en-CA')}
             onChange={(e) =>
               setFormData({ ...formData, dueDate: e.target.value })
             }
