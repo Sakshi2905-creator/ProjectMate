@@ -4,6 +4,7 @@ const User = require('../models/User')
 const Activity = require('../models/Activity')
 const CompletedProject = require('../models/CompletedProject')
 const saveCompletedProjectHistory = require('../utils/saveCompletedProjectHistory')
+const authMiddleware = require('../middleware/authMiddleware')
 const {
   sendInvitationEmail,
   sendInvitationAcceptedEmail,
@@ -16,7 +17,7 @@ const {
 const router = express.Router()
 // CREATE PROJECT
 
-router.post('/', async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
 
   try {
 
@@ -28,9 +29,10 @@ router.post('/', async (req, res) => {
       techStack,
       requiredSkills,
       teamSize,
-      deadline,
-      owner
+      deadline
     } = req.body
+
+    const owner = req.user.userId
 
 
     // Basic validation
@@ -41,8 +43,7 @@ router.post('/', async (req, res) => {
       !category ||
       !techStack ||
       !requiredSkills ||
-      !teamSize ||
-      !owner
+      !teamSize
     ) {
 
       return res.status(400).json({
@@ -101,9 +102,15 @@ await Activity.create({
 
 // GET USER'S PROJECTS
 
-router.get('/user/:userId', async (req, res) => {
+router.get('/user/:userId', authMiddleware, async (req, res) => {
 
   try {
+
+    if (req.params.userId !== req.user.userId.toString()) {
+      return res.status(403).json({
+        message: 'You can only access your own projects.'
+      })
+    }
 
     const projects = await Project.find({
      $or: [
@@ -131,9 +138,14 @@ router.get('/user/:userId', async (req, res) => {
 })
 
 // GET USER'S TEAMS
-router.get('/teams/:userId', async (req, res) => {
+router.get('/teams/:userId',authMiddleware, async (req, res) => {
   try {
     const { userId } = req.params
+    if (userId !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'You can only access your own teams.'
+  })
+}
 
     const projects = await Project.find({
       $or: [
@@ -158,10 +170,14 @@ router.get('/teams/:userId', async (req, res) => {
 })
 
 // GET COMPLETED PROJECT HISTORY FOR A USER
-router.get('/completed-history/:userId', async (req, res) => {
+router.get('/completed-history/:userId',authMiddleware, async (req, res) => {
   try {
     const { userId } = req.params
-
+       if (userId !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'You can only access your own completed history.'
+  })
+}
     const completedProjects = await CompletedProject.find({
       user: userId
     }).sort({
@@ -243,12 +259,16 @@ router.get('/', async (req, res) => {
 
 // SMART MATCHING
 
-router.get('/:projectId/match/:userId', async (req, res) => {
+router.get('/:projectId/match/:userId',authMiddleware, async (req, res) => {
 
   try {
 
     const { projectId, userId } = req.params
-
+      if (userId !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'You can only check your own skill match.'
+  })
+}
     const project = await Project.findById(projectId)
 
     const user = await User.findById(userId)
@@ -345,11 +365,11 @@ console.log('User Saved Skills:', userSkills)
 })
 
 // REQUEST TO JOIN PROJECT
-
-router.post('/:projectId/join', async (req, res) => {
+router.post('/:projectId/join', authMiddleware, async (req, res) => {
   try {
     const { projectId } = req.params
-    const { userId, message } = req.body
+    const userId = req.user.userId
+   const { message } = req.body
 
     // Validate user ID
     if (!userId) {
@@ -467,7 +487,7 @@ if (joiningUser && projectOwner) {
 })
 // GET JOIN REQUESTS FOR A PROJECT
 
-router.get('/:projectId/join-requests', async (req, res) => {
+router.get('/:projectId/join-requests', authMiddleware,async (req, res) => {
 
   try {
 
@@ -485,6 +505,12 @@ router.get('/:projectId/join-requests', async (req, res) => {
       })
 
     }
+
+    if (project.owner.toString() !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'Only the project owner can view join requests.'
+  })
+}
 
     const requests = project.joinRequests.filter(
       request => request.status === 'pending'
@@ -511,7 +537,7 @@ router.get('/:projectId/join-requests', async (req, res) => {
 
 // ACCEPT JOIN REQUEST
 
-router.post('/:projectId/join/:requestId/accept', async (req, res) => {
+router.post('/:projectId/join/:requestId/accept',authMiddleware, async (req, res) => {
 
   try {
 
@@ -524,7 +550,11 @@ router.post('/:projectId/join/:requestId/accept', async (req, res) => {
         message: 'Project not found'
       })
     }
-
+        if (project.owner.toString() !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'Only the project owner can accept join requests.'
+  })
+}
     // Find the request
 
     const request = project.joinRequests.id(requestId)
@@ -623,7 +653,7 @@ if (joiningUser && projectOwner) {
 
 // REJECT JOIN REQUEST
 
-router.post('/:projectId/join/:requestId/reject', async (req, res) => {
+router.post('/:projectId/join/:requestId/reject',authMiddleware, async (req, res) => {
 
   try {
 
@@ -636,7 +666,11 @@ router.post('/:projectId/join/:requestId/reject', async (req, res) => {
         message: 'Project not found'
       })
     }
-
+    if (project.owner.toString() !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'Only the project owner can reject join requests.'
+  })
+}
     // Find the request
 
     const request = project.joinRequests.id(requestId)
@@ -711,9 +745,15 @@ res.status(200).json({
 
 // GET ALL PENDING JOIN REQUESTS FOR PROJECT OWNER
 
-router.get('/join-requests/:userId', async (req, res) => {
+router.get('/join-requests/:userId', authMiddleware,async (req, res) => {
 
   try {
+
+    if (req.params.userId !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'You can only view your own join requests.'
+  })
+}
 
     const projects = await Project.find({
       owner: req.params.userId
@@ -770,16 +810,17 @@ router.get('/join-requests/:userId', async (req, res) => {
 
 // UPDATE PROJECT — OWNER ONLY
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authMiddleware, async (req, res) => {
   try {
-    const { userId } = req.body
+    // const { userId } = req.body
 
-    // Check whether user ID was provided
-    if (!userId) {
-      return res.status(401).json({
-        message: 'Please log in to update this project'
-      })
-    }
+    // // Check whether user ID was provided
+    // if (!userId) {
+    //   return res.status(401).json({
+    //     message: 'Please log in to update this project'
+    //   })
+    // }
+    const userId = req.user.userId
 
     // Find the project
     const project = await Project.findById(req.params.id)
@@ -845,21 +886,12 @@ router.put('/:id', async (req, res) => {
 // DELETE COMPLETED PROJECT
 // ==========================================
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authMiddleware,async (req, res) => {
 
   try {
 
-    const { id } = req.params
-    const { userId } = req.body
-
-    // Check user ID
-    if (!userId) {
-
-      return res.status(400).json({
-        message: 'User ID is required'
-      })
-
-    }
+  const { id } = req.params
+const userId = req.user.userId
 
 
     // Find project
@@ -944,8 +976,7 @@ await saveCompletedProjectHistory(project)
 
 // FIND BEST TEAMMATES
 
-router.get('/:projectId/find-teammates', async (req, res) => {
-
+router.get('/:projectId/find-teammates', authMiddleware, async (req, res) => {
   try {
 
     const { projectId } = req.params
@@ -959,10 +990,22 @@ router.get('/:projectId/find-teammates', async (req, res) => {
       })
     }
 
+const loggedInUserId = req.user.userId.toString()
 
+const isOwner = project.owner.toString() === loggedInUserId
+
+const isMember = project.members.some(
+  member => member.toString() === loggedInUserId
+)
+
+if (!isOwner && !isMember) {
+  return res.status(403).json({
+    message: 'Only project members can find teammates.'
+  })
+}
     // Get all users
     const users = await User.find()
-      .select('name email skills interest')
+     .select('name skills interest')
 
 
     const requiredSkills =
@@ -1073,8 +1116,6 @@ router.get('/:projectId/find-teammates', async (req, res) => {
 
           name: user.name,
 
-          email: user.email,
-
           skills: user.skills,
 
           interest: user.interest,
@@ -1138,7 +1179,7 @@ router.get('/:projectId/find-teammates', async (req, res) => {
 
 // INVITE USER TO PROJECT
 
-router.post('/:projectId/invite', async (req, res) => {
+router.post('/:projectId/invite', authMiddleware, async (req, res) => {
 
   try {
 
@@ -1158,7 +1199,11 @@ router.post('/:projectId/invite', async (req, res) => {
         message: 'Project not found'
       })
     }
-
+       if (project.owner.toString() !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'Only the project owner can invite users.'
+  })
+}
   // Do not invite users if the team is full
 const currentMembers = project.members.length
 const maxTeamSize = Number(project.teamSize)
@@ -1256,9 +1301,14 @@ res.status(200).json({
 // GET USER'S PENDING INVITATIONS
 // ==========================================
 
-router.get('/invitations/:userId', async (req, res) => {
+router.get('/invitations/:userId', authMiddleware,async (req, res) => {
 
   try {
+    if (req.params.userId !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'You can only view your own invitations.'
+  })
+}
 
     const { userId } = req.params
 
@@ -1357,8 +1407,7 @@ router.get('/invitations/:userId', async (req, res) => {
 // ==========================================
 
 router.post(
-  '/:projectId/invitations/:invitationId/accept',
-  async (req, res) => {
+  '/:projectId/invitations/:invitationId/accept',authMiddleware, async (req, res) => {
 
     try {
 
@@ -1384,8 +1433,13 @@ router.post(
         return res.status(404).json({
           message: 'Invitation not found'
         })
-
       }
+
+      if (invitation.user.toString() !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'This invitation does not belong to you.'
+  })
+}
 
       if (invitation.status !== 'pending') {
 
@@ -1474,8 +1528,7 @@ res.status(200).json({
 // ==========================================
 
 router.post(
-  '/:projectId/invitations/:invitationId/reject',
-  async (req, res) => {
+  '/:projectId/invitations/:invitationId/reject',  authMiddleware, async (req, res) => {
 
     try {
 
@@ -1503,6 +1556,12 @@ router.post(
         })
 
       }
+
+      if (invitation.user.toString() !== req.user.userId.toString()) {
+  return res.status(403).json({
+    message: 'This invitation does not belong to you.'
+  })
+}
 
       if (invitation.status !== 'pending') {
 

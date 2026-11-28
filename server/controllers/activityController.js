@@ -1,11 +1,11 @@
+
 const Activity = require('../models/Activity')
 const Project = require('../models/Project')
 
+// GET RECENT ACTIVITIES OF LOGGED-IN USER
 const getRecentActivities = async (req, res) => {
-
   try {
-
-    const userId = req.params.userId
+    const userId = req.user.userId
 
     const activities = await Activity.find({
       user: userId
@@ -17,13 +17,8 @@ const getRecentActivities = async (req, res) => {
     res.status(200).json({
       activities
     })
-
   } catch (error) {
-
-    console.error(
-      'Activity error:',
-      error
-    )
+    console.error('Activity error:', error)
 
     res.status(500).json({
       message: 'Server error'
@@ -31,6 +26,7 @@ const getRecentActivities = async (req, res) => {
   }
 }
 
+// GET PROJECT ACTIVITIES
 const getProjectActivities = async (req, res) => {
   try {
     const { projectId } = req.params
@@ -68,7 +64,6 @@ const getProjectActivities = async (req, res) => {
     res.status(200).json({
       activities
     })
-
   } catch (error) {
     console.error('Project activity error:', error)
 
@@ -80,5 +75,5 @@ const getProjectActivities = async (req, res) => {
 
 module.exports = {
   getRecentActivities,
-   getProjectActivities
+  getProjectActivities
 }

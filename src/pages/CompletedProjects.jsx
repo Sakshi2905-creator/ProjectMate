@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './CompletedProjects.css'
 
 function CompletedProjects() {
@@ -30,7 +31,12 @@ function CompletedProjects() {
         }
 
         const response = await fetch(
-          `http://localhost:5000/api/projects/completed-history/${userId}`
+          `${API}/projects/completed-history/${userId}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
         )
 
         const data = await response.json()

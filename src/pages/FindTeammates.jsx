@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './FindTeammates.css'
 
 function FindTeammates() {
@@ -82,11 +83,12 @@ const handleInvite = async (recipientId) => {
 
     // Send invitation
     const response = await fetch(
-      `http://localhost:5000/api/projects/${id}/invite`,
+      `${API}/projects/${id}/invite`,
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+  ...getAuthHeaders()
         },
         body: JSON.stringify({
           userId: recipientId
@@ -126,7 +128,12 @@ const handleInvite = async (recipientId) => {
       try {
 
         const response = await fetch(
-          `http://localhost:5000/api/projects/${id}/find-teammates`
+            `${API}/projects/${id}/find-teammates`,
+              {
+                headers: {
+                  ...getAuthHeaders()
+                }
+              }
         )
 
         const data = await response.json()
@@ -317,7 +324,7 @@ const handleInvite = async (recipientId) => {
                   </h2>
 
                   <p>
-                    {teammate.email}
+                    View teammate's skills and compatibility
                   </p>
 
                 </div>

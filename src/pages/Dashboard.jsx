@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import { getMyTasks } from '../services/taskService'
 
 import './Dashboard.css'
@@ -106,7 +107,12 @@ useEffect(() => {
     try {
 
       const response = await fetch(
-        `http://localhost:5000/api/projects/user/${loggedInUser.id}`
+      `${API}/projects/user/${loggedInUser.id}`,
+      {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
       )
 
       const data = await response.json()
@@ -142,7 +148,12 @@ const fetchCompletedHistory = async () => {
     const userId = loggedInUser.id || loggedInUser._id
 
     const response = await fetch(
-      `http://localhost:5000/api/projects/completed-history/${userId}`
+     `${API}/projects/completed-history/${userId}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
     )
 
     const data = await response.json()
@@ -168,7 +179,12 @@ const fetchCompletedHistory = async () => {
     try {
 
       const response = await fetch(
-        `http://localhost:5000/api/projects/invitations/${loggedInUser.id}`
+      `${API}/projects/invitations/${loggedInUser.id}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
       )
 
       const data = await response.json()
@@ -204,10 +220,11 @@ const fetchCompletedHistory = async () => {
   const fetchSmartMatches = async () => {
 
     try {
-
-      const response = await fetch(
-        `http://localhost:5000/api/matches/${loggedInUser.id}`
-      )
+const response = await fetch(`${API}/matches/me`, {
+  headers: {
+    ...getAuthHeaders()
+  }
+})
 
       const data = await response.json()
 
@@ -249,7 +266,12 @@ const fetchProfile = async () => {
   try {
 
     const response = await fetch(
-      `http://localhost:5000/api/users/${loggedInUser.id}`
+     `${API}/users/${loggedInUser.id}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
     )
 
     const data = await response.json()
@@ -287,10 +309,11 @@ const fetchProfile = async () => {
 
   try {
 
-    const response = await fetch(
-      `http://localhost:5000/api/activities/${loggedInUser.id}`
-    )
-
+    const response = await fetch(`${API}/activities/me`, {
+  headers: {
+    ...getAuthHeaders()
+  }
+})
     const data = await response.json()
 
     if (response.ok) {

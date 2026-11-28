@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './CreateProject.css'
 
 function CreateProject() {
@@ -11,8 +12,6 @@ function CreateProject() {
   sessionStorage.getItem('user')
 
 const user = storedUser ? JSON.parse(storedUser) : null
-
-console.log('USER DATA:', user)
 
   const [formData, setFormData] = useState({
 
@@ -64,14 +63,14 @@ console.log('USER DATA:', user)
 
     try {
 
-      const response = await fetch(
-        'http://localhost:5000/api/projects',
-        {
+      const response = await fetch(`${API}/projects`, {
 
           method: 'POST',
 
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+              ...getAuthHeaders()
+
           },
 
           body: JSON.stringify({
@@ -88,9 +87,7 @@ console.log('USER DATA:', user)
               .map(skill => skill.trim())
               .filter(Boolean),
 
-            teamSize: Number(formData.teamSize),
-
-            owner: userId
+            teamSize: Number(formData.teamSize)
 
           })
 

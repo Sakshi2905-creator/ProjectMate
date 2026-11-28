@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './Calendar.css'
 
 function Calendar() {
@@ -36,7 +37,12 @@ function Calendar() {
       try {
 
         const response = await fetch(
-          `http://localhost:5000/api/projects/user/${loggedInUser.id}`
+          `${API}/projects/user/${loggedInUser.id}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
         )
 
         const data = await response.json()

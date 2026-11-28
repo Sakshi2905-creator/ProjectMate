@@ -54,12 +54,6 @@ const signup = async (req, res) => {
   }
 }
 
-// module.exports = {
-//   signup
-// }
-
-
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body
@@ -162,7 +156,7 @@ const forgotPassword = async (req, res) => {
 
     // Create reset URL
     const resetUrl =
-      `http://localhost:5173/reset-password/${resetToken}`
+  `${process.env.CLIENT_URL}/reset-password/${resetToken}`
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -235,11 +229,11 @@ const resetPassword = async (req, res) => {
     const { token } = req.params
     const { password } = req.body
 
-    if (!password) {
-      return res.status(400).json({
-        message: 'Please enter a new password'
-      })
-    }
+    if (!password || password.length < 6) {
+  return res.status(400).json({
+    message: 'Password must be at least 6 characters'
+  })
+}
 
     const hashedToken =
       crypto

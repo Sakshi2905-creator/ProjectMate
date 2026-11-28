@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './MyProjects.css'
 
 function MyProjects() {
@@ -35,7 +36,12 @@ function MyProjects() {
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/projects/user/${loggedInUser.id}`
+         `${API}/projects/user/${loggedInUser.id}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
         )
 
         const data = await response.json()
@@ -88,12 +94,13 @@ function MyProjects() {
   try {
 
     const response = await fetch(
-      `http://localhost:5000/api/projects/${projectId}`,
+      `${API}/projects/${projectId}`,
       {
         method: 'DELETE',
 
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+  ...getAuthHeaders()
         },
 
         body: JSON.stringify({

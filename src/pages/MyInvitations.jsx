@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './MyInvitations.css'
 
 function MyInvitations() {
@@ -25,11 +26,12 @@ const handleInvitation = async (
     setMessage('')
 
     const response = await fetch(
-      `http://localhost:5000/api/projects/${projectId}/invitations/${invitationId}/${action}`,
+      `${API}/projects/${projectId}/invitations/${invitationId}/${action}`,
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+      ...getAuthHeaders()
         }
       }
     )
@@ -102,7 +104,12 @@ const user = storedUser
 
 
         const response = await fetch(
-          `http://localhost:5000/api/projects/invitations/${userId}`
+         `${API}/projects/invitations/${userId}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
         )
 
         const data = await response.json()

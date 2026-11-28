@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import TaskBoard from '../components/tasks/TaskBoard'
 import TeamWorkload from '../components/tasks/TeamWorkload'
 import ActivityFeed from '../components/tasks/ActivityFeed'
@@ -29,7 +30,12 @@ const [matchLoading, setMatchLoading] = useState(true)
 const refreshProject = async () => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/projects/${id}`
+      `${API}/projects/${id}`,
+      {
+        headers: {
+          ...getAuthHeaders()
+        }
+      }
     )
 
     const data = await response.json()
@@ -52,7 +58,12 @@ const refreshProject = async () => {
       try {
 
         const response = await fetch(
-          `http://localhost:5000/api/projects/${id}`
+          `${API}/projects/${id}`,
+      {
+        headers: {
+          ...getAuthHeaders()
+        }
+      }
         )
 
         const data = await response.json()
@@ -138,14 +149,15 @@ const handleJoinRequest = async () => {
     setJoinStatus('')
 
     const response = await fetch(
-      `http://localhost:5000/api/projects/${id}/join`,
+      `${API}/projects/${id}/join`,
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+            ...getAuthHeaders()
+
         },
         body: JSON.stringify({
-          userId,
           message: joinMessage.trim()
         })
       }
@@ -189,7 +201,12 @@ if (!userId) {
 }
 
       const response = await fetch(
-        `http://localhost:5000/api/projects/${id}/match/${userId}`
+      `${API}/projects/${id}/match/${userId}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
       )
 
       const data = await response.json()
@@ -731,13 +748,17 @@ if (!userId) {
   </button>
 )}
 
+
+{isProjectMember && (
   <button
     className="find-team-btn"
     onClick={() => navigate(`/project/${id}/find-teammates`)}
   >
     Find Teammates
   </button>
+  )}
 
+{!isProjectMember && (
   <button
     className="join-project-btn"
     onClick={() => {
@@ -749,6 +770,7 @@ if (!userId) {
   >
     Request to Join →
   </button>
+  )}
 
   {showJoinMessage && (
     <div className="join-message-box">

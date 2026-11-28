@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:5000/api/activities'
+import { API } from '../config/api'
+
+const API_URL = `${API}/activities`
 
 const getToken = () =>
   localStorage.getItem('token') ||

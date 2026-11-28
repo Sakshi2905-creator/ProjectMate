@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './Teams.css'
 
 function Teams() {
@@ -37,7 +38,12 @@ const [menuOpen, setMenuOpen] = useState(false)
     const fetchTeams = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/projects/teams/${loggedInUser.id}`
+        `${API}/projects/teams/${loggedInUser.id}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
         )
 
         const data = await response.json()

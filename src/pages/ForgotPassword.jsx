@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { API } from '../config/api'
 
 function ForgotPassword() {
 
@@ -18,9 +19,7 @@ function ForgotPassword() {
 
     try {
 
-      const response = await fetch(
-        'http://localhost:5000/api/auth/forgot-password',
-        {
+      const response = await fetch(`${API}/auth/forgot-password`, {
           method: 'POST',
 
           headers: {

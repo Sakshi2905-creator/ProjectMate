@@ -1,3 +1,4 @@
+
 const express = require('express')
 
 const {
@@ -9,17 +10,13 @@ const authMiddleware = require('../middleware/authMiddleware')
 
 const router = express.Router()
 
-// Existing personal activity route
-router.get(
-  '/:userId',
-  getRecentActivities
-)
+// All activity routes require authentication.
+router.use(authMiddleware)
 
-// New project activity route
-router.get(
-  '/project/:projectId',
-  authMiddleware,
-  getProjectActivities
-)
+// Get activities of the logged-in user.
+router.get('/me', getRecentActivities)
+
+// Get activities of a project.
+router.get('/project/:projectId', getProjectActivities)
 
 module.exports = router

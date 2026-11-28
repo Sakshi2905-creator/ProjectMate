@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './Discover.css'
 
 function Discover() {
@@ -48,7 +49,7 @@ const [sortBy, setSortBy] = useState('newest')
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          'http://localhost:5000/api/projects'
+         `${API}/projects`
         )
 
         const data = await response.json()
@@ -83,7 +84,12 @@ const [sortBy, setSortBy] = useState('newest')
       for (const project of projects) {
         try {
           const response = await fetch(
-            `http://localhost:5000/api/projects/${project._id}/match/${user.id}`
+           `${API}/projects/${project._id}/match/${user.id}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
           )
 
           const data = await response.json()

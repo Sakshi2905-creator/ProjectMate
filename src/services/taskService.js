@@ -1,5 +1,7 @@
 
-const API_URL = 'http://localhost:5000/api/tasks'
+import { API } from '../config/api'
+
+const API_URL = `${API}/tasks`
 
 // Get the token from whichever storage contains it.
 const getToken = () => {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './EditProject.css'
 
 function EditProject() {
@@ -16,7 +17,7 @@ function EditProject() {
     requiredSkills: '',
     teamSize: '',
     deadline: '',
-    status:'Planing',
+    status:'Planning',
     progress:0
   })
 
@@ -36,7 +37,7 @@ function EditProject() {
       try {
 
         const response = await fetch(
-          `http://localhost:5000/api/projects/${id}`
+          `${API}/projects/${id}`
         )
 
         const data = await response.json()
@@ -64,13 +65,18 @@ const loggedInUserId =
 const projectOwnerId =
   project.owner?._id || project.owner
 
-setIsOwner(
-  Boolean(
-    loggedInUserId &&
-    projectOwnerId &&
-    String(loggedInUserId) === String(projectOwnerId)
-  )
+const owner = Boolean(
+  loggedInUserId &&
+  projectOwnerId &&
+  String(loggedInUserId) === String(projectOwnerId)
 )
+
+setIsOwner(owner)
+
+if (!owner) {
+  setError('Only the project owner can edit this project.')
+  return
+}
 
         setFormData({
           title: project.title || '',
@@ -114,33 +120,6 @@ setIsOwner(
 
   }, [id])
 
-
-  // HANDLE INPUT
-
-// const handleChange = (event) => {
-
-//   const { name, value } = event.target
-
-//   setFormData(prev => {
-
-//     if (name === 'status' && value === 'Completed') {
-
-//       return {
-//         ...prev,
-//         status: value,
-//         progress: 100
-//       }
-
-//     }
-
-//     return {
-//       ...prev,
-//       [name]: value
-//     }
-
-//   })
-
-// }
 const handleChange = (event) => {
 
   const { name, value } = event.target
@@ -218,25 +197,17 @@ const handleChange = (event) => {
       setError('')
 
       const response = await fetch(
-        `http://localhost:5000/api/projects/${id}`,
+        `${API}/projects/${id}`,
         {
           method: 'PUT',
 
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            ...getAuthHeaders()
+
           },
 
           body: JSON.stringify({
- userId: (() => {
-  const storedUser =
-      localStorage.getItem('user') ||
-      sessionStorage.getItem('user')
-
-    const user = storedUser
-      ? JSON.parse(storedUser)
-      : null
-    return user?._id || user?.id
-  })(),
 
             title: formData.title,
 
@@ -399,12 +370,6 @@ const handleChange = (event) => {
       {/* FORM */}
 
       <main className="edit-project-container">
-{!isOwner && (
-  <div className="edit-error-message">
-    Only the project owner can edit project details.
-    Redirecting to project details...
-  </div>
-)}
         {isOwner && (
         <form
           className="edit-project-form"

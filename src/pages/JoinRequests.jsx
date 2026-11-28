@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './JoinRequests.css'
 
 function JoinRequests() {
@@ -19,9 +20,12 @@ const handleRequest = async (
     try {
 
       const response = await fetch(
-        `http://localhost:5000/api/projects/${projectId}/join/${requestId}/${action}`,
+      `${API}/projects/${projectId}/join/${requestId}/${action}`,
         {
-          method: 'POST'
+          method: 'POST',
+    headers: {
+      ...getAuthHeaders()
+    }
         }
       )
 
@@ -94,7 +98,12 @@ const handleRequest = async (
         // Fetch projects owned by current user
 
         const projectResponse = await fetch(
-          `http://localhost:5000/api/projects/user/${userId}`
+         `${API}/projects/user/${userId}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
         )
 
         const projectData =
@@ -117,7 +126,12 @@ const handleRequest = async (
         for (const project of userProjects) {
 
           const response = await fetch(
-            `http://localhost:5000/api/projects/${project._id}/join-requests`
+            `${API}/projects/${project._id}/join-requests`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
           )
 
           const data = await response.json()

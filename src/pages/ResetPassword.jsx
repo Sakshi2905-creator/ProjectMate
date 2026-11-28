@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { API } from '../config/api'
 
 function ResetPassword() {
 
@@ -40,9 +41,7 @@ function ResetPassword() {
 
     try {
 
-      const response = await fetch(
-        `http://localhost:5000/api/auth/reset-password/${token}`,
-        {
+      const response = await fetch(`${API}/auth/reset-password/${token}`, {
           method: 'POST',
 
           headers: {

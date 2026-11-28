@@ -1,8 +1,10 @@
+
 const User = require('../models/User')
 
 const getSmartMatches = async (req, res) => {
   try {
-    const userId = req.params.userId
+    // Always identify the user through the verified JWT.
+    const userId = req.user.userId
 
     const currentUser = await User.findById(userId)
 
@@ -18,10 +20,9 @@ const getSmartMatches = async (req, res) => {
 
     const users = await User.find({
       _id: { $ne: userId }
-    }).select('name email skills interest')
+    }).select('name skills interest')
 
     const matches = users.map(user => {
-
       const userSkills = (user.skills || []).map(skill =>
         skill.toLowerCase()
       )
@@ -41,7 +42,6 @@ const getSmartMatches = async (req, res) => {
       return {
         id: user._id,
         name: user.name,
-        email: user.email,
         interest: user.interest,
         skills: user.skills || [],
         commonSkills,
@@ -60,9 +60,7 @@ const getSmartMatches = async (req, res) => {
     res.status(200).json({
       matches: sortedMatches
     })
-
   } catch (error) {
-
     console.error('Smart match error:', error)
 
     res.status(500).json({

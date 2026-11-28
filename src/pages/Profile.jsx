@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { API, getAuthHeaders } from '../config/api'
 import './Profile.css'
 
 function Profile() {
@@ -35,7 +36,12 @@ const storedUserId = storedUser?.id || storedUser?._id
   const fetchProfile = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/${id}`
+        `${API}/users/${id}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
       )
 
       const data = await response.json()
@@ -76,7 +82,12 @@ useEffect(() => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/users/${storedUserId}`
+       `${API}/users/${storedUserId}`,
+  {
+    headers: {
+      ...getAuthHeaders()
+    }
+  }
       )
 
       const data = await response.json()
@@ -162,11 +173,12 @@ const saveSkills = async () => {
 
     // Save skills
     const response = await fetch(
-      `http://localhost:5000/api/users/${userId}/skills`,
+     `${API}/users/${userId}/skills`,
       {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+  ...getAuthHeaders()
         },
         body: JSON.stringify({
           skills: selectedSkills
@@ -183,12 +195,13 @@ const saveSkills = async () => {
 
     // Save project preference
     const interestResponse = await fetch(
-      `http://localhost:5000/api/users/${userId}/interest`,
+    `${API}/users/${userId}/interest`,
       {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
-        },
+          'Content-Type': 'application/json',
+  ...getAuthHeaders()
+},
         body: JSON.stringify({
           interest
         })
